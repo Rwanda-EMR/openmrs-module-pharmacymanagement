@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="org.openmrs.module.pharmacymanagement.CmdDrug" table="pharmacymanagement_cmd_drug">
+		<id name="cmddrugId" column="cmddrug_id">
+			<generator class="native" />
+		</id>
+		<property name="supportingProg" column="supporting_prog" />
+		<property name="monthPeriod" column="month_period" type="date" />
+		<property name="isAchieved" column="is_achieved" />
+		<many-to-one name="locationId" class="org.openmrs.Location" column="location_id" />
+		<many-to-one name="destination" class="org.openmrs.Location" column="destination" />
+		<many-to-one name="pharmacy" class="org.openmrs.module.pharmacymanagement.Pharmacy" column="pharmacy" />
+		<set name="drugProducts" cascade="all" inverse="false" lazy="true" table="drug_product">
+			<key column="drugproduct_id" />
+			<one-to-many class="org.openmrs.module.pharmacymanagement.DrugProduct" />
+		</set>
+	</class>
+
+	<class name="org.openmrs.module.pharmacymanagement.DrugProduct" table="pharmacymanagement_drug_product">
+		<id name="drugproductId" column="drugproduct_id">
+			<generator class="native" />
+		</id>
+		<property name="storeQnty" column="store_qnty" />
+		<property name="qntyReq" column="req_qnty" />
+		<property name="deliveredQnty" column="deliv_qnty" />
+		<property name="isDelivered" column="is_deliv" />
+		<property name="expiryDate" column="expiry_date" type="date" />
+		<property name="lotNo" column="lot_no" />
+		<property name="comments" column="comments" />
+
+		<many-to-one name="cmddrugId" class="org.openmrs.module.pharmacymanagement.CmdDrug" column="cmddrug_id" fetch="join" />
+		<many-to-one  name="drugId" class="org.openmrs.Drug"  column="drug_id" cascade="all" />
+		<many-to-one  name="conceptId" class="org.openmrs.Concept"  column="concept_id" cascade="all" />
+
+	</class>
+	
+	<class name="org.openmrs.module.pharmacymanagement.DrugProductInventory" table="pharmacymanagement_drugproduct_inventory">
+		<id name="inventoryId" column="inventory_id">
+			<generator class="native" />
+		</id>
+		<property name="inventoryDate" column="inventory_date" type="date" />
+		<property name="entree" column="entree" />
+		<property name="sortie" column="sortie" />
+		<property name="solde" column="solde" />
+		<property name="isStore" column="is_store" />
+
+		<many-to-one name="drugproductId" class="org.openmrs.module.pharmacymanagement.DrugProduct" not-null="true" column="drugproduct_id" fetch="join" />
+
+	</class>
+	
+	<class name="org.openmrs.module.pharmacymanagement.Pharmacy" table="pharmacymanagement_pharmacy">
+		<id name="pharmacyId" column="pharmacy_id">
+			<generator class="native" />
+		</id>
+		<property name="name" column="name" />
+
+		<many-to-one name="locationId" class="org.openmrs.Location" column="location_id" />
+
+	</class>
+
+	<class name="org.openmrs.module.pharmacymanagement.DrugOrderPrescription" table="pharmacymanagement_drug_order_prescription">
+		<id name="drugOrderPrescriptionId" column="drugorderprescription_id">
+			<generator class="native" />
+		</id>
+		<property name="date" column="date" type="date" />
+		<property name="quantity" column="quantity" />
+
+		<many-to-one name="patient" class="org.openmrs.Patient" column="patient" />
+		<many-to-one name="user" class="org.openmrs.User" column="user" />
+		<many-to-one name="drugproductId" class="org.openmrs.module.pharmacymanagement.DrugProduct" column="drugproduct_id" />
+		<many-to-one name="encounterId" class="org.openmrs.Encounter" column="encounter_id" />
+		<many-to-one name="orderId" class="org.openmrs.Order" column="order_id" />
+
+	</class>
+	
+	<class name="org.openmrs.module.pharmacymanagement.ConsumableDispense" table="pharmacymanagement_consumable_dispense">
+		<id name="consumabledispenseId" column="consumabledispense_id">
+			<generator class="native" />
+		</id>
+		<property name="date" column="date" type="date" />
+		<property name="qnty" column="qnty" />
+
+		<many-to-one name="service" class="org.openmrs.Concept" column="service" />
+		<many-to-one name="provider" class="org.openmrs.User" column="provider" />
+		<many-to-one name="patientId" class="org.openmrs.Patient" column="patient_id" />
+		<many-to-one name="drugproductId" class="org.openmrs.module.pharmacymanagement.DrugProduct" column="drugproduct_id" />
+		
+	</class>
+	
+	<class name="org.openmrs.module.pharmacymanagement.PharmacyInventory" table="pharmacymanagement_pharmacy_inventory">
+		<id name="pharmacyInventoryId" column="pharmacyinventory_id">
+			<generator class="native" />
+		</id>
+		<property name="date" column="date" type="date" />
+		<property name="entree" column="entree" />
+		<property name="sortie" column="sortie" />
+		<property name="solde" column="solde" />
+		
+		<many-to-one name="dopId" class="org.openmrs.module.pharmacymanagement.DrugOrderPrescription" column="dop_id" />
+		<many-to-one name="drugproductId" class="org.openmrs.module.pharmacymanagement.DrugProduct" not-null="true" column="drugproduct_id" fetch="join" />
+		<many-to-one name="cpId" class="org.openmrs.module.pharmacymanagement.ConsumableDispense" column="cp_id" />
+		
+
+	</class>
+	
+	<class name="org.openmrs.module.pharmacymanagement.ProductReturnStore" table="pharmacymanagement_arv_return_store">
+		<id name="returnStoreId" column="return_store_id">
+			<generator class="native" />
+		</id>
+		<property name="retDate" column="ret_date" type="date" />
+		<property name="retQnty" column="ret_qnty" />
+		<property name="isReturned" column="is_returned" />
+		<property name="observation" column="observation" />
+
+		<many-to-one name="drugproductId" class="org.openmrs.module.pharmacymanagement.DrugProduct" column="drugproduct_id" />
+		<many-to-one name="returnedBy" class="org.openmrs.User" column="returned_by" />
+		<many-to-one name="dpInventory" class="org.openmrs.module.pharmacymanagement.DrugProductInventory" column="dp_inventory" not-null="true" cascade="all" unique="true" />
+		<many-to-one name="originLocation" class="org.openmrs.Location" column="origin_location" not-null="false" cascade="all" />
+		<many-to-one name="destination" class="org.openmrs.Location" column="destination" not-null="true" cascade="all" />
+		<many-to-one name="phInventory" class="org.openmrs.module.pharmacymanagement.PharmacyInventory" column="ph_inventory" not-null="false" cascade="all" unique="true" />
+		<many-to-one name="originPharmacy" class="org.openmrs.module.pharmacymanagement.Pharmacy" column="origin_pharmacy" not-null="false" cascade="all" />
+	</class>
+	
+	
+</hibernate-mapping>

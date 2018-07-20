@@ -1,0 +1,46 @@
+/*
+ * SimpleModal Basic Modal Dialog
+ * http://www.ericmmartin.com/projects/simplemodal/
+ * http://code.google.com/p/simplemodal/
+ *
+ * Copyright (c) 2010 Eric Martin - http://ericmmartin.com
+ *
+ * Licensed under the MIT license:
+ *   http://www.opensource.org/licenses/mit-license.php
+ *
+ * Revision: $Id: basic.css 242 2010-03-14 00:55:02Z emartin24 $
+ *
+ */
+ 
+#stop-modal-content {display: none;}
+#rpt-dialog-content {display: none;}
+#edit-dialog-content {display: none;}
+#delete-modal-content {display: none;}
+#basic-modal-content { display: none;}
+#edit-modal-content {display: none;}
+
+
+#simplemodal-overlay {background-color: #000; cursor: wait;}
+#createditdialog-overlay {background-color: #000; cursor: wait;}
+
+#simplemodal-container {height: 150px; width: 400px;	color: #000000;	font-weight: bold; background-color: #8FABC7; border: 4px solid #E9F2FA; padding: 12px;}
+#createditdialog-container {color: #000000; font-weight: bold; background-color: #8FABC7;	border: 4px solid #E9F2FA; padding: 12px;}
+
+#simplemodal-container code {background: #141414; border-left: 3px solid #65B43D; color: #F5F5F5; font-weight: bold; display: block; margin-bottom: 12px; padding: 4px 6px 6px;}
+#createditdialog-container code {background: #141414; border-left: 3px solid #65B43D; color: #F5F5F5; font-weight: bold; display: block; margin-bottom: 12px; padding: 4px 6px 6px;}
+
+#simplemodal-container a {color: #ddd;}
+#createditdialog-container a {color: #000;}
+
+#simplemodal-container a.modalCloseImg { background: url(../images/x.png) no-repeat; width: 25px; height: 29px; display: inline; z-index: 806; position: absolute; top: -15px; right: -16px; cursor: pointer;}
+#createditdialog-container a.dialogCloseImg {background: url(../images/x.png) no-repeat; width: 25px; height: 29px; display: inline; z-index: 806; position: absolute; top: -15px; right: -16px; cursor: pointer;}
+
+#simplemodal-container #stop-modal-content {padding: 8px;}
+#createditdialog-container #edit-dialog-content {padding: 8px;}
+#createditdialog-container #rpt-dialog-content {padding: 8px;}
+.col1 {width: 40%;}
+
+
+
+
+

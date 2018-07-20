@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+	<!-- Beans to add to the current Application context definition -->
+
+<beans>
+
+	<bean parent="serviceContext">
+		<property name="moduleService">
+			<list>
+				<value>org.openmrs.module.pharmacymanagement.service.DrugOrderService</value>
+				<bean
+					class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager">
+						<ref bean="transactionManager" />
+					</property>
+					<property name="target">
+						<bean
+							class="org.openmrs.module.pharmacymanagement.impl.DrugOrderServiceImpl">
+							<property name="drugOrderDAO">
+								<bean
+									class="org.openmrs.module.pharmacymanagement.db.hibernate.DrugOrderDAOImpl">
+									<property name="sessionFactory">
+										<ref bean="sessionFactory" />
+									</property>
+								</bean>
+							</property>
+						</bean>
+					</property>
+					<property name="preInterceptors">
+						<list>
+							<ref bean="authorizationInterceptor" />
+						</list>
+					</property>
+					<property name="transactionAttributeSource">
+						<bean
+							class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource" />
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="pharmacymanagementUrlMapping"
+		class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+		<property name="order">
+			<value>2</value>
+		</property>
+		<property name="mappings">
+			<props>
+				<prop key="module/@MODULE_ID@/storequest.form">drugStoreFormController</prop>
+				<prop key="module/@MODULE_ID@/arvreport.list">aRVMonthlyReport</prop>
+				<prop key="module/@MODULE_ID@/cmdsearch.form">cmdSearch</prop>
+				<prop key="module/@MODULE_ID@/order.list">displayDrugOrders</prop>
+				<prop key="module/@MODULE_ID@/stocksecurity.list">stockDeSecurite</prop>
+				<prop key="module/@MODULE_ID@/pharmacyorder.list">findPharmacyRequestForm</prop>
+				<prop key="module/@MODULE_ID@/pharmacyInventory.list">pharmacyDrugInventory</prop>
+				<prop key="module/@MODULE_ID@/report.form">pharmacyReport</prop>
+				<prop key="module/@MODULE_ID@/pharmacyproducts.list">pharmacyProducts</prop>
+				<prop key="module/@MODULE_ID@/pharmacyrequest.form">pharmacyRequestForm</prop>
+				<prop key="module/@MODULE_ID@/pharmacy.list">pharmacyViewController</prop>
+				<prop key="module/@MODULE_ID@/pharmacy.form">pharmacyFormController</prop>
+				<prop key="module/@MODULE_ID@/drugOrder.list">drugOrderView</prop>
+				<prop key="module/@MODULE_ID@/drugDetail.list">drugDetailView</prop>
+				<prop key="module/@MODULE_ID@/drugDetail.form">drugDetailForm</prop>
+				<prop key="module/@MODULE_ID@/storeAlert.htm">drugStoreAlert</prop>
+				<prop key="module/@MODULE_ID@/home.htm">drugStoreMgt</prop>
+				<prop key="module/@MODULE_ID@/patOrders.list">patientDrugOrders</prop>
+				<prop key="module/@MODULE_ID@/pharmacyDrugDisp.htm">pharmacyDrugDispController</prop>
+				<prop key="module/@MODULE_ID@/return.form">storeReturnForm</prop>				
+				<prop key="module/@MODULE_ID@/lot.htm">lotNumbersController</prop>					
+				<prop key="module/@MODULE_ID@/json.htm">jSonHandler</prop>
+				<prop key="module/@MODULE_ID@/drugSolde.htm">drugOrderSoldeHandler</prop>
+				<prop key="module/@MODULE_ID@/printReturnStock.list">printReturnStock</prop>
+				<prop key="module/@MODULE_ID@/dopc.form">drugOrderPrescriptionController</prop>
+				<prop key="module/@MODULE_ID@/consumabledispensation.htm">consumableDispensationController</prop>
+				<prop key="module/@MODULE_ID@/conceptdrug.htm">conceptDrugHandler</prop>
+				<prop key="module/@MODULE_ID@/cmdUpdate.form">cmdProductUpdate</prop>
+				<prop key="module/@MODULE_ID@/storeSearch.form">storeSearchForm</prop>
+				<prop key="**/drugOrderPortlet.portlet">drugOrderPortletController</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- Controllers -->
+	<bean id="cmdSearch" class="@MODULE_PACKAGE@.stock.web.controller.CmdSearch">
+		<property name="viewName" value="module/@MODULE_ID@/findDrugCmd" />
+	</bean>
+	
+	<bean id="aRVMonthlyReport" class="@MODULE_PACKAGE@.stock.web.controller.ARVMonthlyReport">
+		<property name="viewName" value="module/@MODULE_ID@/report" />
+	</bean>
+	
+	<bean id="displayDrugOrders" class="@MODULE_PACKAGE@.stock.web.controller.DisplayDrugOrders">
+		<property name="viewName" value="module/@MODULE_ID@/orderDisplay" />
+	</bean>	
+	
+	<bean id="stockDeSecurite" class="@MODULE_PACKAGE@.stock.web.controller.StockDeSecurite">
+		<property name="viewName" value="module/@MODULE_ID@/stockSecurite" />
+	</bean>
+	
+	<bean id="pharmacyRequestForm" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyRequestForm">
+		<property name="viewName" value="module/@MODULE_ID@/pharmacyRequestForm" />
+	</bean>
+	
+	<bean id="findPharmacyRequestForm" class="@MODULE_PACKAGE@.phcymgt.web.controller.FindPharmacyRequestForm">
+		<property name="viewName" value="module/@MODULE_ID@/findPharmacyRequestForm" />
+	</bean>
+	
+	<bean id="pharmacyDrugInventory" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyDrugInventory">
+		<property name="viewName" value="module/@MODULE_ID@/pharmacyDrugInventory" />
+	</bean>
+	
+	<bean id="pharmacyProducts" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyProducts">
+		<property name="viewName" value="module/@MODULE_ID@/pharmacyProducts" />
+	</bean>
+	
+	<bean id="pharmacyReport" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyReport">
+		<property name="viewName" value="module/@MODULE_ID@/pharmacyReport" />
+	</bean>
+	
+	<bean id="pharmacyViewController" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyViewController">
+		<property name="viewName" value="module/@MODULE_ID@/pharmacyView" />
+	</bean>
+	
+	<bean id="pharmacyFormController" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyFormController">
+		<property name="viewName" value="module/@MODULE_ID@/pharmacyForm" />
+	</bean>
+	<bean id="drugOrderView" class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugOrderView">
+		<property name="viewName" value="module/@MODULE_ID@/drugOrderList" />
+	</bean>
+	
+	<bean id="drugDetailView" class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugDetailView">
+		<property name="viewName" value="module/@MODULE_ID@/drugDetailView" />
+	</bean>
+	
+	<bean id="drugDetailForm" class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugDetailForm">
+		<property name="viewName" value="module/@MODULE_ID@/drugDetailForm" />
+	</bean>
+	
+	<bean id="drugStoreAlert" class="@MODULE_PACKAGE@.stock.web.controller.DrugStoreAlert">
+		<property name="viewName" value="module/@MODULE_ID@/drugStoreAlert" />
+	</bean>
+	
+	<bean id="drugStoreMgt" class="@MODULE_PACKAGE@.stock.web.controller.DrugStoreMgt">
+		<property name="viewName" value="module/@MODULE_ID@/menu" />
+	</bean>
+	
+	<bean id="pharmacyDrugDispController" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyDrugDispController">
+		<property name="viewName" value="module/@MODULE_ID@/pharmacyDrugDisp" />
+	</bean>
+	
+	<bean id="patientDrugOrders" class="@MODULE_PACKAGE@.phcymgt.web.controller.PatientDrugOrders">
+		<property name="viewName" value="module/@MODULE_ID@/patientDrugOrders" />
+	</bean>
+	
+	<bean id="printReturnStock" class="@MODULE_PACKAGE@.stock.web.controller.PrintReturnStock">
+		<property name="viewName" value="module/@MODULE_ID@/printReturnStock" />
+	</bean>
+	
+	<bean id="storeReturnForm" class="@MODULE_PACKAGE@.stock.web.controller.StoreReturnForm">
+		<property name="viewName" value="module/@MODULE_ID@/storeReturnForm" />
+	</bean>
+	
+	<bean id="consumableDispensationController" class="@MODULE_PACKAGE@.phcymgt.web.controller.ConsumableDispensationController">
+		<property name="viewName" value="module/@MODULE_ID@/consumableDispensation" />
+	</bean>
+	
+	<bean id="cmdProductUpdate" class="@MODULE_PACKAGE@.stock.web.controller.CmdProductUpdate">
+		<property name="viewName" value="module/@MODULE_ID@/cmdProductUpdate" />
+	</bean>
+	
+	<bean id="storeSearchForm" class="@MODULE_PACKAGE@.stock.web.controller.StoreSearchForm">
+		<property name="viewName" value="module/@MODULE_ID@/storeSearch" />
+	</bean>
+	
+	<bean id="lotNumbersController" class="@MODULE_PACKAGE@.stock.web.controller.LotNumbersController">
+		<property name="viewName">
+			<value>lot.htm</value>
+		</property>		
+		<property name="av">
+			<ref bean="ajaxView" />
+		</property>
+	</bean>
+	
+	<bean id="jSonHandler" class="@MODULE_PACKAGE@.stock.web.controller.JSonHandler" >
+		<property name="viewName">
+			<value>module/@MODULE_ID@/storeReturnForm</value>
+		</property>
+		<property name="viewRenderer">
+			<ref bean="ajaxViewRenderer" />
+		</property>
+	</bean>
+	
+	<bean id="drugOrderSoldeHandler" class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugOrderSoldeHandler" >
+		<property name="viewName">
+			<value>drugSolde.htm</value>
+		</property>		
+		<property name="drugSoldeViewRenderer">
+			<ref bean="ajaxSoldeRenderer" />
+		</property>
+	</bean>
+		
+	<bean id="conceptDrugHandler" class="@MODULE_PACKAGE@.phcymgt.web.controller.ConceptDrugHandler">
+		<property name="viewName">
+			<value>json.htm</value>
+		</property>
+		<property name="viewRenderer">
+			<ref bean="ajaxViewRenderer" />
+		</property>
+	</bean>
+	
+	<bean id="drugStoreFormController" class="@MODULE_PACKAGE@.stock.web.controller.DrugStoreFormController" />
+	
+	<bean id="drugOrderPrescriptionController" class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugOrderPrescriptionController" />
+	
+	<bean id="drugOrderPortletController"
+		class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugOrderPortletController" />
+	
+    
+	<!-- /Controllers -->
+	
+	
+	<!-- views -->
+	<bean id="ajaxViewRenderer" class="@MODULE_PACKAGE@.view.extn.AjaxViewRenderer" />
+	<bean id="ajaxSoldeRenderer" class="@MODULE_PACKAGE@.view.extn.AjaxSoldeRenderer" />
+	<bean id="ajaxView" class="@MODULE_PACKAGE@.view.extn.AjaxView" />
+	<!-- /views -->
+	
+	
+</beans>

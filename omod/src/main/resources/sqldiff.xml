@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqldiff PUBLIC "-//OpenMRS//DTD OpenMRS SQL Diff Config 1.0//EN" "http://resources.openmrs.org/doctype/sqldiff-1.0.dtd">
+
+<sqldiff version="1.0">
+	<help>
+		USE:
+		The diffs are ordered by datamodel version number.
+		The script
+		can be run in a top down fashion and is
+		expected to not failor
+		overwrite old data
+
+		EXPECT:
+		- "use business-database-name;" was called
+		prior to
+		calling this script
+	</help>
+
+	<diff>
+		<version>1.6.0</version>
+		<author>Dusabe Eric</author>
+		<date>Mar 1st 2010</date>
+		<description>
+
+		</description>
+		<sql>
+		
+		CREATE TABLE IF NOT EXISTS `pharmacy` (
+			`pharmacy_id` int(11) NOT NULL AUTO_INCREMENT,
+			`name` varchar(80) NOT NULL,
+			`location_id` int(11) NOT NULL,
+			PRIMARY KEY (`pharmacy_id`),
+			KEY `location_id` (`location_id`),
+			CONSTRAINT `pharmacy_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;		
+		
+		CREATE TABLE IF NOT EXISTS `cmd_drug` (
+			`cmddrug_id` int(11) NOT NULL AUTO_INCREMENT,
+			`location_id` int(11) DEFAULT NULL,
+			`destination` int(11) DEFAULT NULL,
+			`pharmacy` int(11) DEFAULT NULL,
+			`supporting_prog` varchar(45) DEFAULT NULL,
+			`month_period` date DEFAULT NULL,
+			`is_achieved` tinyint(1) DEFAULT NULL,
+			PRIMARY KEY (`cmddrug_id`),
+			CONSTRAINT `cmddrug_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`location_id`),
+			CONSTRAINT `cmddrug_destination` FOREIGN KEY (`destination`) REFERENCES `location` (`location_id`),
+			CONSTRAINT `cmddrug_pharmacy` FOREIGN KEY (`pharmacy`) REFERENCES `pharmacy` (`pharmacy_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+		CREATE TABLE IF NOT EXISTS `drug_product` (
+			`drugproduct_id` int(11)
+			NOT NULL AUTO_INCREMENT ,
+			`store_qnty` int(11) DEFAULT NULL ,
+			`req_qnty` int(11) DEFAULT NULL ,
+			`deliv_qnty` int(11) DEFAULT NULL ,
+			`is_deliv` tinyint(1) DEFAULT NULL,
+			`expiry_date` date DEFAULT NULL ,
+			`lot_no` varchar(45) DEFAULT NULL ,
+			`comments` varchar(45) DEFAULT NULL ,
+			`cmddrug_id` int(11) DEFAULT NULL ,
+			`drug_id` int(11) DEFAULT NULL ,
+			`concept_id` int(11) DEFAULT NULL, 
+			PRIMARY KEY (`drugproduct_id`),
+			CONSTRAINT `drugproduct_drug` FOREIGN KEY (`drug_id`) REFERENCES `drug` (`drug_id`),
+			CONSTRAINT `drugproduct_cmddrug` FOREIGN KEY (`cmddrug_id`) REFERENCES `cmd_drug` (`cmddrug_id`),
+			CONSTRAINT `drugproduct_concept` FOREIGN KEY (`concept_id`) REFERENCES `concept` (`concept_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			
+		CREATE TABLE IF NOT EXISTS `drug_order_prescription` (
+			`drugorderprescription_id` int(11) NOT NULL AUTO_INCREMENT,
+			`quantity` int(11) NOT NULL,
+			`date` date NOT NULL,
+			`patient` int(11) NOT NULL,
+			`user` int(11) NOT NULL,
+			`drugproduct_id` int(11) NOT NULL,
+			`encounter_id` int(11) NOT NULL,
+			`order_id` int(11) NOT NULL,
+			PRIMARY KEY (`drugorderprescription_id`),
+			CONSTRAINT `drugorder_patient` FOREIGN KEY (`patient`) REFERENCES `patient` (`patient_id`),
+			CONSTRAINT `drugorder_users` FOREIGN KEY (`user`) REFERENCES `users` (`user_id`),
+			CONSTRAINT `drugorder_drugproduct` FOREIGN KEY (`drugproduct_id`) REFERENCES `drug_product` (`drugproduct_id`),
+			CONSTRAINT `drugorder_encounter` FOREIGN KEY (`encounter_id`) REFERENCES `encounter` (`encounter_id`),
+			CONSTRAINT `drugorder_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`)
+			
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			<!-- 
+			CREATE TABLE IF NOT EXISTS `drug_details` (
+			`drugdetails_id` int(11) NOT NULL AUTO_INCREMENT,
+			`forme` varchar(45) NOT NULL,
+			`measurement_unit` varchar(45) NOT NULL,
+			`units` int(11) NOT NULL,
+			`drug` int(11) NOT NULL,
+			PRIMARY KEY (`drugdetails_id`),
+			CONSTRAINT `drugdetails_drug` FOREIGN KEY (`drug`) REFERENCES `drug` (`drug_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			 -->		
+			 
+			 CREATE TABLE IF NOT EXISTS `consumable_dispense` (
+			`consumabledispense_id` int(11) NOT NULL AUTO_INCREMENT,
+			`date` date NOT NULL,
+			`qnty` int(11) NOT NULL,
+			`service` int(11) NOT NULL,
+			`provider` int(11) NOT NULL,
+			`drugproduct_id` int(11) NOT NULL,
+			
+			PRIMARY KEY (`consumabledispense_id`),
+						
+			CONSTRAINT `cd_service` FOREIGN KEY (`service`) REFERENCES `concept` (`concept_id`),
+			CONSTRAINT `cd_provider` FOREIGN KEY (`provider`) REFERENCES `users` (`user_id`),
+			CONSTRAINT `cd_dp` FOREIGN KEY (`drugproduct_id`) REFERENCES `drug_product` (`drugproduct_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;	
+			
+			CREATE TABLE IF NOT EXISTS `pharmacy_inventory` (
+			`pharmacyinventory_id` int(11) NOT NULL AUTO_INCREMENT,
+			`date` date NOT NULL,
+			`drugproduct_id` int(11) NOT NULL,
+			`entree` int(11) NOT NULL,
+			`sortie` int(11) NOT NULL,
+			`solde` int(11) NOT NULL,
+			`dop_id` int(11) DEFAULT NULL,
+			`cp_id` int(11) DEFAULT NULL,
+			PRIMARY KEY (`pharmacyinventory_id`),
+			CONSTRAINT `pharmacyinventory_drugproduct` FOREIGN KEY (`drugproduct_id`) REFERENCES `drug_product` (`drugproduct_id`),
+			CONSTRAINT `pharmacyinventory_dop` FOREIGN KEY (`dop_id`) REFERENCES `drug_order_prescription` (`drugorderprescription_id`),			
+			CONSTRAINT `pharmacyinventory_cp` FOREIGN KEY (`cp_id`) REFERENCES `consumable_dispense` (`consumabledispense_id`)
+			
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			
+			CREATE TABLE IF NOT EXISTS `drugproduct_inventory` (
+			`inventory_id` int(11) NOT NULL AUTO_INCREMENT,
+			`inventory_date` date NOT NULL,
+			`drugproduct_id` int(11) NOT NULL,
+			`entree` int(11) NOT NULL,
+			`sortie` int(11) NOT NULL,
+			`solde` int(11) NOT NULL,			
+			`is_store` TINYINT(1) NOT NULL,
+			PRIMARY KEY (`inventory_id`),
+			KEY `drugproduct_id` (`drugproduct_id`),
+			CONSTRAINT `drugproduct_id` FOREIGN KEY (`drugproduct_id`) REFERENCES
+			`drug_product` (`drugproduct_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+			CREATE TABLE IF NOT EXISTS `arv_return_store` (
+			`return_store_id` int(11) NOT NULL AUTO_INCREMENT,
+			`ret_date` date NOT NULL,
+			`ret_qnty` int(11) NOT NULL,
+			`drugproduct_id` int(11) NOT NULL,
+			`observation` VARCHAR(155) NOT NULL,
+			`is_returned` TINYINT(1) DEFAULT NULL,
+			`returned_by` int(11) NOT NULL,
+			`dp_inventory` int(11) NOT NULL,
+			`origin_location` int(11) DEFAULT NULL,
+			`destination` int(11) NOT NULL,
+			`ph_inventory` int(11) DEFAULT NULL,
+			`origin_pharmacy` int(11) DEFAULT NULL,
+			
+			PRIMARY KEY (`return_store_id`),
+			
+			CONSTRAINT `ret_dp` FOREIGN KEY (`drugproduct_id`) REFERENCES `drug_product` (`drugproduct_id`),
+			CONSTRAINT `ret_user` FOREIGN KEY (`returned_by`) REFERENCES `users` (`user_id`),
+			CONSTRAINT `ret_dpi` FOREIGN KEY (`dp_inventory`) REFERENCES `drugproduct_inventory` (`inventory_id`),
+			CONSTRAINT `ret_origin_location` FOREIGN KEY (`origin_location`) REFERENCES `location` (`location_id`),			
+			CONSTRAINT `ret_destination` FOREIGN KEY (`destination`) REFERENCES `location` (`location_id`),
+			CONSTRAINT `ret_pi` FOREIGN KEY (`ph_inventory`) REFERENCES `pharmacy_inventory` (`pharmacyinventory_id`),
+			CONSTRAINT `ret_origin_pharmacy` FOREIGN KEY (`origin_pharmacy`) REFERENCES `pharmacy` (`pharmacy_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;			
+			
+		</sql>
+	</diff>
+	<diff>
+		<version>1.6.1</version>
+		<author>Dusabe Eric</author>
+		<date>June 7th 2012</date>
+		<description>Prefix all the tables with pharmacymanagement_...</description>
+		<sql>
+			rename table arv_return_store to pharmacymanagement_arv_return_store;
+			rename table drugproduct_inventory to pharmacymanagement_drugproduct_inventory;
+			rename table pharmacy_inventory to pharmacymanagement_pharmacy_inventory;
+			rename table consumable_dispense to pharmacymanagement_consumable_dispense;
+			rename table drug_order_prescription to pharmacymanagement_drug_order_prescription;
+			rename table drug_product to pharmacymanagement_drug_product;
+			rename table cmd_drug to pharmacymanagement_cmd_drug;
+			rename table pharmacy to pharmacymanagement_pharmacy;
+		</sql>	
+	</diff>
+	<diff>
+		<version>1.6.2</version>
+		<author>Dusabe Eric</author>
+		<date>August 7th 2012</date>
+		<description>Add another attribute in pharmacymanagement_consumable_dispense table</description>
+		<sql>
+			ALTER TABLE pharmacymanagement_consumable_dispense ADD patient_id int(11) DEFAULT NULL;
+			ALTER TABLE pharmacymanagement_consumable_dispense
+			ADD CONSTRAINT fk_pat_cd
+			FOREIGN KEY (patient_id)
+			REFERENCES patient(patient_id);
+		</sql>	
+	</diff>
+	<diff>
+		<version>1.6.3</version>
+		<author>Dusabe Eric</author>
+		<date>August 7th 2012</date>
+		<description>Add another attribute in pharmacymanagement_consumable_dispense table</description>
+		<sql>
+			ALTER TABLE pharmacymanagement_pharmacy MODIFY name VARCHAR(100) DEFAULT NULL;
+		</sql>	
+	</diff>
+</sqldiff>

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.2//EN" "http://resources.openmrs.org/doctype/config-1.2.dtd">
+<module configVersion="1.2">
+
+	<!-- Drug Store Management and Dispensing Module Properties -->
+	<id>pharmacymanagement</id>
+	<name>Pharmacy Management and Dispensing Module</name>
+	<version>1.2.7</version>
+	<package>org.openmrs.module.pharmacymanagement</package>
+	<author>Dusabe Eric</author>
+	<description>This is module to help in management of a pharmacy in health facilities</description>
+
+	<activator>@MODULE_PACKAGE@.PharmacyManagementModuleActivator</activator>
+
+	<!-- /Drug Store Management and Dispensing Module Properties -->
+
+	<require_version>1.2.0.3400</require_version>
+
+	<require_modules>
+		<require_module version="0.3-SNAPSHOT">org.openmrs.module.mohappointment</require_module>
+	</require_modules>
+
+	<!-- AOP
+	<advice>
+	  	<point>org.openmrs.api.OrderService</point>
+	  	<class>@MODULE_PACKAGE@.advice.DrugOrderServiceAdvice</class>
+	 </advice>
+	-->
+
+	<!-- Extensions -->
+
+	<extension>
+		<point>org.openmrs.tracmodule.list</point>
+		<class>@MODULE_PACKAGE@.extension.html.AdminList</class>
+	</extension>
+
+	<extension>
+		<point>org.openmrs.patientDashboardTab</point>
+		<class>@MODULE_PACKAGE@.extension.html.DrugOrderDashboardTab</class>
+	</extension>
+	<!--
+   <extension>
+       <point>org.openmrs.admin.list</point>
+       <class>@MODULE_PACKAGE@.extension.html.AdminList</class>
+   </extension>
+    -->
+	<!-- Required Privileges -->
+	<privilege>
+		<name>View Pharmacy management and Dispensing</name>
+		<description>To view pharmacy module depending on other privileges</description>
+	</privilege>
+	<privilege>
+		<name>View Drug Store management</name>
+		<description>Able to view Drug Store management</description>
+	</privilege>
+	<privilege>
+		<name>View Pharmacy management</name>
+		<description>Able to view Pharmacy management</description>
+	</privilege>
+	<privilege>
+		<name>Manage Pharmacy</name>
+		<description>Able to add requisition/find pharmacy order/add drug order and view drug orders</description>
+	</privilege>
+	<privilege>
+		<name>View Drug store alert</name>
+		<description>Able to view drug store alerts</description>
+	</privilege>
+	<privilege>
+		<name>View Pharmacies</name>
+		<description>Able to view and create Pharmacies</description>
+	</privilege>
+	<privilege>
+		<name>View Pharmacy report</name>
+		<description>Able to view Pharmacy report</description>
+	</privilege>
+
+	<privilege>
+		<name>Patient Dashboard - View Drug Order Section</name>
+		<description>Able to view the Drug Order Section</description>
+	</privilege>
+
+
+
+	<!-- Required Global Properties -->
+	<globalProperty>
+		<property>@MODULE_ID@.pharmacyEncounter</property>
+		<defaultValue>14</defaultValue>
+		<description>Pharmacy Encounter</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.periodDispense</property>
+		<defaultValue>0</defaultValue>
+		<description>The number of months to go back if there is no Dispense in the current month and there has been dispensing in the previous months</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.possibleFrequency</property>
+		<defaultValue>4,5,30</defaultValue>
+		<description>The first is for the drugs that a patient can take at once, the second is times per day and the last is days</description>
+	</globalProperty>
+
+
+	<!-- Internationalization -->
+	<!-- All message codes should start with @MODULE_ID@.* -->
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	<messages>
+		<lang>fr</lang>
+		<file>messages_fr.properties</file>
+	</messages>
+	<messages>
+		<lang>es</lang>
+		<file>messages_es.properties</file>
+	</messages>
+	<!-- /Internationalization -->
+
+	<mappingFiles>
+		CmdDrug.hbm.xml
+	</mappingFiles>
+
+
+</module>
