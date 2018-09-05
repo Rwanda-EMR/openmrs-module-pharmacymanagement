@@ -215,7 +215,7 @@
 	<bean id="drugOrderPrescriptionController" class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugOrderPrescriptionController" />
 	
 	<bean id="drugOrderPortletController"
-		class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugOrderPortletController" />
+		class="org.openmrs.module.pharmacymanagement.phcymgt.web.controller.DrugOrderPortletController" />
 	
     
 	<!-- /Controllers -->

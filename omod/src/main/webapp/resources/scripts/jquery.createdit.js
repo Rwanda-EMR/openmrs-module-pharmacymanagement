@@ -3,22 +3,22 @@
  * http://www.ericmmartin.com/projects/simpledialog/
  * Copyright (c) 2010 Eric Martin (http://twitter.com/EricMMartin)
  * Dual licensed under the MIT and GPL licenses
- * Revision: $Id: jquery.simpledialog.js 245 2010-03-25 20:41:15Z emartin24 $
+ * Revision: $jId: jquery.simpledialog.js 245 2010-03-25 20:41:15Z emartin24 $j
  */
 ;
-( function($) {
-	var ie6 = $.browser.msie && parseInt($.browser.version) == 6
+( function($j) {
+	var ie6 = $j.browser.msie && parseInt($j.browser.version) == 6
 			&& typeof window['XMLHttpRequest'] != "object", ieQuirks = null, w = [];
-	$.dialog = function(data, options) {
-		return $.dialog.impl.init(data, options);
+	$j.dialog = function(data, options) {
+		return $j.dialog.impl.init(data, options);
 	};
-	$.dialog.close = function() {
-		$.dialog.impl.close();
+	$j.dialog.close = function() {
+		$j.dialog.impl.close();
 	};
-	$.fn.dialog = function(options) {
-		return $.dialog.impl.init(this, options);
+	$j.fn.dialog = function(options) {
+		return $j.dialog.impl.init(this, options);
 	};
-	$.dialog.defaults = {
+	$j.dialog.defaults = {
 		appendTo :'body',
 		focus :true,
 		opacity :50,
@@ -47,7 +47,7 @@
 		onShow :null,
 		onClose :null
 	};
-	$.dialog.impl = {
+	$j.dialog.impl = {
 		o :null,
 		d : {},
 		init : function(data, options) {
@@ -55,15 +55,15 @@
 			if (s.d.data) {
 				return false;
 			}
-			ieQuirks = $.browser.msie && !$.boxModel;
-			s.o = $.extend( {}, $.dialog.defaults, options);
+			ieQuirks = $j.browser.msie && !$j.boxModel;
+			s.o = $j.extend( {}, $j.dialog.defaults, options);
 			s.zIndex = s.o.zIndex;
 			s.occb = false;
 			if (typeof data == 'object') {
-				data = data instanceof jQuery ? data : $(data);
+				data = data instanceof jQuery ? data : $j(data);
 				s.d.placeholder = false;
 				if (data.parent().parent().size() > 0) {
-					data.before($('<span></span>').attr('id',
+					data.before($j('<span></span>').attr('id',
 							'createditdialog-placeholder').css( {
 						display :'none'
 					}));
@@ -74,7 +74,7 @@
 					}
 				}
 			} else if (typeof data == 'string' || typeof data == 'number') {
-				data = $('<div></div>').html(data);
+				data = $j('<div></div>').html(data);
 			} else {
 				alert('createdit Error: Unsupported data type: ' + typeof data);
 				return s;
@@ -82,7 +82,7 @@
 			s.create(data);
 			data = null;
 			s.open();
-			if ($.isFunction(s.o.onShow)) {
+			if ($j.isFunction(s.o.onShow)) {
 				s.o.onShow.apply(s, [ s.d ]);
 			}
 			return s;
@@ -91,8 +91,8 @@
 			var s = this;
 			w = s.getDimensions();
 			if (s.o.dialog && ie6) {
-				s.d.iframe = $('<iframe src="javascript:false;"></iframe>')
-						.css($.extend(s.o.iframeCss, {
+				s.d.iframe = $j('<iframe src="javascript:false;"></iframe>')
+						.css($j.extend(s.o.iframeCss, {
 							display :'none',
 							opacity :0,
 							position :'fixed',
@@ -103,8 +103,8 @@
 							left :0
 						})).appendTo(s.o.appendTo);
 			}
-			s.d.overlay = $('<div></div>').attr('id', s.o.overlayId).addClass(
-					'createditdialog-overlay').css($.extend(s.o.overlayCss, {
+			s.d.overlay = $j('<div></div>').attr('id', s.o.overlayId).addClass(
+					'createditdialog-overlay').css($j.extend(s.o.overlayCss, {
 				display :'none',
 				opacity :s.o.opacity / 100,
 				height :s.o.dialog ? w[0] : 0,
@@ -114,24 +114,24 @@
 				top :0,
 				zIndex :s.o.zIndex + 1
 			})).appendTo(s.o.appendTo);
-			s.d.container = $('<div></div>').attr('id', s.o.containerId)
+			s.d.container = $j('<div></div>').attr('id', s.o.containerId)
 					.addClass('createditdialog-container').css(
-							$.extend(s.o.containerCss, {
+							$j.extend(s.o.containerCss, {
 								display :'none',
 								position :'fixed',
 								zIndex :s.o.zIndex + 2
 							})).append(
-							s.o.close && s.o.closeHTML ? $(s.o.closeHTML)
+							s.o.close && s.o.closeHTML ? $j(s.o.closeHTML)
 									.addClass(s.o.closeClass) : '').appendTo(
 							s.o.appendTo);
-			s.d.wrap = $('<div></div>').attr('tabIndex', -1).addClass(
+			s.d.wrap = $j('<div></div>').attr('tabIndex', -1).addClass(
 					'createditdialog-wrap').css( {
 				height :'100%',
 				outline :0,
 				width :'100%'
 			}).appendTo(s.d.container);
 			s.d.data = data.attr('id', data.attr('id') || s.o.dataId).addClass(
-					'createditdialog-data').css($.extend(s.o.dataCss, {
+					'createditdialog-data').css($j.extend(s.o.dataCss, {
 				display :'none'
 			})).appendTo('body');
 			data = null;
@@ -143,7 +143,7 @@
 		},
 		bindEvents : function() {
 			var s = this;
-			$('.' + s.o.closeClass).bind('click.createditdialog', function(e) {
+			$j('.' + s.o.closeClass).bind('click.createditdialog', function(e) {
 				e.preventDefault();
 				s.close();
 			});
@@ -153,7 +153,7 @@
 					s.close();
 				});
 			}
-			$(document).bind('keydown.createditdialog', function(e) {
+			$j(document).bind('keydown.createditdialog', function(e) {
 				if (s.o.dialog && s.o.focus && e.keyCode == 9) {
 					s.watchTab(e);
 				} else if ((s.o.close && s.o.escClose) && e.keyCode == 27) {
@@ -161,7 +161,7 @@
 					s.close();
 				}
 			});
-			$(window).bind('resize.createditdialog', function() {
+			$j(window).bind('resize.createditdialog', function() {
 				w = s.getDimensions();
 				s.setContainerDimensions(true);
 				if (ie6 || ieQuirks) {
@@ -179,14 +179,14 @@
 			});
 		},
 		unbindEvents : function() {
-			$('.' + this.o.closeClass).unbind('click.createditdialog');
-			$(document).unbind('keydown.createditdialog');
-			$(window).unbind('resize.createditdialog');
+			$j('.' + this.o.closeClass).unbind('click.createditdialog');
+			$j(document).unbind('keydown.createditdialog');
+			$j(window).unbind('resize.createditdialog');
 			this.d.overlay.unbind('click.createditdialog');
 		},
 		fixIE : function() {
 			var s = this, p = s.o.position;
-			$
+			$j
 					.each(
 							[ s.d.iframe || null,
 									!s.o.dialog ? null : s.d.overlay,
@@ -281,15 +281,15 @@
 		},
 		focus : function(pos) {
 			var s = this, p = pos || 'first';
-			var input = $(':input:enabled:visible:' + p, s.d.wrap);
+			var input = $j(':input:enabled:visible:' + p, s.d.wrap);
 			input.length > 0 ? input.focus() : s.d.wrap.focus();
 		},
 		getDimensions : function() {
-			var el = $(window);
-			var h = $.browser.opera && $.browser.version > '9.5'
-					&& $.fn.jquery <= '1.2.6' ? document.documentElement['clientHeight']
-					: $.browser.opera && $.browser.version < '9.5'
-							&& $.fn.jquery > '1.2.6' ? window.innerHeight : el
+			var el = $j(window);
+			var h = $j.browser.opera && $j.browser.version > '9.5'
+					&& $j.fn.jquery <= '1.2.6' ? document.documentElement['clientHeight']
+					: $j.browser.opera && $j.browser.version < '9.5'
+							&& $j.fn.jquery > '1.2.6' ? window.innerHeight : el
 							.height();
 			return [ h, el.width() ];
 		},
@@ -300,8 +300,8 @@
 		setContainerDimensions : function(resize) {
 			var s = this;
 			if (!resize || (resize && s.o.autoResize)) {
-				var ch = $.browser.opera ? s.d.container.height() : s
-						.getVal(s.d.container.css('height')), cw = $.browser.opera ? s.d.container
+				var ch = $j.browser.opera ? s.d.container.height() : s
+						.getVal(s.d.container.css('height')), cw = $j.browser.opera ? s.d.container
 						.width()
 						: s.getVal(s.d.container.css('width')), dh = s.d.data
 						.outerHeight(true), dw = s.d.data.outerWidth(true);
@@ -371,8 +371,8 @@
 		},
 		watchTab : function(e) {
 			var s = this;
-			if ($(e.target).parents('.createditdialog-container').length > 0) {
-				s.inputs = $(
+			if ($j(e.target).parents('.createditdialog-container').length > 0) {
+				s.inputs = $j(
 						':input:enabled:visible:first, :input:enabled:visible:last',
 						s.d.data[0]);
 				if ((!e.shiftKey && e.target == s.inputs[s.inputs.length - 1])
@@ -394,7 +394,7 @@
 		open : function() {
 			var s = this;
 			s.d.iframe && s.d.iframe.show();
-			if ($.isFunction(s.o.onOpen)) {
+			if ($j.isFunction(s.o.onOpen)) {
 				s.o.onOpen.apply(s, [ s.d ]);
 			} else {
 				s.d.overlay.show();
@@ -410,12 +410,12 @@
 				return false;
 			}
 			s.unbindEvents();
-			if ($.isFunction(s.o.onClose) && !s.occb) {
+			if ($j.isFunction(s.o.onClose) && !s.occb) {
 				s.occb = true;
 				s.o.onClose.apply(s, [ s.d ]);
 			} else {
 				if (s.d.placeholder) {
-					var ph = $('#createditdialog-placeholder');
+					var ph = $j('#createditdialog-placeholder');
 					if (s.o.persist) {
 						ph.replaceWith(s.d.data.removeClass('createditdialog-data')
 								.css('display', s.display));

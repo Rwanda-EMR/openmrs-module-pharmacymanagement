@@ -80,7 +80,6 @@
 	</privilege>
 
 
-
 	<!-- Required Global Properties -->
 	<globalProperty>
 		<property>@MODULE_ID@.pharmacyEncounter</property>
