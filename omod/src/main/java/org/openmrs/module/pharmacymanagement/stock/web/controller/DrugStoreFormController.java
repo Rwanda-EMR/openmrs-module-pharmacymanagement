@@ -54,7 +54,10 @@ public class DrugStoreFormController extends AbstractController {
 		List<Location> locations = locationService.getAllLocations();
 		int i;
 		for (i = 0; i < drugs.size(); i++) {
-			drugMap.put(drugs.get(i).getDrugId(), drugs.get(i).getName());
+			if(drugs.get(i).getName()!=null)
+				drugMap.put(drugs.get(i).getDrugId(), drugs.get(i).getName().toString());
+			else
+				drugMap.put(drugs.get(i).getDrugId(), drugs.get(i).getConcept().getName().toString());
 		}
 
 		Collection<DrugProduct> products = service.getAllProducts();

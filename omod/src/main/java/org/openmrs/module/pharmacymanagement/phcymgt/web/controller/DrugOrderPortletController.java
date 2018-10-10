@@ -94,7 +94,11 @@ public class DrugOrderPortletController extends PortletController {
 			model.put("patient", patient);
 		}
 		for(Drug drg : drugs) {
-			drugMap.put(drg.getDrugId(), drg.getName().toString());
+			if(drg.getName()!=null)
+				drugMap.put(drg.getDrugId(), drg.getName().toString());
+			else
+				drugMap.put(drg.getDrugId(), drg.getConcept().getName().toString());
+
 		}
 
 //		System.out.println("The loop A Start: ********************* " + new Date());
