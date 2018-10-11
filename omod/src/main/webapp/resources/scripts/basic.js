@@ -8,22 +8,22 @@
  * Licensed under the MIT license:
  *   http://www.opensource.org/licenses/mit-license.php
  *
- * Revision: $Id: basic.js 243 2010-03-15 14:23:14Z emartin24 $
+ * Revision: jQueryId: basic.js 243 2010-03-15 14:23:14Z emartin24 jQuery
  *
  */
 
-jQuery(function ($) {
-	$('.edit').click(function (e) {
-		$('#edit-dialog-content').dialog();
-		$('.ui-dialog').css({'width':'650px', 'height':'280px'});
+jQuery(function (jQuery) {
+	jQuery('.edit').click(function (e) {
+		jQuery('#edit-dialog-content').dialog();
+		jQuery('.ui-dialog').css({'width':'650px', 'height':'280px'});
 		  return false;
 	});
 	
-	$('.stop').click(function (e) {
+	jQuery('.stop').click(function (e) {
 		var index = this.id;
 		var suffix = index.substring(index.indexOf("_") + 1);
 		var varReason = document.getElementById("stopReasonId");
-		var reason = $dm('#discontinuedReason_'+suffix).text();
+		var reason = jQuery('#discontinuedReason_'+suffix).text();
 		for ( var i = 0; i < varReason.options.length; i++) {
 			if (varReason.options[i].value == reason) {
 				varReason.selectedIndex = i;
@@ -31,43 +31,43 @@ jQuery(function ($) {
 			}
 		}
 		
-		$('#stop-modal-content').dialog();
-		$('.ui-dialog').css({'width':'400px', 'height':'auto'});
+		jQuery('#stop-modal-content').dialog();
+		jQuery('.ui-dialog').css({'width':'400px', 'height':'auto'});
 		  return false;
 	});
 	
-	$('#create').click(function(e) {
-		$('#edit-dialog-content').dialog();
-		$('.ui-dialog').css({'width':'700px', 'height':'280px'});
+	jQuery('#create').click(function(e) {
+		jQuery('#edit-dialog-content').dialog();
+		jQuery('.ui-dialog').css({'width':'700px', 'height':'280px'});
 		return false;
 	});
 	
-	$('.popit').click(function(e) {
-		$('#rpt-dialog-content').dialog();		
+	jQuery('.popit').click(function(e) {
+		jQuery('#rpt-dialog-content').dialog();		
 		  return false;
 	});	
 	
-	$(".delete").click(function(e) {
+	jQuery(".delete").click(function(e) {
 		var deleteBtnId = this.id;
 		var orderId = deleteBtnId.substring(deleteBtnId.indexOf("_") + 1);
-		$dm('#orderToDelId').val(orderId);
+		jQuery('#orderToDelId').val(orderId);
 		
-		$("#delete-modal-content").dialog();
-		$('.ui-dialog').css({'width':'200px', 'height':'100px'});
+		jQuery("#delete-modal-content").dialog();
+		jQuery('.ui-dialog').css({'width':'200px', 'height':'100px'});
 	});
 	
-	$(".edit-basic").click(function(e) {		
-		$("#edit-modal-content").dialog();
-		$('.ui-dialog').width(840);
-		$('.ui-dialog').height(180);
-		$('.ui-dialog').css({'left':'428.5px'});
+	jQuery(".edit-basic").click(function(e) {		
+		jQuery("#edit-modal-content").dialog();
+		jQuery('.ui-dialog').width(840);
+		jQuery('.ui-dialog').height(180);
+		jQuery('.ui-dialog').css({'left':'428.5px'});
 		return false;
 	});
 	
-	$('.basic').click(function (e) {
-		$('#basic-modal-content').dialog();
-		$('.ui-dialog').height(180);
-		$('.ui-dialog').width(420);
+	jQuery('.basic').click(function (e) {
+		jQuery('#basic-modal-content').dialog();
+		jQuery('.ui-dialog').height(180);
+		jQuery('.ui-dialog').width(420);
 		return false;
 	});
 });
