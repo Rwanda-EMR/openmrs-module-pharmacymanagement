@@ -23,7 +23,7 @@
 #simplemodal-overlay {background-color: #000; cursor: wait;}
 #createditdialog-overlay {background-color: #000; cursor: wait;}
 
-#simplemodal-container {height: 150px; width: 400px;	color: #000000;	font-weight: bold; background-color: #8FABC7; border: 4px solid #E9F2FA; padding: 12px;}
+#simplemodal-container {height: 150px; width: 400px;	color: #000000;	font-weight: bold; background-color: white; border: 4px solid #E9F2FA; padding: 12px;}
 #createditdialog-container {color: #000000; font-weight: bold; background-color: #8FABC7;	border: 4px solid #E9F2FA; padding: 12px;}
 
 #simplemodal-container code {background: #141414; border-left: 3px solid #65B43D; color: #F5F5F5; font-weight: bold; display: block; margin-bottom: 12px; padding: 4px 6px 6px;}

@@ -24,6 +24,7 @@ import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.AppointmentState;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.openmrs.module.pharmacymanagement.PharmacyConstants;
+import org.openmrs.module.pharmacymanagement.utils.GlobalPropertiesMgt;
 import org.openmrs.module.pharmacymanagement.utils.Utils;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.WebConstants;
@@ -281,8 +282,7 @@ public class DrugOrderPrescriptionController extends AbstractController {
 		for (Appointment appointment : AppointmentUtil
 				.getAllWaitingAppointmentsByPatientAtService(patient,
 						new AppointmentState(4, "WAITING"), new Date(),
-						AppointmentUtil.getServiceByConcept(Context
-								.getConceptService().getConcept(8053)))) {
+						AppointmentUtil.getServiceByConcept(GlobalPropertiesMgt.getConcept(GlobalPropertiesMgt.Consultationservice)))) {
 
 			Utils.setConsultationAppointmentAsAttended(appointment);
 		}

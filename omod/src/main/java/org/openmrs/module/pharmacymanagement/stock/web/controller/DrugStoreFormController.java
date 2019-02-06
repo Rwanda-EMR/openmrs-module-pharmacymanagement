@@ -69,6 +69,9 @@ public class DrugStoreFormController extends AbstractController {
 		}
 		
 
+		/*String locationStr = Context.getAuthenticatedUser().getUserProperties()
+				.get(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);*/
+
 		String locationStr = Context.getAuthenticatedUser().getUserProperties()
 				.get(OpenmrsConstants.USER_PROPERTY_DEFAULT_LOCATION);
 

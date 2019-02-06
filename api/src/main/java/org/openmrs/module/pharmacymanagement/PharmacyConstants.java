@@ -1,5 +1,7 @@
 package org.openmrs.module.pharmacymanagement;
 
+import org.openmrs.api.context.Context;
+
 public class PharmacyConstants {
 	public static final int ADVERSE_ACTIONS = 1645;
 	public static final int NEW_PROPHYLAXIS = 3117;
@@ -9,7 +11,7 @@ public class PharmacyConstants {
 	public static final int REASON_ORDER_STOPPED = 1812;
 	public static final int DRUG_ORDER_TYPE = 1;
 	public static final String PROVIDER_ROLE = "Provider";
-	public static final int CONSUMABLE = 7988;
+	public static final int CONSUMABLE = Integer.parseInt(Context.getAdministrationService().getGlobalProperty("pharmacymanagement.CONSUMABLE"));
 	public static final String CMD_DRUG = "pharmacymanagement_cmd_drug";
 	public static final String ARV_RETURN_STORE = "pharmacymanagement_arv_return_store";
 	public static final String DRUGPRODUCT_INVENTORY = "pharmacymanagement_drugproduct_inventory";

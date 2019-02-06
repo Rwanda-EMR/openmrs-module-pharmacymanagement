@@ -132,9 +132,7 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 		if (request.getParameter("patientId") != null
 				&& !request.getParameter("patientId").equals("")
 				&& request.getParameter("encDate") != null
-				&& !request.getParameter("encDate").equals("")
-				&& request.getParameter("weight") != null
-				&& !request.getParameter("weight").equals("")) {
+				&& !request.getParameter("encDate").equals("")) {
 
 			patient = patientService.getPatient(Integer.valueOf(request
 					.getParameter("patientId")));
@@ -147,10 +145,18 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 
 			List<Obs> obsList = new ArrayList<Obs>();
 
-			Object weight = Double.valueOf(request.getParameter("weight"));
+			if(request.getParameter("weight") != null
+					&& !request.getParameter("weight").equals("")) {
 
-			Concept weightConcept = conceptService
-					.getConcept(PharmacyConstants.WEIGHT);
+				Object weight = Double.valueOf(request.getParameter("weight"));
+
+				Concept weightConcept = conceptService
+						.getConcept(PharmacyConstants.WEIGHT);
+
+				Obs weightObs = Utils.createObservation(encDate, dftLoc, patient,
+						weightConcept, weight, 1);
+				obsList.add(weightObs);
+			}
 			Concept nvDateConcept = conceptService
 					.getConcept(PharmacyConstants.NEXT_VISIT_DATE);
 
@@ -158,9 +164,7 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 					.getEncounterType(Utils
 							.getGP("pharmacymanagement.pharmacyEncounter"));
 
-			Obs weightObs = Utils.createObservation(encDate, dftLoc, patient,
-					weightConcept, weight, 1);
-			obsList.add(weightObs);
+
 			
 			if(request.getParameter("nvDate") != null && !request.getParameter("nvDate").equals("")) {
 				nvDateStr = request.getParameter("nvDate");

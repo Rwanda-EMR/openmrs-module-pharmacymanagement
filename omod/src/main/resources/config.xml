@@ -96,7 +96,16 @@
 		<defaultValue>4,5,30</defaultValue>
 		<description>The first is for the drugs that a patient can take at once, the second is times per day and the last is days</description>
 	</globalProperty>
-
+	<globalProperty>
+		<property>@MODULE_ID@.appointmentInConsultationService</property>
+		<defaultValue>8053</defaultValue>
+		<description>Consultation Services concept</description>
+	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.CONSUMABLE</property>
+		<defaultValue>7988</defaultValue>
+		<description>Consumable coded concept id</description>
+	</globalProperty>
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with @MODULE_ID@.* -->
