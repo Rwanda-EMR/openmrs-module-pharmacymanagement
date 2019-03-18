@@ -95,6 +95,8 @@ public class PatientDrugOrders extends ParameterizableViewController {
 
 			Set<DrugProduct> lotNos = new HashSet<DrugProduct>();
 			int solde = 0;
+			Map<String, String> availNotAvailOrderedDrug = new HashMap<String, String>();
+
 
 			List<Integer> drugIdss = new ArrayList<Integer>();
 			List<DrugOrder> drugOrders1 = new ArrayList<DrugOrder>();
@@ -128,16 +130,25 @@ public class PatientDrugOrders extends ParameterizableViewController {
 							if(solde != 0) {
 								dpMap.put(drugproduct.getLotNo() + " / " + solde + " (" + drugproduct.getExpiryDate() + ") ", drugproduct.getDrugproductId() + "");								
 								dld.setDpMap(dpMap);
+								availNotAvailOrderedDrug.put(drugproduct.getDrugId().getName().toString(),"Available");
 							}
 						}
+
 						if(dpMap.size() > 0)
 							dlds.add(dld);
-					} 
+					}
+
 				}
 				drugIdss.add(drOr.getDrug().getDrugId());
+
+				if(!availNotAvailOrderedDrug.containsKey(drOr.getDrug().getName().toString())) {
+					availNotAvailOrderedDrug.put(drOr.getDrug().getName().toString(),"Not Available");
+				}
 			}
 
 			mav.addObject("patient", patient);
+			mav.addObject("availNotAvailOrderedDrug", availNotAvailOrderedDrug);
+
 		}
 
 		if (dlds.size() != 0) {

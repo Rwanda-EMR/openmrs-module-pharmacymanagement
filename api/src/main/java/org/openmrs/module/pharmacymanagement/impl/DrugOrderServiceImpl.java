@@ -259,7 +259,13 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 		return drugOrderDAO.getSoldeByToDrugLocation(to, drugId, conceptId, locationId);
 	}
 
-	@Override
+@Override
+	public Integer getSoldeByDrugOrConcept(String drugId, String conceptId){
+		return drugOrderDAO.getSoldeByDrugOrConcept(drugId, conceptId);
+	}
+
+
+		@Override
 	public Object[] getSumEntreeSortieByFromToDrugLocation(String from,
 			String to, String drugId, String conceptId, String locationId) {
 		return drugOrderDAO.getSumEntreeSortieByFromToDrugLocation(from, to, drugId, conceptId, locationId);

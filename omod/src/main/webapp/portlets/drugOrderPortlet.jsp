@@ -271,6 +271,7 @@
 			<th><spring:message code="pharmacymanagement.units" /></th>
 			<th><spring:message code="pharmacymanagement.frequency" /></th>
 			<th><spring:message code="pharmacymanagement.quantity" /></th>
+			<th><spring:message code="pharmacymanagement.dispensedquantity" /></th>
 			<th><spring:message code="pharmacymanagement.startDate" /></th>
 			<th><spring:message code="pharmacymanagement.stopDate" /></th>
 			<th><spring:message code="Stopped Reason" /></th>
@@ -295,6 +296,18 @@
 				<td><span id="units_${dro.orderId}">${dro.units}</span></td>
 				<td><span id="frequency_${dro.orderId}">${dro.frequency}</span></td>
 				<td><span id="quantity_${dro.orderId}">${dro.quantity}</span></td>
+				<td><span>
+
+				<c:if test="${!empty model.dispensedQuantity}">
+
+                                <c:forEach items="${model.dispensedQuantity}" var="elem">
+                                            <c:if test="${elem.key eq dro.orderId}">
+                                                ${elem.value}
+                                            </c:if>
+                                </c:forEach>
+                </c:if>
+
+				</span></td>
 				<td><span id="startDate_${dro.orderId}"><openmrs:formatDate date="${dro.startDate}" type="textbox" /></span></td>
 				<td><span id="discontinuedDate_${dro.orderId}"><openmrs:formatDate date="${dro.discontinuedDate}" type="textbox" /></span></td>
 				<td><span id="discontinuedReason_${dro.orderId}">${dro.discontinuedReason.name}</span></td>
@@ -307,6 +320,7 @@
 	</tbody>
 	<tfoot>
 		<tr>
+			<td></td>
 			<td></td>
 			<td></td>
 			<td></td>

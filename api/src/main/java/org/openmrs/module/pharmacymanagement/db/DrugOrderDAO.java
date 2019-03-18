@@ -333,6 +333,11 @@ public interface DrugOrderDAO {
 	 * returns the solde by passing the date, drug and the location
 	 */
 	public Integer getSoldeByFromDrugLocation(String from, String drugId, String conceptId, String locationId);
+
+	/**
+	 * returns the solde by passing the concept or, drug
+	 */
+	public Integer getSoldeByDrugOrConcept(String drugId, String conceptId);
 	
 	/**
 	 * returns the solde by passing the date, drug and the location

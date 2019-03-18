@@ -127,6 +127,8 @@ public interface DrugOrderService {
 
 	public Integer getSoldeByToDrugLocation(String var1, String var2, String var3, String var4);
 
+	public Integer getSoldeByDrugOrConcept(String drugId, String conceptId);
+
 	public Object[] getSumEntreeSortieByFromToDrugLocation(String var1, String var2, String var3, String var4, String var5);
 
 	public Integer getPharmacySoldeFirstDayOfWeek(String var1, String var2, String var3, String var4);

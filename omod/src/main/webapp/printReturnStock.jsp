@@ -9,18 +9,12 @@
 </div>
 <div id="middle"><%@ include file="template/localHeader.jsp"%>
 
-<!--  
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/dataentrystyle.css" /> 
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/jquery.js" />
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/jquery.validate.js" />
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/create_dynamic_field.js" /> 
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/validator.js" />
--->
+
 
 <script type="text/javascript">
-var $ = jQuery.noConflict();
-$(document).ready(function() {
-	$('#example').dataTable();
+var $j = jQuery.noConflict();
+$j(document).ready(function() {
+	$j('#example').dataTable();
 });
 </script>
 	

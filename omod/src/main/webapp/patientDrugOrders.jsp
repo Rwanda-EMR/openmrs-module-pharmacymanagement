@@ -39,11 +39,39 @@
 				</tr>
 			</c:forEach>
 		</c:if>
-		<c:if test="${empty dlds}">
-		<tr>
-			<td><input type="hidden" name="hideBtn" /><p style="font-family: 'Comic sans serif'; color: red;"><spring:message code="pharmacymanagement.noRegimenMsg" /></p></td>
-		</tr>
-		</c:if>
+
+		<c:if test="${empty availNotAvailOrderedDrug}">
+        		<tr>
+        			<td colspan='5' width='100%'><input type="hidden" name="hideBtn" /><p style="font-family: 'Comic sans serif'; color: red;"><spring:message code="pharmacymanagement.noRegimenOrderedMsg" /></p></td>
+        		</tr>
+        </c:if>
+
+		<c:if test="${!empty availNotAvailOrderedDrug}">
+        		<tr>
+        			<td colspan='5' width='100%'><input type="hidden" name="hideBtn" /><p style="font-family: 'Comic sans serif'; color: red;"><spring:message code="pharmacymanagement.drugOrderedMsg" /></p></td>
+        		</tr>
+
+        		<tr>
+                        			<td colspan='5' width='100%'><p style="font-family: 'Comic sans serif';">
+                        			<c:forEach var="type" items="${availNotAvailOrderedDrug}">
+
+                        			        <c:choose>
+                                                <c:when test="${type.value eq 'Available'}">
+                                                    ${type.key} : ${type.value} <br />
+                                                </c:when>
+                                                <c:otherwise>
+                                                   <font color='red'> ${type.key} : ${type.value}</font> <br />
+                                                </c:otherwise>
+                                            </c:choose>
+
+                                    </c:forEach>
+
+                        			</p></td>
+                </tr>
+
+        </c:if>
+
+
 	</tbody>
 </table>
 </div>

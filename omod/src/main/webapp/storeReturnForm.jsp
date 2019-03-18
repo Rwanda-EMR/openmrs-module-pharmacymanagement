@@ -4,11 +4,8 @@
 
 <openmrs:require privilege="View Drug Store management" otherwise="/login.htm" redirect="/module/pharmacymanagement/return.form" />
 
-<openmrs:htmlInclude file="/scripts/jquery/jquery.min.js" />
 
-<!-- 
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/scripts/calendar.js" />
- -->
+
 
 <div>
 <div id="outer"><%@ include file="template/leftMenu.jsp"%>

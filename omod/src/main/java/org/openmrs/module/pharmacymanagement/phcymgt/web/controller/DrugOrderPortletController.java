@@ -20,7 +20,9 @@ import org.openmrs.api.LocationService;
 import org.openmrs.api.ObsService;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.pharmacymanagement.DrugOrderPrescription;
 import org.openmrs.module.pharmacymanagement.PharmacyConstants;
+import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
 import org.openmrs.module.pharmacymanagement.utils.Utils;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.controller.PortletController;
@@ -152,6 +154,15 @@ public class DrugOrderPortletController extends PortletController {
 		});
 
 
+		DrugOrderService service = (DrugOrderService)Context.getService(DrugOrderService.class);
+
+		Collection<DrugOrderPrescription> dopList = service.getDOPByPatientId(patient);
+		Map<Integer,Integer> orderIdAndDisQuantity=new HashMap<Integer,Integer>();
+
+		for (DrugOrderPrescription dop:dopList) {
+			orderIdAndDisQuantity.put(dop.getOrderId().getOrderId(),dop.getQuantity());
+		}
+		model.put("dispensedQuantity", orderIdAndDisQuantity);
 
 		model.put("drugs", drugs);
 
@@ -166,6 +177,7 @@ public class DrugOrderPortletController extends PortletController {
 		model.put("insuranceType", insuranceType);
 		model.put("insuranceNumber", insuranceNumber);
 		super.populateModel(request, model);
+
 	}
 
 }

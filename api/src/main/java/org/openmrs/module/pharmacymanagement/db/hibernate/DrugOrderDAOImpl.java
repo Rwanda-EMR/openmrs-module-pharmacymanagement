@@ -605,6 +605,8 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 			String conceptId, String locationId) {
 
 		StringBuffer sb = new StringBuffer();
+		StringBuffer sbPharmInv = new StringBuffer();
+
 		int solde = 0;
 
 		sb.append("SELECT dpi.solde FROM "
@@ -630,15 +632,90 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 					+ "' OR p.location_id = '" + locationId
 					+ "' ) ORDER BY dpi.inventory_id DESC LIMIT 1 ; ");
 
+
+
+
+		sbPharmInv.append("SELECT sum(dpi.solde) FROM (select * from (select * from "+PharmacyConstants.PHARMACY_INVENTORY+" order by pharmacyinventory_id desc) pi group by drugproduct_id) dpi INNER JOIN "
+				+ PharmacyConstants.DRUG_PRODUCT
+				+ " dp ON dpi.drugproduct_id = dp.drugproduct_id INNER JOIN "
+				+ PharmacyConstants.CMD_DRUG
+				+ " cd ON dp.cmddrug_id = cd.cmddrug_id LEFT JOIN "
+				+ PharmacyConstants.PHARMACY
+				+ " p ON cd.pharmacy = p.pharmacy_id WHERE 1 = 1 ");
+
+		if (drugId != null && !drugId.equals(""))
+			sbPharmInv.append(" AND dp.drug_id = '" + drugId + "' ");
+
+		if (conceptId != null && !conceptId.equals(""))
+			sbPharmInv.append(" AND dp.concept_id = '" + conceptId + "' ");
+
+		if (locationId != null && !locationId.equals(""))
+			sbPharmInv.append(" AND (cd.location_id = '" + locationId
+					+ "' OR p.location_id = '" + locationId
+					+ "' ) ; ");
+
+
+
 		Session session = sessionFactory.getCurrentSession();
 
 		Query query = session.createSQLQuery(sb.toString());
 
+		Query queryPharmInv = session.createSQLQuery(sbPharmInv.toString());
+
+
 		List<Object> list = query.list();
+		List<Object> listPharmInv = queryPharmInv.list();
+
 		if (list.size() > 0) {
 			solde = Integer.valueOf(list.get(0).toString());
 		}
+		if (listPharmInv.size() > 0 && listPharmInv.get(0)!=null) {
+			solde += Integer.valueOf(listPharmInv.get(0).toString());
+		}
+		return solde;
+	}
 
+
+
+	@Override
+	public Integer getSoldeByDrugOrConcept(String drugId, String conceptId) {
+
+		StringBuffer sb = new StringBuffer();
+		StringBuffer sbPharmInv = new StringBuffer();
+
+
+		int solde = 0;
+
+		if (drugId != null && !drugId.equals("")) {
+			sb.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.drug_id=" + drugId + " and cmd.pharmacy is null;");
+
+
+			sbPharmInv.append("SELECT sum(dpr.quantity) FROM pharmacymanagement_drug_product dp,pharmacymanagement_drug_order_prescription dpr where 1 = 1 and dp.drugproduct_id=dpr.drugproduct_id and dp.drug_id=" + drugId + ";");
+		}
+
+		if ((drugId == null || drugId.equals("")) && (conceptId != null && !conceptId.equals("")) ) {
+			sb.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.concept_id=" + conceptId + " and cmd.pharmacy is null;");
+
+
+			sbPharmInv.append("SELECT sum(dpr.quantity) FROM pharmacymanagement_drug_product dp,pharmacymanagement_drug_order_prescription dpr where 1 = 1 and dp.drugproduct_id=dpr.drugproduct_id and dp.concept_id=" + conceptId + ";");
+		}
+
+		Session session = sessionFactory.getCurrentSession();
+
+		Query query = session.createSQLQuery(sb.toString());
+
+		Query queryPharmInv = session.createSQLQuery(sbPharmInv.toString());
+
+
+		List<Object> list = query.list();
+		List<Object> listPharmInv = queryPharmInv.list();
+
+		if (list.size() > 0) {
+			solde = Integer.valueOf(list.get(0).toString());
+		}
+		if (listPharmInv.size() > 0 && listPharmInv.get(0)!=null) {
+			solde -= Integer.valueOf(listPharmInv.get(0).toString());
+		}
 		return solde;
 	}
 

@@ -19,6 +19,7 @@ import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
 import org.openmrs.util.OpenmrsConstants;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.servlet.view.AbstractView;
 
 public class AjaxSoldeRenderer extends AbstractView {
@@ -58,10 +59,17 @@ public class AjaxSoldeRenderer extends AbstractView {
 							.valueOf(locationStr));
 				} catch (Exception e) {
 				}
-				
-				currSolde = dos.getSoldeByToDrugLocation(new Date()
+try {
+
+	currSolde = dos.getSoldeByDrugOrConcept(drug.getDrugId() + "", null);
+
+}catch (Exception e){
+	currSolde=0;
+}
+
+			/*	currSolde = dos.getSoldeByToDrugLocation(new Date()
 						+ "", drug.getDrugId() + "", null,
-						dftLoc.getLocationId() + "");				
+						dftLoc.getLocationId() + "");*/
 				
 				writer.write("{\"solde\":\"" + currSolde + "\"}");
 			} else

@@ -11,16 +11,7 @@
 
 <%@ include file="template/dispensingLocalHeader.jsp"%>
 
-<!--  
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/jquery.js" />
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/jquery.validate.js" />
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/create_dynamic_field.js" />
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/validator.js" />
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/dataentrystyle.css" />
-<openmrs:htmlInclude file="/scripts/calendar/calendar.js" /> 
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/jquery.tabs.js" />
-<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/jquery.tabs.css" />
--->
+
 
 <script type="text/javascript">
 
