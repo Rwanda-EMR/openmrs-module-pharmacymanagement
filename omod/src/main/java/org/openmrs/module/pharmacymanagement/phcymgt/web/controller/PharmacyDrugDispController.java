@@ -70,7 +70,13 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 		user = Context.getAuthenticatedUser();
 		String pharmacyIdStr = null;
 		ObsService obsService = Context.getObsService();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+		SimpleDateFormat sdf;
+
+		if(request.getLocale().toString().equals("en_US"))
+			sdf = new SimpleDateFormat("MM/dd/yyyy");
+		else
+			sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		DrugOrderService service = Context.getService(DrugOrderService.class);
 
@@ -223,7 +229,7 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 								int solde = currStat - quantity;
 								if (solde >= 0) {
 									//auto expire the regimen to remove from the list which appears when dispensing what have been prescribed
-									drugOrder.setAutoExpireDate(encDate);
+									drugOrder.setAutoExpireDate(drugOrder.getStartDate());
 									
 									if (count == 1) {
 										encounterService
