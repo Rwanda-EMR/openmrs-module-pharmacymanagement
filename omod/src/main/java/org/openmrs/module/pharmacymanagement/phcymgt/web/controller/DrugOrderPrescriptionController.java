@@ -51,7 +51,13 @@ public class DrugOrderPrescriptionController extends AbstractController {
 		Patient patient = Context.getPatientService().getPatient(
 					Integer.valueOf(patientId));
 
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf;
+
+		if(request.getLocale().toString().equals("en_US"))
+			sdf = new SimpleDateFormat("MM/dd/yyyy");
+		else
+			sdf = new SimpleDateFormat("dd/MM/yyyy");
+
 		ConceptService conceptService = Context.getConceptService();
 		OrderService orderService = Context.getOrderService();
 		LocationService locationService = Context.getLocationService();

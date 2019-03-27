@@ -40,7 +40,12 @@ public class CmdProductUpdate extends ParameterizableViewController {
 		ConceptService cs = Context.getConceptService();
 		List<Drug> drugs = new ArrayList<Drug>();
 		Collection<ConceptAnswer> consumable = new ArrayList<ConceptAnswer>();
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		SimpleDateFormat sdf;
+
+		if(request.getLocale().toString().equals("en_US"))
+			sdf = new SimpleDateFormat("MM/dd/yyyy");
+		else
+			sdf = new SimpleDateFormat("dd/MM/yyyy");
 		
 		Collection<PharmacyInventory> piList = dos.getAllPharmacyInventory();
 		
