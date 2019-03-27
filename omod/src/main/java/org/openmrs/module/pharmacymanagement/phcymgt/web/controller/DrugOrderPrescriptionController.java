@@ -58,7 +58,6 @@ public class DrugOrderPrescriptionController extends AbstractController {
 		else
 			sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-
 		ConceptService conceptService = Context.getConceptService();
 		OrderService orderService = Context.getOrderService();
 		LocationService locationService = Context.getLocationService();
