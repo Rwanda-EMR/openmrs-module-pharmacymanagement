@@ -37,15 +37,21 @@ public class CmdSearch extends ParameterizableViewController {
 							"msg",
 							"pharmacymanagement.missingDftLoc");
 		}
-		
-		
+
+
 		if (request.getParameter("on") != null) {
 			if (request.getParameter("month") != null
 					&& !request.getParameter("month").equals("")) {
 				String monthParam = request.getParameter("month");
 				String[] monthArray = monthParam.split("/");
-				month = monthArray[2] + "-" + monthArray[1] + "-"
-						+ monthArray[0];
+				if(Context.getLocale().toString().equals("en_US")) {
+					month = monthArray[2] + "-" + monthArray[0] + "-"
+							+ monthArray[1];
+				}
+				else {
+					month = monthArray[2] + "-" + monthArray[1] + "-"
+							+ monthArray[0];
+				}
 			}
 				orders = service.findOrdersByLocSupProgMonth(
 					request.getParameter("fosaName"), request

@@ -66,7 +66,7 @@
 			<table width="98%" class="return">
 				<thead>
 					<tr>
-						<th><spring:message code="Date"/> (dd/mm/yyyy)</th>
+						<th><spring:message code="Date"/></th>
 						<th><spring:message code="Service"/></th>	
 						<th><spring:message code="Consommable" /></th>
 						<th><spring:message code="Quantity"/></th>

@@ -106,8 +106,16 @@ public class ConsumableDispensationController extends
 				&& request.getParameter("patientId") != null
 				&& !request.getParameter("patientId").equals("")) {
 			String[] dateArr = request.getParameter("date").split("/");
-			String dateStr = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+
+			String dateStr;
+			if(Context.getLocale().toString().equals("en_US")) {
+				dateStr = dateArr[2] + "-" + dateArr[0] + "-" + dateArr[1];
+			}
+			else {
+				dateStr = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+			}
 			Date date = sdf.parse(dateStr);
+
 
 			cd.setDate(date);
 			cd.setQnty(Integer.valueOf(request.getParameter("qnty")));
