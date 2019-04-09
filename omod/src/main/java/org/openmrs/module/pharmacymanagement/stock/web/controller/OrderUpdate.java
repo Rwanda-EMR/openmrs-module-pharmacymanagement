@@ -27,7 +27,14 @@ public class OrderUpdate extends ParameterizableViewController {
 			dp.setLotNo(request.getParameter("noLot"));
 			
 			String strDate = request.getParameter("expDate");
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat sdf;
+
+			if(Context.getLocale().toString().equals("en_US")) {
+				sdf = new SimpleDateFormat("MM-dd-yyyy");
+			}
+			else {
+				sdf = new SimpleDateFormat("dd-MM-yyyy");
+			}
 			Date date = sdf.parse(strDate);
 			dp.setExpiryDate(date);
 			

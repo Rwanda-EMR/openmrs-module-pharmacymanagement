@@ -53,10 +53,13 @@ public class DrugOrderPrescriptionController extends AbstractController {
 
 		SimpleDateFormat sdf;
 
-		if(request.getLocale().toString().equals("en_US"))
+		if(Context.getLocale().toString().equals("en_US")) {
 			sdf = new SimpleDateFormat("MM/dd/yyyy");
-		else
+		}
+		else {
 			sdf = new SimpleDateFormat("dd/MM/yyyy");
+		}
+
 
 		ConceptService conceptService = Context.getConceptService();
 		OrderService orderService = Context.getOrderService();
