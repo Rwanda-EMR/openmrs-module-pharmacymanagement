@@ -78,7 +78,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 		Collection<ConceptAnswer> consumers = null;
 		List<ConceptAnswer> consumerList = null;
 		try {
-			consumers = conceptService.getConcept(7988).getAnswers();
+			consumers = conceptService.getConcept(Integer.parseInt(Context.getAdministrationService().getGlobalProperty("pharmacymanagement.CONSUMABLE"))).getAnswers();
 			consumerList = new ArrayList<ConceptAnswer>(consumers);
 
 		} catch (NullPointerException npe) {
@@ -267,7 +267,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 					service.saveInventory(dpiCurrSortie);
 				} else {
 					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
-							"pharmacymanagement.stock.noenough");
+							"The quantity requested is greater than what is in store: "+currentSolde);
 				}
 			} else {
 				httpSession

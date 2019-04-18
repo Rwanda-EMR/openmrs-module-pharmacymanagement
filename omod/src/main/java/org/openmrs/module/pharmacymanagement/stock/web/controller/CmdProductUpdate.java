@@ -150,7 +150,7 @@ public class CmdProductUpdate extends ParameterizableViewController {
 			mav.addObject("drugs", drugs);
 		} else {
 			try {
-				consumable = cs.getConcept(PharmacyConstants.CONSUMABLE).getAnswers();
+				consumable = cs.getConcept(Integer.parseInt(Context.getAdministrationService().getGlobalProperty("pharmacymanagement.CONSUMABLE"))).getAnswers();
 			} catch (NullPointerException npe) {
 				mav.addObject("msg", "pharmacymanagement.noConsumable");
 			}
