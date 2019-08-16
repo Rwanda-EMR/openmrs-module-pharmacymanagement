@@ -71,12 +71,12 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 		String pharmacyIdStr = null;
 		ObsService obsService = Context.getObsService();
 
-		SimpleDateFormat sdf;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-		if(request.getLocale().toString().equals("en_US"))
+		/*if(request.getLocale().toString().equals("en_US"))
 			sdf = new SimpleDateFormat("MM/dd/yyyy");
 		else
-			sdf = new SimpleDateFormat("dd/MM/yyyy");
+			sdf = new SimpleDateFormat("dd/MM/yyyy");*/
 		
 		DrugOrderService service = Context.getService(DrugOrderService.class);
 
@@ -174,7 +174,8 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 			
 			if(request.getParameter("nvDate") != null && !request.getParameter("nvDate").equals("")) {
 				nvDateStr = request.getParameter("nvDate");
-				nvDate = sdf.parse(nvDateStr);Obs nvDateObs = Utils.createObservation(encDate, dftLoc, patient,
+				nvDate = sdf.parse(nvDateStr);
+				Obs nvDateObs = Utils.createObservation(encDate, dftLoc, patient,
 						nvDateConcept, nvDate, 2);
 				obsList.add(nvDateObs);
 			}

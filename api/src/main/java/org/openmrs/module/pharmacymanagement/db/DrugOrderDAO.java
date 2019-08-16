@@ -45,19 +45,19 @@ public interface DrugOrderDAO {
 	/**
 	 * finds an product in the store by passing FOSAId as parameter
 	 * 
-	 * @param locationId
+	 * @param_locationId
 	 */
 	public Collection<DrugStore> findProductByLocation(Location location);
 	
 	/**
 	 * finds products by passing the Store Keeper Id as parameter
-	 * @param providerId
+	 * @param_providerId
 	 */
 	public Collection<DrugStore> findProductByStoreKeeper(User user);
 	
 	/**
 	 * finds products by passing the expiration date as parameter
-	 * @param providerId
+	 * @param_providerId
 	 */
 	public Collection<DrugStore> findProductsByDate(Date expiryDate);
 	
@@ -71,21 +71,21 @@ public interface DrugOrderDAO {
 	
 	/**
 	 * updates DrugStore
-	 * @param drugStore
+	 * @param_drugStore
 	 */
 	public void updateStore(DrugProduct drugProduct);
 	
 	/**
 	 * cancel a product by passing the product id as parameter
 	 * 
-	 * @param ProductId
+	 * @param_ProductId
 	 */
 	public void cancelProduct(DrugStore drugStore);
 	
 	/**
 	 * find drug by passing the Command Drug Id as parameter
 	 * 
-	 * @param cmddrugId
+	 * @param_cmddrugId
 	 */
 	public Collection<DrugProduct> getDrugProductByCmdDrugId(CmdDrug cmddrug);
 	
@@ -159,10 +159,10 @@ public interface DrugOrderDAO {
 	 * get inventory
 	 * 
 	 * @param locationId
-	 * @param supporter
-	 * @param mois
-	 * @param from
-	 * @param to
+	 * @param_supporter
+	 * @param_mois
+	 * @param_from
+	 * @param_to
 	 * @return
 	 */
 	public Collection<DrugProductInventory> getDrugInventoryByDrugId(String drugId, String conceptId, String locationId, String pharmacyId);
@@ -170,7 +170,7 @@ public interface DrugOrderDAO {
 	/**
 	 *return different calculation on a particular drug
 	 * 
-	 * @param DrugId
+	 * @param_DrugId
 	 * @return
 	 */
 	public List<Object[]> getCalculations(int drugId, int isStore);
@@ -221,7 +221,7 @@ public interface DrugOrderDAO {
 		
 	/**
 	 * Save or update the DrugDetails object 
-	 * @param drugDetails
+	 * @param_drugDetails
 	 */	
 	public void saveDrugDetails(DrugDetails drugDetail);
 	
@@ -235,7 +235,7 @@ public interface DrugOrderDAO {
 	/**
 	 * get DrugDetail by passing drugDetailsId as parameter
 	 * 
-	 * @param drugDetailsId
+	 * @param_drugDetailsId
 	 * @return DrugDetail
 	 */
 	public DrugDetails getDrugDetailsById(int drugDetailId);
@@ -243,7 +243,7 @@ public interface DrugOrderDAO {
 	/**
 	 * Delete the DrugDetail object by passing drugDetailId as parameter
 	 * 
-	 * @param drugDetailId
+	 * @param_drugDetailId
 	 */
 	public void cancelDrugDetail(DrugDetails drugDetail);
 	
@@ -272,7 +272,7 @@ public interface DrugOrderDAO {
 	/**
 	 * returns different statistics on a particular drug
 	 * 
-	 * @param DrugId
+	 * @param_DrugId
 	 * @return a List of objects
 	 */
 	public List<Object[]> getdrugStatistics(String drugId, String conceptId);
@@ -399,7 +399,7 @@ public interface DrugOrderDAO {
 	/**
 	 * gets the <code>DrugOrderPrescription</code> by passing the patientId
 	 * 
-	 * @param patientId
+	 * @param_patientId
 	 * @return <code>DrugOrderPrescription</code>
 	 */
 	public List<DrugOrderPrescription> getDOPByPatientId(Patient patient);

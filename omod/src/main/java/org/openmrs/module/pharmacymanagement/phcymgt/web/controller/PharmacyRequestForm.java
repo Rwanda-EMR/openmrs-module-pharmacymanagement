@@ -111,7 +111,7 @@ public class PharmacyRequestForm
         for (Object key : requestMap.keySet()) {
             String keyString = (String)key;
             fieldNames.add(keyString); }
-        Date date;
+        Date date =null;
         int currConsumableSolde;
         if ((request.getParameter("on") != null) &&
                 (request.getParameter("on").equals("true")))
@@ -136,13 +136,13 @@ public class PharmacyRequestForm
                         .setSupportingProg(request
                                 .getParameter("supporter"));
 
-                SimpleDateFormat sdf;
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-                if(request.getLocale().toString().equals("en_US"))
+                /*if(request.getLocale().toString().equals("en_US"))
                     sdf = new SimpleDateFormat("MM/dd/yyyy");
                 else
-                    sdf = new SimpleDateFormat("dd/MM/yyyy");
-                date = null;
+                    sdf = new SimpleDateFormat("dd/MM/yyyy");*/
+                //date = null;
                 try {
                     date = sdf.parse(request.getParameter("month"));
                     cmdDrug.setMonthPeriod(date);

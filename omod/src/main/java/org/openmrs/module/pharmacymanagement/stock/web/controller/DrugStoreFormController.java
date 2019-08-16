@@ -110,13 +110,13 @@ public class DrugStoreFormController extends AbstractController {
 				cmdDrug.setDestination(to);
 				cmdDrug.setSupportingProg(request.getParameter("supporter"));
 
-				SimpleDateFormat sdf;
+				SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-				if(request.getLocale().toString().equals("en_US"))
+				/*if(request.getLocale().toString().equals("en_US"))
 					sdf = new SimpleDateFormat("MM/dd/yyyy");
 				else
 					sdf = new SimpleDateFormat("dd/MM/yyyy");
-
+*/
 				Date date = sdf.parse(request.getParameter("month"));
 
 				cmdDrug.setMonthPeriod(date);
