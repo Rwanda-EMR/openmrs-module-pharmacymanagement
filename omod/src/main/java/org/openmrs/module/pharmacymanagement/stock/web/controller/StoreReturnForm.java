@@ -48,10 +48,12 @@ public class StoreReturnForm extends ParameterizableViewController {
 		Location dftLoc = null;
 		SimpleDateFormat sdf;
 
-		if(request.getLocale().toString().equals("en_US"))
+		if(Context.getLocale().toString().equals("en_US")) {
 			sdf = new SimpleDateFormat("MM/dd/yyyy");
-		else
+		}
+		else {
 			sdf = new SimpleDateFormat("dd/MM/yyyy");
+		}
 		ProductReturnStore ars = null;
 		DrugProductInventory dpi = null;
 		PharmacyInventory pi = null;

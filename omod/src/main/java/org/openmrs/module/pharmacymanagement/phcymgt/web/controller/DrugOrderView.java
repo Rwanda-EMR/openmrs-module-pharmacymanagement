@@ -53,8 +53,14 @@ public class DrugOrderView
 		Patient patient = null;
 		List<Adherance> adheranceList = new ArrayList();
 		List<ProductReturnStore> returnStoreList = new ArrayList();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		DrugOrderService service = (DrugOrderService)Context.getService(DrugOrderService.class);
+		SimpleDateFormat sdf;
+
+		if(Context.getLocale().toString().equals("en_US")) {
+			sdf = new SimpleDateFormat("MM-dd-yyyy");
+		}
+		else {
+			sdf = new SimpleDateFormat("dd-MM-yyyy");
+		}		DrugOrderService service = (DrugOrderService)Context.getService(DrugOrderService.class);
 		List<ProductReturnStore> borrowedListProduct;
 		if ((request.getParameter("isChecked") != null) &&
 				(!request.getParameter("isChecked").equals("")) &&

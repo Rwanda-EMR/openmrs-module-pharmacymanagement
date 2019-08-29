@@ -50,10 +50,12 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 				"pharmacymanagement.periodDispense");
 		SimpleDateFormat sdf;
 
-		if(request.getLocale().toString().equals("en_US"))
+		if(Context.getLocale().toString().equals("en_US")) {
 			sdf = new SimpleDateFormat("MM/dd/yyyy");
-		else
+		}
+		else {
 			sdf = new SimpleDateFormat("dd/MM/yyyy");
+		}
 		LocationService locationService = Context.getLocationService();
 		ConceptService conceptService = Context.getConceptService();
 		List<Drug> drugs = conceptService.getAllDrugs();
@@ -123,8 +125,18 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 					&& !request.getParameter("expDate").equals("")) {
 				strDate = request.getParameter("expDate");
 				String[] strDateArr = strDate.split("/");
-				dateStr = strDateArr[2] + "-" + strDateArr[1] + "-"
-						+ strDateArr[0];
+
+				if(Context.getLocale().toString().equals("en_US")) {
+					dateStr = strDateArr[2] + "-" + strDateArr[0] + "-"
+							+ strDateArr[1];
+				}
+				else {
+					dateStr = strDateArr[2] + "-" + strDateArr[1] + "-"
+							+ strDateArr[0];
+				}
+
+//				dateStr = strDateArr[2] + "-" + strDateArr[1] + "-"
+//						+ strDateArr[0];
 			}
 
 			if (request.getParameter("prodFromLot") != null

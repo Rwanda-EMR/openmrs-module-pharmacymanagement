@@ -71,7 +71,8 @@ var $ = jQuery.noConflict();
 					<td>${num.count}.</td>
 					<td>${order.locationId.locationId == null ? order.pharmacy.name : order.locationId.name}</td>
 					<td>${order.supportingProg}</td>
-					<td>${order.monthPeriod}</td>
+					<!-- <td>${order.monthPeriod}</td> -->
+					<td><openmrs:formatDate date="${order.monthPeriod}" type="textbox" /></td>
 					<td><a
 						href="${pageContext.request.contextPath}/module/pharmacymanagement/order.list?orderId=${order.cmddrugId}">
 					${order.isAchieved == true ? 'Completed' : 'Incomplete'} </a></td>

@@ -280,7 +280,7 @@ $(document).ready( function() {
 <input type="hidden" name="pharmacyId" value="${cmdDrug.pharmacy.pharmacyId}" id="pharmacyId" />
 <table>
 	<tr>
-		<td><spring:message code="pharmacymanagement.inventoryDate" /></td>		
+		<td><spring:message code="pharmacymanagement.inventoryDate" /></td>
 		<td><input type="hidden" name="now" id="nowId" value="<openmrs:formatDate date="${now}" type='textbox' />" />
 			<input type="text" name="invDate" id="invDateId" onchange="CompareDates('<openmrs:datePattern />');"
 				onfocus="showCalendar(this)" class="date" size="11" /><span id="msgId"></span></td>
@@ -302,7 +302,7 @@ $(document).ready( function() {
 		<td><spring:message code="pharmacymanagement.expDate" /></td>
 		<td><div id="expirationId"><input type="text" name="expDate" onfocus="showCalendar(this)" class="date" size="11" /></div></td>
 	</tr>
-	
+
 	<tr>
 		<td><input type="submit" value="Update" class="send" /></td>
 	</tr>
