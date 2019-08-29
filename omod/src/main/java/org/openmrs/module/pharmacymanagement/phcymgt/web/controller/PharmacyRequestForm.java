@@ -138,12 +138,10 @@ public class PharmacyRequestForm
 
                 SimpleDateFormat sdf;
 
-                if(Context.getLocale().toString().equals("en_US")) {
+                if(request.getLocale().toString().equals("en_US"))
                     sdf = new SimpleDateFormat("MM/dd/yyyy");
-                }
-                else {
+                else
                     sdf = new SimpleDateFormat("dd/MM/yyyy");
-                }
                 date = null;
                 try {
                     date = sdf.parse(request.getParameter("month"));

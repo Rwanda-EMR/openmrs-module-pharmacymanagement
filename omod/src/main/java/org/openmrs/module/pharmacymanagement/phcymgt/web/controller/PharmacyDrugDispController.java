@@ -73,12 +73,10 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 
 		SimpleDateFormat sdf;
 
-		if(Context.getLocale().toString().equals("en_US")) {
+		if(request.getLocale().toString().equals("en_US"))
 			sdf = new SimpleDateFormat("MM/dd/yyyy");
-		}
-		else {
+		else
 			sdf = new SimpleDateFormat("dd/MM/yyyy");
-		}
 		
 		DrugOrderService service = Context.getService(DrugOrderService.class);
 

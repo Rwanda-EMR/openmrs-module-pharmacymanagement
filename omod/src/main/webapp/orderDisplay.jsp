@@ -188,7 +188,16 @@ $(document).ready( function() {
 <tr class="tr_${counter}">
    	<td class="non-printable">
    		<input type="hidden" value="${counter}" id="prodId_${counter}" class="id" name="${counter}" />
+		<c:if test="${consommation.value.drugProduct.isDelivered}">
+		<div style="display : none">
 		<center><img id="drug_${counter}" class="edit-basic" src="${pageContext.request.contextPath}/images/edit.gif" style="cursor: pointer;" /></center>
+	    </div>
+	    </c:if>
+
+	    <c:if test="${!consommation.value.drugProduct.isDelivered}">
+        		<center><img id="drug_${counter}" class="edit-basic" src="${pageContext.request.contextPath}/images/edit.gif" style="cursor: pointer;" /></center>
+        </c:if>
+
 	</td>
    <td><a href="${pageContext.request.contextPath}/module/pharmacymanagement/stocksecurity.list?drugId=${consommation.value.drugId}&locationId=${consommation.value.locationId}">${consommation.value.drugName}</a></td>
     <td>${consommation.value.conditUnitaire}&nbsp;</td>
