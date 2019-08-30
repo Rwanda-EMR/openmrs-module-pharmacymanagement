@@ -108,7 +108,7 @@ public class ConsumableDispensationController extends
 			String[] dateArr = request.getParameter("date").split("/");
 
 			String dateStr;
-			if(Context.getLocale().toString().equals("en_US")) {
+			if(Context.getLocale().toString().equals("en_US") || Context.getLocale().toString().equals("en")) {
 				dateStr = dateArr[2] + "-" + dateArr[0] + "-" + dateArr[1];
 			}
 			else {

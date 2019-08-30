@@ -50,7 +50,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 				"pharmacymanagement.periodDispense");
 		SimpleDateFormat sdf;
 
-		if(Context.getLocale().toString().equals("en_US")) {
+		if(Context.getLocale().toString().equals("en_US") || Context.getLocale().toString().equals("en")) {
 			sdf = new SimpleDateFormat("MM/dd/yyyy");
 		}
 		else {
@@ -125,8 +125,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 					&& !request.getParameter("expDate").equals("")) {
 				strDate = request.getParameter("expDate");
 				String[] strDateArr = strDate.split("/");
-
-				if(Context.getLocale().toString().equals("en_US")) {
+				if(Context.getLocale().toString().equals("en_US") || Context.getLocale().toString().equals("en")) {
 					dateStr = strDateArr[2] + "-" + strDateArr[0] + "-"
 							+ strDateArr[1];
 				}
