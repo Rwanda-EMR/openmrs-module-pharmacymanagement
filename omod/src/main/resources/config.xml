@@ -5,7 +5,7 @@
 	<!-- Drug Store Management and Dispensing Module Properties -->
 	<id>pharmacymanagement</id>
 	<name>Pharmacy Management and Dispensing Module</name>
-	<version>1.3.5-SNAPSHOT</version>
+	<version>1.3.6-SNAPSHOT</version>
 	<package>org.openmrs.module.pharmacymanagement</package>
 	<author>Dusabe Eric</author>
 	<description>This is module to help in management of a pharmacy in health facilities</description>
