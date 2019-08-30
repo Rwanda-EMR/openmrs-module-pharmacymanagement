@@ -55,7 +55,8 @@ public class DrugOrderView
 		List<ProductReturnStore> returnStoreList = new ArrayList();
 		SimpleDateFormat sdf;
 
-		if(Context.getLocale().toString().equals("en_US")) {
+        System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! userLocale"+ Context.getUserContext().getLocale());
+        if(Context.getLocale().toString().equals("en_US") || Context.getLocale().toString().equals("en")) {
 			sdf = new SimpleDateFormat("MM-dd-yyyy");
 		}
 		else {

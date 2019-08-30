@@ -29,8 +29,7 @@ public class PrintReturnStock
 
 		List<ProductReturnStore> returnStoreList = new ArrayList();
 		SimpleDateFormat sdf;
-
-		if(Context.getLocale().toString().equals("en_US")) {
+		if(Context.getLocale().toString().equals("en_US") || Context.getLocale().toString().equals("en")) {
 			sdf = new SimpleDateFormat("MM-dd-yyyy");
 		}
 		else {

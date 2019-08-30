@@ -44,7 +44,7 @@ public class CmdSearch extends ParameterizableViewController {
 					&& !request.getParameter("month").equals("")) {
 				String monthParam = request.getParameter("month");
 				String[] monthArray = monthParam.split("/");
-				if(Context.getLocale().toString().equals("en_US")) {
+				if(Context.getLocale().toString().equals("en_US") || Context.getLocale().toString().equals("en")) {
 					month = monthArray[2] + "-" + monthArray[0] + "-"
 							+ monthArray[1];
 				}

@@ -28,8 +28,7 @@ public class OrderUpdate extends ParameterizableViewController {
 			
 			String strDate = request.getParameter("expDate");
 			SimpleDateFormat sdf;
-
-			if(Context.getLocale().toString().equals("en_US")) {
+			if(Context.getLocale().toString().equals("en_US") || Context.getLocale().toString().equals("en")) {
 				sdf = new SimpleDateFormat("MM-dd-yyyy");
 			}
 			else {
