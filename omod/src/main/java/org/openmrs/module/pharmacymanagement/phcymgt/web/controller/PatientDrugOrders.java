@@ -198,7 +198,8 @@ public class PatientDrugOrders extends ParameterizableViewController {
 			String dateStr = dp.getExpiryDate().toString();
 			String[] dateArr = dateStr.split("-");
 			String date;
-			if(Context.getLocale().toString().equals("en_US")) {
+
+			if(Context.getLocale().toString().equals("en_US") || Context.getLocale().toString().equals("en")) {
 				date = dateArr[1] + "/" + dateArr[2] + "/" + dateArr[0];
 			}
 			else {
