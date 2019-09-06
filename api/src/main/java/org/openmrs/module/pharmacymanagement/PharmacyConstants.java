@@ -9,7 +9,7 @@ public class PharmacyConstants {
 	public static final int WEIGHT = 5089;
 	public static final int NEXT_VISIT_DATE = 5096;
 	public static final int REASON_ORDER_STOPPED = 1812;
-	public static final int DRUG_ORDER_TYPE = 1;
+	public static final int DRUG_ORDER_TYPE = 2;
 	public static final String PROVIDER_ROLE = "Provider";
 	public static final int CONSUMABLE = Integer.parseInt(Context.getAdministrationService().getGlobalProperty("pharmacymanagement.CONSUMABLE"));
 	public static final String CMD_DRUG = "pharmacymanagement_cmd_drug";

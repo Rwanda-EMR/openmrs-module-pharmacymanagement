@@ -145,18 +145,17 @@ public class ConsumableDispensationController extends
 
 			if (solde >= 0) {
 				dos.saveOrUpdateConsumableDispense(cd);
-				if (isEdit) {
+	//			if (isEdit) {
 					pinv.setDate(date);
 					pinv.setDrugproductId(dp);
 					pinv.setCpId(cd);
 					pinv.setEntree(0);
-					pinv.setSortie(Integer
-							.valueOf(request.getParameter("qnty")));
+					pinv.setSortie(Integer.valueOf(request.getParameter("qnty")));
 
 					pinv.setSolde(solde);
 					dos.savePharmacyInventory(pinv);
 					piList = dos.getAllPharmacyInventory();
-				}
+	//			}
 				mav.addObject("msg", "Saved");
 			}
 		}
