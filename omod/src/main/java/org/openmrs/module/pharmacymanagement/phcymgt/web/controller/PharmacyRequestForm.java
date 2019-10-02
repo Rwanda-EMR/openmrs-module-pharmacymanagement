@@ -171,6 +171,7 @@ public class PharmacyRequestForm
                         String id = request.getParameter("drugs_" + suffixId);
                         String drugneeded = request.getParameter("drugneeded_" +
                                 suffixId);
+                        String reqReason=request.getParameter("reqReson_" +suffixId);
                         if ((count == 1) && (!id.equals("")) &&
                                 (!drugneeded.equals(""))) {
                             serviceDrug.saveCmdDrug(cmdDrug);
@@ -188,7 +189,9 @@ public class PharmacyRequestForm
 
                         drugProduct.setStoreQnty(storeqnty);
                         drugProduct.setQntyReq(amountreq);
+                        drugProduct.setComments(reqReason);
                         drugProduct.setCmddrugId(cmdDrug);
+
                         serviceDrug.saveDrugProduct(drugProduct);
                         hasSaved = true;
                         count++;

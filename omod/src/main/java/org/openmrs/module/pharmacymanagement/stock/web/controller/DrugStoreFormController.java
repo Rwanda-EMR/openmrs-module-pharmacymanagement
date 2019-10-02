@@ -50,7 +50,7 @@ public class DrugStoreFormController extends AbstractController {
 		Collection<ConceptAnswer> css = null;
 		
 		// Reference Data
-		drugs = Context.getConceptService().getAllDrugs();
+		drugs = Context.getConceptService().getAllDrugs(false);
 		List<Location> locations = locationService.getAllLocations();
 		int i;
 		for (i = 0; i < drugs.size(); i++) {

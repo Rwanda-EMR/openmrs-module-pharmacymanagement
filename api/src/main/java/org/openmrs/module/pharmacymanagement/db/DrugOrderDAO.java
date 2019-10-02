@@ -378,7 +378,7 @@ public interface DrugOrderDAO {
 	 * @param pharmacyId
 	 * @return
 	 */
-	public Object[] getReceivedDispensedDrug(String from, String to, String drugId, String pharmacyId);
+	public Object[] getReceivedDispensedDrugOrConsumable(String from, String to, String drugId, String pharmacyId,String conceptI);
 	
 	/**
 	 * returns the <code>DrugOrderPrescription</code> by passing the orderId

@@ -1,5 +1,6 @@
 package org.openmrs.module.pharmacymanagement.stock.web.controller;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.servlet.http.HttpServletRequest;
@@ -56,7 +57,28 @@ public class CmdSearch extends ParameterizableViewController {
 				orders = service.findOrdersByLocSupProgMonth(
 					request.getParameter("fosaName"), request
 							.getParameter("supporter"), month, null, "STORE");
-			mav.addObject("orders", orders);
+
+			Collection<CmdDrug> cmds=new ArrayList<CmdDrug>();
+			if (request.getParameter("status").equals("completed")){
+				for (CmdDrug cmd:orders) {
+					if(cmd.getIsAchieved()){
+						cmds.add(cmd);
+					}
+				}
+			}
+			else if (request.getParameter("status").equals("incomplete")){
+				for (CmdDrug cmd:orders) {
+					if(!cmd.getIsAchieved()){
+						cmds.add(cmd);
+					}
+				}
+			}
+			else {
+				cmds=orders;
+			}
+
+
+			mav.addObject("orders", cmds);
 		}
 		mav.addObject("dftLoc", dftLoc);
 		mav.setViewName(getViewName());

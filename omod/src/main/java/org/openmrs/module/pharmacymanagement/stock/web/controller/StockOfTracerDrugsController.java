@@ -88,7 +88,7 @@ public class StockOfTracerDrugsController extends ParameterizableViewController 
 				
 			for(int i = 0; i < drugArray.length; i++) {
 				/** -- Drug Dispensed --- **/
-				Object dispensedObj = service.getReceivedDispensedDrug(sDateStr, eDateStr, drugArray[i] + "", null)[1];
+				Object dispensedObj = service.getReceivedDispensedDrugOrConsumable(sDateStr, eDateStr, drugArray[i] + "", null,null)[1];
 				if(dispensedObj != null)
 					dispensed = Integer.valueOf(dispensedObj + "");
 					

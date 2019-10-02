@@ -65,11 +65,7 @@ public class ConsumableDispensationController extends
 
 		for (PharmacyInventory pi : piList) {
 			if (pi.getDrugproductId().getConceptId() != null) {
-				currSolde = dos.getCurrSoldeDisp(null, pi.getDrugproductId()
-						.getConceptId().getConceptId()
-						+ "", pi.getDrugproductId().getCmddrugId()
-						.getPharmacy().getPharmacyId()
-						+ "", null, null, nd);
+				currSolde = dos.getCurrSoldeDisp(null, pi.getDrugproductId().getConceptId().getConceptId()+ "", pi.getDrugproductId().getCmddrugId().getPharmacy().getPharmacyId()+ "", null, null, nd);
 				if (currSolde > 0) {
 					if (pi.getDrugproductId().getConceptId() != null)
 						map.put(pi.getDrugproductId().getConceptId()
@@ -129,7 +125,7 @@ public class ConsumableDispensationController extends
 			currConsSolde = dos.getCurrSoldeDisp(null, dp.getConceptId()
 						.getConceptId()
 						+ "", dp.getCmddrugId().getPharmacy().getPharmacyId()
-						+ "", null, null, null);
+						+ "", dp.getExpiryDate()+"", dp.getLotNo()+"", null);
 			solde = currConsSolde
 						- Integer.valueOf(request.getParameter("qnty"));
 //			}
@@ -142,6 +138,7 @@ public class ConsumableDispensationController extends
 			Patient patient = ps.getPatient(Integer.valueOf(request
 					.getParameter("patientId")));
 			cd.setPatientId(patient);
+
 
 			if (solde >= 0) {
 				dos.saveOrUpdateConsumableDispense(cd);

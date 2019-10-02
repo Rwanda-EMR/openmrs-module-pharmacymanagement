@@ -21,6 +21,8 @@ import org.openmrs.api.ObsService;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.pharmacymanagement.DrugOrderPrescription;
+import org.openmrs.module.pharmacymanagement.DrugProduct;
+import org.openmrs.module.pharmacymanagement.DrugProductInventory;
 import org.openmrs.module.pharmacymanagement.PharmacyConstants;
 import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
 import org.openmrs.module.pharmacymanagement.utils.Utils;
@@ -37,8 +39,24 @@ public class DrugOrderPortletController extends PortletController {
 			Map<String, Object> model){
 		ConceptService conceptService = Context.getConceptService();
 		ObsService obsService = Context.getObsService();
+		DrugOrderService service = Context.getService(DrugOrderService.class);
 		OrderService orderService = Context.getOrderService();
-		List<Drug> drugs = Context.getConceptService().getAllDrugs();
+
+		//List<Drug> drugs = Context.getConceptService().getAllDrugs(false);
+		List<DrugProduct> drugProductList= (List<DrugProduct>) service.getAllProducts();
+
+		List<Drug> drugs =new ArrayList<Drug>();
+		for (DrugProduct dp:drugProductList) {
+
+			if(dp.getDrugId()!=null && !drugs.contains(dp.getDrugId()) && !dp.getDrugId().getRetired()) {
+				drugs.add(dp.getDrugId());
+			}
+		}
+
+
+
+
+
 		Map<Integer, String> drugMap = new HashMap<Integer, String>();
 		LocationService locationService = Context.getLocationService();
 		ConceptClass cc = conceptService.getConceptClass(9);
@@ -121,10 +139,12 @@ public class DrugOrderPortletController extends PortletController {
 		for(DrugOrder o : drugOrders) {
 			List<DrugOrder> ordList = new ArrayList<DrugOrder>();
 			for(DrugOrder o1 : drugOrders) {
-				if(o1.getStartDate()!=null && o.getStartDate()!=null)
-				if(o1.getStartDate().equals(o.getStartDate())) {
-					ordList.add(o1);
-					dat1 = o1.getStartDate();
+				if(o1.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
+					if (o1.getStartDate() != null && o.getStartDate() != null)
+						if (o1.getStartDate().equals(o.getStartDate())) {
+							ordList.add(o1);
+							dat1 = o1.getStartDate();
+						}
 				}
 			}
 			map.put(dat1, ordList);
@@ -154,7 +174,7 @@ public class DrugOrderPortletController extends PortletController {
 		});
 
 
-		DrugOrderService service = (DrugOrderService)Context.getService(DrugOrderService.class);
+		//DrugOrderService service = (DrugOrderService)Context.getService(DrugOrderService.class);
 
 		Collection<DrugOrderPrescription> dopList = service.getDOPByPatientId(patient);
 		Map<Integer,Integer> orderIdAndDisQuantity=new HashMap<Integer,Integer>();

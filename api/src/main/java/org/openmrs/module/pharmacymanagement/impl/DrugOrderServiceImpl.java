@@ -284,9 +284,9 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 	}
 
 	@Override
-	public Object[] getReceivedDispensedDrug(String from, String to,
-			String drugId, String pharmacyId) {
-		return drugOrderDAO.getReceivedDispensedDrug(from, to, drugId, pharmacyId);
+	public Object[] getReceivedDispensedDrugOrConsumable(String from, String to,
+														 String drugId, String pharmacyId,String conceptId) {
+		return drugOrderDAO.getReceivedDispensedDrugOrConsumable(from, to, drugId, pharmacyId,conceptId);
 	}
 
 	@Override

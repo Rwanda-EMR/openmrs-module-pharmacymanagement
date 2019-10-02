@@ -145,9 +145,11 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 <div id="fragment-1">
 <div id="drugs">
 	<table width="100%">
-		<tr align="center">
+		<tr>
 			<td class="designation"><spring:message code="pharmacymanagement.designation" /></td>
 			<td class="qr"><spring:message code="pharmacymanagement.qntyReq" /></td>
+		    <td class="res">Reason</td>
+
 			<td class="del">&nbsp;</td>
 		</tr>
 	</table>
@@ -158,9 +160,11 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 <div id="fragment-2">
 <div id="consumable">
 	<table width="100%">
-		<tr align="center">
+		<tr>
 			<td class="designation"><spring:message code="pharmacymanagement.designation" /></td>
 			<td class="qr"><spring:message code="pharmacymanagement.qntyReq" /></td>
+		    <td class="res">Reason</td>
+
 			<td class="del">&nbsp;</td>
 		</tr>
 	</table>

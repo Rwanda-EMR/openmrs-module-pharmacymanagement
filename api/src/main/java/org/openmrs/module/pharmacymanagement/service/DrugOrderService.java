@@ -135,7 +135,7 @@ public interface DrugOrderService {
 
 	public Integer getPharmacySoldeLastDayOfWeek(String var1, String var2, String var3, String var4);
 
-	public Object[] getReceivedDispensedDrug(String var1, String var2, String var3, String var4);
+	public Object[] getReceivedDispensedDrugOrConsumable(String var1, String var2, String var3, String var4,String var5);
 
 	public DrugOrderPrescription getDOPByOrderId(String var1);
 

@@ -45,6 +45,14 @@ var $ = jQuery.noConflict();
 		<td><input type="text" name="month" onfocus="showCalendar(this)" size="10" /></td>
 	</tr>
 	<tr>
+    		<td>Status</td>
+    		<td> <select name="status">
+    		 <option value="all">All</option>
+    		 <option value="completed">Completed</option>
+    		 <option value="incomplete">Incomplete</option>
+    		 </select></td>
+    </tr>
+	<tr>
 		<td colspan="2"><input type="submit" value="Find" class="send" /></td>
 	</tr>
 </table>

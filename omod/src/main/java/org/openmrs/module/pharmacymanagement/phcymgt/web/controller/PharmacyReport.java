@@ -87,12 +87,18 @@ public class PharmacyReport extends ParameterizableViewController {
 				for (PharmacyInventory pi : piList) {
 
 					Consommation ca = new Consommation();
+					if (pi.getDrugproductId().getDrugId() != null) {
+						ca.setDrugName(pi.getDrugproductId().getDrugId().getName());
+						ca.setDrugId(pi.getDrugproductId().getDrugId().getDrugId()
+								+ "");
+						ca.setConditUnitaire(pi.getDrugproductId().getDrugId()
+								.getUnits());
+					}else {
+						ca.setDrugName(pi.getDrugproductId().getConceptId().getName().getName());
+						ca.setDrugId(pi.getDrugproductId().getConceptId().getConceptId()
+								+ "");
+					}
 
-					ca.setDrugName(pi.getDrugproductId().getDrugId().getName());
-					ca.setDrugId(pi.getDrugproductId().getDrugId().getDrugId()
-							+ "");
-					ca.setConditUnitaire(pi.getDrugproductId().getDrugId()
-							.getUnits());
 
 					// Quantity received on the first day of the reported month
 					if (pi.getDrugproductId().getDrugId() != null) {
@@ -126,13 +132,31 @@ public class PharmacyReport extends ParameterizableViewController {
 
 					Object obRec = null;
 					Object obCons = null;
+
+					if (pi.getDrugproductId().getConceptId() != null) {
+						System.out.println("Innnnnnnnnnnnnnnnnnnnnnnnnn:"+pi.getDrugproductId().getConceptId().getName());
+						obRec = service.getReceivedDispensedDrugOrConsumable(from, to, null, pharmacyId, pi.getDrugproductId().getConceptId().getConceptId()+"")[0];
+						obCons = service.getReceivedDispensedDrugOrConsumable(from, to, null, pharmacyId, pi.getDrugproductId().getConceptId().getConceptId()+"")[1];
+						// Quantity received during the reported period
+						if (obRec != null)
+							ca.setQntRecuMens(obRec);
+						else
+							ca.setQntRecuMens(0);
+
+						// Quantity dispensed during the reported period
+						if (obCons != null)
+							ca.setQntConsomMens(obCons);
+						else
+							ca.setQntConsomMens(0);
+					}
+
 					if (pi.getDrugproductId().getDrugId() != null) {
-						obRec = service.getReceivedDispensedDrug(from, to, pi
+						obRec = service.getReceivedDispensedDrugOrConsumable(from, to, pi
 								.getDrugproductId().getDrugId().getDrugId()
-								.toString(), pharmacyId)[0];
-						obCons = service.getReceivedDispensedDrug(from, to, pi
+								.toString(), pharmacyId, null)[0];
+						obCons = service.getReceivedDispensedDrugOrConsumable(from, to, pi
 								.getDrugproductId().getDrugId().getDrugId()
-								.toString(), pharmacyId)[1];
+								.toString(), pharmacyId,null)[1];
 						// Quantity received during the reported period
 						if (obRec != null)
 							ca.setQntRecuMens(obRec);
@@ -146,6 +170,9 @@ public class PharmacyReport extends ParameterizableViewController {
 							ca.setQntConsomMens(0);
 
 					}
+
+
+
 
 					String key = "";
 					key = ca.getDrugId().toString() + "_" + pharmacyId;

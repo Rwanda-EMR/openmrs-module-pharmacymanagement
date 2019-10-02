@@ -232,9 +232,14 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 								+ "", cmddrug.getPharmacy().getPharmacyId()
 								+ "", dateStr, noLot, null);
 
-					dpi.setSortie(qntAcc);
 					dpi.setIsStore(true);
-					total = currSolde - qntAcc;
+					dpi.setSortie(qntAcc);
+
+					if(qntAcc<0){
+						total = currSolde;
+					}else {
+						total = currSolde - qntAcc;
+					}
 					int solde = qntAcc + currStat;
 
 					// saving in the pharmacy inventory table
@@ -253,6 +258,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 
 				if (total >= 0) {
 					dp.setDeliveredQnty(qntAcc);
+					//dp.setComments("Testttttttttttttt");
 					dp.setLotNo(noLot);
 					if (strDate != null) {
 						Date date = sdf.parse(strDate);
@@ -275,6 +281,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 						&& cmddrug.getLocationId() != null) {
 					dpiCurrSortie.setDrugproductId(dp);
 					dpiCurrSortie.setSolde(total1);
+
 					service.saveInventory(dpiCurrSortie);
 				} else {
 					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
@@ -376,9 +383,9 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 								.valueOf(dispConf), toString);
 						log.info("Start Quantity Consumed Mensually: "
 								+ new Date());
-						obQntyConsomMens = service.getReceivedDispensedDrug(
+						obQntyConsomMens = service.getReceivedDispensedDrugOrConsumable(
 								fromStr, toString, dp.getDrugId().getDrugId()
-										+ "", pharmaStr)[1];
+										+ "", pharmaStr,null)[1];
 						log.info("End Quantity Consumed Mensually: "
 								+ new Date());
 
@@ -511,11 +518,11 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 								.valueOf(dispConf), toString);
 						log.info("Start Quantity Received Mensually: "
 								+ new Date());
-						obQntyConsomMens = service.getReceivedDispensedDrug(
+						obQntyConsomMens = service.getReceivedDispensedDrugOrConsumable(
 								fromStr, toString, dp.getDrugId().getDrugId()
 										+ "", cmddrug.getPharmacy()
 										.getPharmacyId()
-										+ "")[1];
+										+ "",null)[1];
 						log.info("End Quantity Received Mensually: "+new Date());
 						
 						if (obQntyConsomMens != null)
@@ -586,12 +593,12 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 
 					if (dp.getDrugId() != null) {
 						log.info("Start Quantite Recu Mensuelle: "+new Date());
-						obQntyRec = service.getReceivedDispensedDrug(from,
+						obQntyRec = service.getReceivedDispensedDrugOrConsumable(from,
 								toString,
 								dp.getDrugId().getDrugId().toString(), dp
 										.getCmddrugId().getPharmacy()
 										.getPharmacyId()
-										+ "")[0];
+										+ "",null)[0];
 						log.info("End Quantite Recu Mensuelle: "+new Date());
 
 						if (obQntyRec != null)
@@ -609,12 +616,12 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 						drugReq.setQntyToOrder(i);
 					} else {
 						log.info("Start Quantite Recu Mensuelle: "+new Date());
-						obQntyRec = service.getReceivedDispensedDrug(from,
+						obQntyRec = service.getReceivedDispensedDrugOrConsumable(from,
 								toString,
 								dp.getConceptId().getConceptId() + "", dp
 										.getCmddrugId().getPharmacy()
 										.getPharmacyId()
-										+ "")[0];
+										+ "",null)[0];
 						log.info("End Quantite Recu Mensuelle: "+new Date());
 
 						if (obQntyRec != null)

@@ -852,8 +852,8 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Object[] getReceivedDispensedDrug(String from, String to,
-			String drugId, String pharmacyId) {
+	public Object[] getReceivedDispensedDrugOrConsumable(String from, String to,
+			String drugId, String pharmacyId,String conceptId) {
 		StringBuffer sb = new StringBuffer();
 		Object[] obj = new Object[2];
 		sb.append("SELECT SUM(pi.entree), SUM(pi.sortie) FROM "
@@ -871,6 +871,9 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 
 		if (drugId != null && !drugId.equals(""))
 			sb.append(" AND dp.drug_id = '" + drugId + "' ");
+
+		if (conceptId != null && !conceptId.equals(""))
+			sb.append(" AND dp.concept_id = '" + conceptId + "' ");
 
 		if (pharmacyId != null && !pharmacyId.equals(""))
 			sb.append(" AND cd.pharmacy IN ('" + pharmacyId + "') ; ");
@@ -897,7 +900,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 			String from, String to, String pharmacyId) {
 		StringBuffer sb = new StringBuffer();
 
-		sb.append(" SELECT pi.* FROM " + PharmacyConstants.PHARMACY_INVENTORY
+		sb.append(" select * from (SELECT pi.* FROM " + PharmacyConstants.PHARMACY_INVENTORY
 				+ " pi INNER JOIN " + PharmacyConstants.DRUG_PRODUCT
 				+ " dp ON pi.drugproduct_id = dp.drugproduct_id INNER JOIN "
 				+ PharmacyConstants.CMD_DRUG
@@ -913,7 +916,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 			sb
 					.append(" AND cd.pharmacy = '"
 							+ pharmacyId
-							+ "' AND pi.dop_id IS NOT NULL ORDER BY pi.pharmacyinventory_id; ");
+							+ "' AND (pi.dop_id IS NOT NULL or pi.cp_id is not null) ORDER BY pi.pharmacyinventory_id desc) pio group by pio.drugproduct_id ");
 
 		Session session = sessionFactory.getCurrentSession();
 

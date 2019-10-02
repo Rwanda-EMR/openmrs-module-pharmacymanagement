@@ -20,7 +20,7 @@
 			var serviceId = $p('#serviceId').val();
 			$p.getJSON('json.htm?serviceId=' + serviceId, function(data) {
 				for(var i in data) {
-					concOption += '<option value="'+data[i].id+'">'+data[i].name+'</option>';
+					concOption += '<option value="'+data[i].id+'">'+data[i].name+'(Solde:'+data[i].solde+'/LotNo:'+data[i].lotno+'/Exp:'+data[i].expiry+')</option>';
 				}
 				$p('#dpId').html(concOption);				
 			});
@@ -90,10 +90,11 @@
 							<td style="min-width: 300px; max-width: 300px; width : 300px;">
 								<select style="min-width: 300px; max-width: 300px; width : 300px;" name="consumable" id="dpId">
 									<option value="">-- consumable --</option>
-									<!-- 
+<!--
 									<c:forEach var="cons" items="${map}">
-										<option value="${cons.value.drugproductId}">${cons.value.conceptId.name.name}</option>
-									</c:forEach>  -->
+										<option value="${cons.value.drugproductId}">${cons.value.conceptId.name.name}(${cons.value.lotNo})</option>
+									</c:forEach>
+-->
 								</select>
 							</td>
 							<td><input type="text" name="qnty" size="5" value="${cd.qnty > 0 ? cd.qnty : ''}" /></td>							
@@ -134,7 +135,7 @@
 					<td>${cl.drugproductId.conceptId.name.name}</td>
 					<td>${cl.qnty}</td>
 					<td>${cl.drugproductId.cmddrugId.pharmacy.name}</td>
-					<td>${cl.patientNames}</td>
+					<td>${cl.patientId.familyName} ${cl.patientId.givenName}</td>
 					<td>
 						<a href="consumabledispensation.htm?editId=${cl.consumabledispenseId}" style="text-decoration: none;"><img class="editConsDisp" id="editConsDisp_${cl.consumabledispenseId}" src="${pageContext.request.contextPath}/images/edit.gif" style="cursor: pointer" /></a>
 					</td>
