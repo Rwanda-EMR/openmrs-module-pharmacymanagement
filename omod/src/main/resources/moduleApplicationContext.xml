@@ -58,6 +58,7 @@
 				<prop key="module/@MODULE_ID@/report.form">pharmacyReport</prop>
 				<prop key="module/@MODULE_ID@/pharmacyproducts.list">pharmacyProducts</prop>
 				<prop key="module/@MODULE_ID@/pharmacyrequest.form">pharmacyRequestForm</prop>
+				<prop key="module/@MODULE_ID@/pharmacyrequestAdjust.form">pharmacyRequestAdjustForm</prop>
 				<prop key="module/@MODULE_ID@/pharmacy.list">pharmacyViewController</prop>
 				<prop key="module/@MODULE_ID@/pharmacy.form">pharmacyFormController</prop>
 				<prop key="module/@MODULE_ID@/drugOrder.list">drugOrderView</prop>
@@ -101,6 +102,9 @@
 	
 	<bean id="pharmacyRequestForm" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyRequestForm">
 		<property name="viewName" value="module/@MODULE_ID@/pharmacyRequestForm" />
+	</bean>
+	<bean id="pharmacyRequestAdjustForm" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyRequestAdjustForm">
+		<property name="viewName" value="module/@MODULE_ID@/pharmacyRequestAdjustForm" />
 	</bean>
 	
 	<bean id="findPharmacyRequestForm" class="@MODULE_PACKAGE@.phcymgt.web.controller.FindPharmacyRequestForm">

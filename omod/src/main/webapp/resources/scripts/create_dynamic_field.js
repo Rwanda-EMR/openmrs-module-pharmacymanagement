@@ -48,13 +48,51 @@ function createDrug(baseName, displayArray, valueArray, classAttr) {
 			"3");
 
 			// amount requisitioned
+
+	// delete button
+	var deleteButton = createDeleteButton(baseName);
+		
+	// adding row fields
+	table.append($dsm(document.createElement("tr")).attr("align", "center")
+			.append($dsm(document.createElement("td")).attr("width", "70%").append(optionSelectRow))
+			.append($dsm(document.createElement("td")).attr("width", "20%").append(amountReqInputElement))
+			.append($dsm(document.createElement("td")).attr("width", "10%").append(deleteButton)));
+
+	// add the line separator between tables
+	table.append($dsm(document.createElement("tr")).append(
+			$dsm(document.createElement("td")).attr("colspan", "5").append(
+					$dsm(document.createElement("hr")).attr("color", "#C9C9C9"))));
+
+	// add the entire set of elements to the div
+	table.hide();
+	$dsm("#" + baseName).append(table);
+
+	$dsm(".drugs_tables").removeAttr("style");
+	table.show(200);
+}
+
+function createDrugToAdjust(baseName, displayArray, valueArray, classAttr) {
+	// the containing table
+	var table = $dsm(document.createElement("table")).attr("id",
+			baseName + "tableid_" + ++fieldGroupCount).attr("class", "drugs_tables").attr("width", "100%");
+
+	// designation selector
+	var optionSelectRow = createNakedOptionSelect("drugs_" + fieldGroupCount,
+			displayArray, valueArray, classAttr);
+
+	// amount requisitioned
+	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
+			"text").attr("name", "drugneeded_" + fieldGroupCount).attr("size",
+			"3");
+
+			// amount requisitioned
      var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
             			"text").attr("name", "reqReson_" + fieldGroupCount).attr("size",
             			"20").attr("Value", "Provision of drug");
 
 	// delete button
 	var deleteButton = createDeleteButton(baseName);
-		
+
 	// adding row fields
 	table.append($dsm(document.createElement("tr")).attr("align", "center")
 			.append($dsm(document.createElement("td")).attr("width", "50%").append(optionSelectRow))
@@ -88,6 +126,43 @@ function createConsumable(baseName, displayArray, valueArray, classAttr) {
 	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
 			"text").attr("name", "consneeded_" + fieldGroupCount).attr("size",
 			"3");
+
+
+	// delete button
+	var deleteButton = createDeleteButton(baseName);
+		
+	// adding row fields
+	table.append($dsm(document.createElement("tr")).attr("align", "center")
+			.append($dsm(document.createElement("td")).attr("width", "70%").append(optionSelectRow))
+			.append($dsm(document.createElement("td")).attr("width", "20%").append(amountReqInputElement))
+			.append($dsm(document.createElement("td")).attr("width", "10%").append(deleteButton)));
+
+	// add the line separator between tables
+	table.append($dsm(document.createElement("tr")).append(
+			$dsm(document.createElement("td")).attr("colspan", "5").append(
+					$dsm(document.createElement("hr")).attr("color", "#C9C9C9"))));
+
+	// add the entire set of elements to the div
+	table.hide();
+	$dsm("#" + baseName).append(table);
+
+	$dsm(".consumable_tables").removeAttr("style");
+	table.show(200);
+}
+
+function createConsumableToAdjust(baseName, displayArray, valueArray, classAttr) {
+	// the containing table
+	var table = $dsm(document.createElement("table")).attr("id",
+			baseName + "tableid_" + ++fieldGroupCount).attr("class", "consumable_tables").attr("width", "100%");
+
+	// designation selector
+	var optionSelectRow = createNakedOptionSelect("consumable_" + fieldGroupCount,
+			displayArray, valueArray, classAttr);
+
+	// amount requisitioned
+	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
+			"text").attr("name", "consneeded_" + fieldGroupCount).attr("size",
+			"3");
 			// amount requisitioned
      var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
             			"text").attr("name", "ConsreqReson_" + fieldGroupCount).attr("size",
@@ -95,7 +170,7 @@ function createConsumable(baseName, displayArray, valueArray, classAttr) {
 
 	// delete button
 	var deleteButton = createDeleteButton(baseName);
-		
+
 	// adding row fields
 	table.append($dsm(document.createElement("tr")).attr("align", "center")
 			.append($dsm(document.createElement("td")).attr("width", "50%").append(optionSelectRow))

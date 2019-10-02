@@ -58,6 +58,8 @@ var $e = jQuery.noConflict();
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/drugOrder.list"><spring:message code="pharmacymanagement.orderList"/></a></span></li>
 			<li><span class="file"><a
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/consumabledispensation.htm"><spring:message code="pharmacymanagement.consumableDispensing"/></a></span></li>
+			<li><span class="file"><a
+            			href="${pageContext.request.contextPath}/module/pharmacymanagement/pharmacyrequestAdjust.form">Adjust Dispensing Pharmacy</a></span></li>
 		</ul> 
 		</li>
 	</openmrs:hasPrivilege>

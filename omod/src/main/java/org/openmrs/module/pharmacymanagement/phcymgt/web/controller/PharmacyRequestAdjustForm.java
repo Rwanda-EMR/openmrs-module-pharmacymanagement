@@ -1,22 +1,9 @@
 package org.openmrs.module.pharmacymanagement.phcymgt.web.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Concept;
 import org.openmrs.Drug;
 import org.openmrs.Location;
-import org.openmrs.User;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
@@ -29,19 +16,19 @@ import org.openmrs.module.pharmacymanagement.utils.Utils;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 
-
-
-
-
-
-public class PharmacyRequestForm
+public class PharmacyRequestAdjustForm
         extends ParameterizableViewController
 {
     private Log log = LogFactory.getLog(getClass());
 
-    public PharmacyRequestForm() {}
+    public PharmacyRequestAdjustForm() {}
 
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
@@ -171,6 +158,7 @@ public class PharmacyRequestForm
                         String id = request.getParameter("drugs_" + suffixId);
                         String drugneeded = request.getParameter("drugneeded_" +
                                 suffixId);
+                        String reqReason=request.getParameter("reqReson_" +suffixId);
                         if ((count == 1) && (!id.equals("")) &&
                                 (!drugneeded.equals(""))) {
                             serviceDrug.saveCmdDrug(cmdDrug);
@@ -188,6 +176,7 @@ public class PharmacyRequestForm
 
                         drugProduct.setStoreQnty(storeqnty);
                         drugProduct.setQntyReq(amountreq);
+                        drugProduct.setComments(reqReason);
                         drugProduct.setCmddrugId(cmdDrug);
 
                         serviceDrug.saveDrugProduct(drugProduct);

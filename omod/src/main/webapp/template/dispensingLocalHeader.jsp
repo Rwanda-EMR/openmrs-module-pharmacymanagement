@@ -41,4 +41,11 @@
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/consumabledispensation.htm">
 		<spring:message code="pharmacymanagement.consumableDispensing"/></a></li>
 	</openmrs:hasPrivilege>
+	<openmrs:hasPrivilege privilege="Manage Pharmacy">
+    		<li
+    			class="first<c:if test='<%= request.getRequestURI().contains("pharmacyRequestAdjustForm") %>'> active</c:if>">
+    		<a
+    			href="${pageContext.request.contextPath}/module/pharmacymanagement/pharmacyrequestAdjust.form">
+    		Adjust Dispensing Pharmacy </a></li>
+    	</openmrs:hasPrivilege>
 </ul>

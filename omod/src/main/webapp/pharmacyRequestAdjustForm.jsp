@@ -75,12 +75,12 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 			    });
 			    	
 				$dsm("#adddrugid").click(function(){
-					createDrug("drugs",drugsArray,drugsIdArray,"dynamicDrug");
+					createDrugToAdjust("drugs",drugsArray,drugsIdArray,"dynamicDrug");
 					$dsm("#hiddenfield").attr("value", fieldGroupCount);
 				});
 							
 				$dsm("#addconsumableid").click(function() {
-					createConsumable("consumable",consArray,consIdArray,"dynamicConsumable");
+					createConsumableToAdjust("consumable",consArray,consIdArray,"dynamicConsumable");
 				});
 				
 				$dsm('#drugstore').salidate({
@@ -148,6 +148,8 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 		<tr>
 			<td class="designation"><spring:message code="pharmacymanagement.designation" /></td>
 			<td class="qr"><spring:message code="pharmacymanagement.qntyReq" /></td>
+		    <td class="res">Reason</td>
+
 			<td class="del">&nbsp;</td>
 		</tr>
 	</table>
@@ -161,6 +163,7 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 		<tr>
 			<td class="designation"><spring:message code="pharmacymanagement.designation" /></td>
 			<td class="qr"><spring:message code="pharmacymanagement.qntyReq" /></td>
+		    <td class="res">Reason</td>
 
 			<td class="del">&nbsp;</td>
 		</tr>
