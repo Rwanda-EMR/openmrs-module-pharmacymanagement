@@ -1,6 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <openmrs:require privilege="View Pharmacy management" otherwise="/login.htm"
-	redirect="/module/pharmacymanagement/pharmacyrequest.form" />
+	redirect="/module/pharmacymanagement/pharmacyrequestAdjust.form" />
 <%@ include file="/WEB-INF/template/header.jsp"%>
 
 <div>
@@ -19,6 +19,7 @@ var $dsm = jQuery.noConflict();
 $dsm(function() {
 	$dsm('#productCategory').tabs();
 });
+
 
 var dftLocationName = "<c:out value="${dftLoc.name}"/>"
 var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
@@ -65,6 +66,7 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
    
 	
 	$dsm(document).ready(
+
 			function(){			
 				$dsm("input").focus(function () {
 			         $dsm(this).css('background-color','#abcdef');
@@ -92,12 +94,24 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 
 				$dsm("#locat").html(dftLocationName);
 			    $dsm("#destin").attr("value", dftLocationId);
+
+
+			 /*    $dsm('#service').change(function() {
+                    			var serviceId = $dsm('#service').val();
+                    			alert("Test Pharmacy ID: "+serviceId);
+                    			$dsm(".dynamicDrug").empty().html('Loading...');
+                         		$dsm(".dynamicDrug").load("pharmacyItems.form?pharmacyId="+serviceId);
+                         	    alert("Tested after");
+
+
+                    		}); */
+
 		}
 );
 
 </script>
 
-<form method="post" id="drugstore" action="pharmacyrequest.form?on=true">
+<form method="post" id="drugstore" action="pharmacyrequestAdjust.form?on=true">
 
 <fieldset><legend><spring:message code="pharmacymanagement.phcyReqForm" /></legend> <input
 	id="hiddenfield" type="hidden" name="fieldCount" />
@@ -107,7 +121,7 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 		<td><spring:message code="pharmacymanagement.from" /></td>
 		<td><input id="destin" type="hidden" name="destination" /> 
 		
-		<select name="pharmacy">
+		<select name="pharmacy" id="service">
 			<option value="">-- select --</option>
 			<c:forEach items="${pharmacyList}" var="pharmacy">
 				<option value="${pharmacy.pharmacyId}">${pharmacy.name}</option>

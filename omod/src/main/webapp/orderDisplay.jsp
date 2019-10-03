@@ -164,6 +164,7 @@ $(document).ready( function() {
 	<td style="width:100px" class="simple"><spring:message code="pharmacymanagement.qty2Order" /></td>
 	<td id="qtyReceivedId" style="width:100px" class="simpleSpan"><spring:message code="pharmacymanagement.qtyReceived" /></td>
 	<td rowspan="2" style="width:100px" class="simpleRSpan"><spring:message code="Requested Quantity" /></td>
+	<td rowspan="2" style="width:100px" class="simpleRSpan">Reason</td>
     <td class="non-printable" rowspan="2"><spring:message code="pharmacymanagement.status" /></td>
 </tr>
 <tr>
@@ -180,7 +181,7 @@ $(document).ready( function() {
     <td class="simple">J</td>
   </tr>
 <tr>
-<td colspan="18" style="background-color: #c0c0c0"><center><spring:message code="pharmacymanagement.drug" />s ${empty drugMap ? '(no record)' : '' }</center></td>
+<td colspan="19" style="background-color: #c0c0c0"><center><spring:message code="pharmacymanagement.drug" />s ${empty drugMap ? '(no record)' : '' }</center></td>
 </tr>
 <c:forEach var="consommation" items="${drugMap}" varStatus="num">
 <c:if test="${consomation.value.drugProduct.conceptId.conceptId == null}">
@@ -213,6 +214,8 @@ $(document).ready( function() {
     <td class="simple">${consommation.value.qntyToOrder}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.isDelivered == false ? '' : consommation.value.drugProduct.deliveredQnty}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.qntyReq}&nbsp;</td>
+    <td class="simpleSpan">${consommation.value.drugProduct.comments}&nbsp;</td>
+
     <td class="non-printable">
     	<c:if test="${!consommation.value.drugProduct.isDelivered}">
 			<center><img id="${counter}" class="basic" src="${pageContext.request.contextPath}/images/problem.gif" style="cursor: pointer;" /></center>
@@ -226,7 +229,7 @@ $(document).ready( function() {
   </c:forEach>
 
 <tr>
-<td colspan="18" style="background-color: #c0c0c0"><center><spring:message code="pharmacymanagement.consumable" /> ${empty consommationMap ? '(no record)' : '' }</center></td>
+<td colspan="19" style="background-color: #c0c0c0"><center><spring:message code="pharmacymanagement.consumable" /> ${empty consommationMap ? '(no record)' : '' }</center></td>
 </tr>
 <c:forEach var="consommation" items="${consommationMap}" varStatus="num">
 <c:if test="${consomation.value.drugProduct.conceptId.conceptId == null}">
@@ -250,6 +253,8 @@ $(document).ready( function() {
     <td class="simple">${consommation.value.qntyToOrder}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.isDelivered == false ? '' : consommation.value.drugProduct.deliveredQnty}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.qntyReq}&nbsp;</td>
+     <td class="simpleSpan">${consommation.value.drugProduct.comments}&nbsp;</td>
+
     <td class="non-printable">
     	<c:if test="${!consommation.value.drugProduct.isDelivered}">
 			<center><img id="${counter}" class="basic" src="${pageContext.request.contextPath}/images/problem.gif" style="cursor: pointer;" /></center>

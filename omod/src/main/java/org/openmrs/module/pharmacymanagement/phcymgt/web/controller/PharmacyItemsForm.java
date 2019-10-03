@@ -23,12 +23,12 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 
-public class PharmacyRequestAdjustForm
+public class PharmacyItemsForm
         extends ParameterizableViewController
 {
     private Log log = LogFactory.getLog(getClass());
 
-    public PharmacyRequestAdjustForm() {}
+    public PharmacyItemsForm() {}
 
     protected ModelAndView handleRequestInternal(HttpServletRequest request, HttpServletResponse response) throws Exception
     {
@@ -275,7 +275,10 @@ public class PharmacyRequestAdjustForm
 
 
         for (DrugProduct drugproduct : dpSet) {
-            drugMap.put(drugproduct.getDrugId().getDrugId(), drugproduct);
+
+            if(drugproduct.getCmddrugId().getPharmacy().getPharmacyId()==Integer.parseInt(request.getParameter("pharmacyId"))) {
+                drugMap.put(drugproduct.getDrugId().getDrugId(), drugproduct);
+            }
         }
 
 
