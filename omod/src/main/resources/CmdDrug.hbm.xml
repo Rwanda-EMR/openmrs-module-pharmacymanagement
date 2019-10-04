@@ -31,10 +31,16 @@
 		<property name="expiryDate" column="expiry_date" type="date" />
 		<property name="lotNo" column="lot_no" />
 		<property name="comments" column="comments" />
+		<property name="transferType" column="transferType" />
+		<property name="reqDate" column="req_date" type="date" />
+
 
 		<many-to-one name="cmddrugId" class="org.openmrs.module.pharmacymanagement.CmdDrug" column="cmddrug_id" fetch="join" />
 		<many-to-one  name="drugId" class="org.openmrs.Drug"  column="drug_id" cascade="all" />
 		<many-to-one  name="conceptId" class="org.openmrs.Concept"  column="concept_id" cascade="all" />
+
+		<many-to-one  name="transfereBy" class="org.openmrs.User"  column="transfereBy" cascade="all" />
+		<many-to-one  name="requestedBy" class="org.openmrs.User"  column="requestedBy" cascade="all" />
 
 	</class>
 	

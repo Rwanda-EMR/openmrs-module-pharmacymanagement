@@ -7,6 +7,7 @@ import java.util.Date;
 
 import org.openmrs.Concept;
 import org.openmrs.Drug;
+import org.openmrs.User;
 
 /**
  *@author Eric D.
@@ -24,10 +25,44 @@ public class DrugProduct {
 	private String comments;
 	private CmdDrug cmddrugId;
 	private Concept conceptId;
+    private User transfereBy;
+    private String transferType;
+    private User requestedBy;
+    private Date reqDate;
 
-	
-	
-	/**
+    public User getRequestedBy() {
+        return requestedBy;
+    }
+
+    public void setRequestedBy(User requestedBy) {
+        this.requestedBy = requestedBy;
+    }
+
+    public Date getReqDate() {
+        return reqDate;
+    }
+
+    public void setReqDate(Date reqDate) {
+        this.reqDate = reqDate;
+    }
+
+    public User getTransfereBy() {
+        return transfereBy;
+    }
+
+    public void setTransfereBy(User transfereBy) {
+        this.transfereBy = transfereBy;
+    }
+
+    public String getTransferType() {
+        return transferType;
+    }
+
+    public void setTransferType(String transferType) {
+        this.transferType = transferType;
+    }
+
+    /**
 	 * @return the drugproductId
 	 */
 	public int getDrugproductId() {

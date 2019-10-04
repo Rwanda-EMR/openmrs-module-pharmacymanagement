@@ -208,4 +208,19 @@
 			ALTER TABLE pharmacymanagement_pharmacy MODIFY name VARCHAR(100) DEFAULT NULL;
 		</sql>	
 	</diff>
+	<diff>
+		<version>1.6.4</version>
+		<author>Rwanda-Emr</author>
+		<date>October 4th 2019</date>
+		<description>Add another attributes in pharmacymanagement_drug_product table</description>
+		<sql>
+			ALTER TABLE pharmacymanagement_drug_product ADD COLUMN transferType VARCHAR(45) NULL AFTER concept_id;
+			ALTER TABLE pharmacymanagement_drug_product ADD requestedBy int(11) DEFAULT NULL AFTER req_qnty;
+			ALTER TABLE pharmacymanagement_drug_product ADD CONSTRAINT fk_requestedBy_dp FOREIGN KEY (requestedBy) REFERENCES users(user_id);
+			ALTER TABLE pharmacymanagement_drug_product ADD COLUMN req_date DATE NULL AFTER requestedBy;
+			ALTER TABLE pharmacymanagement_drug_product ADD transfereBy int(11) DEFAULT NULL AFTER transferType;
+			ALTER TABLE pharmacymanagement_drug_product ADD CONSTRAINT fk_transfereBy_dp FOREIGN KEY (transfereBy) REFERENCES users(user_id);
+
+		</sql>
+	</diff>
 </sqldiff>
