@@ -12,7 +12,17 @@ public class PharmacyInventory {
 	private int solde;
 	private DrugOrderPrescription dopId;
 	private ConsumableDispense cpId;
-	
+	private int adjustedOldSolde;
+
+	public int getAdjustedOldSolde() {
+		return adjustedOldSolde;
+	}
+
+	public void setAdjustedOldSolde(int adjustedOldSolde) {
+		this.adjustedOldSolde = adjustedOldSolde;
+	}
+
+
 	/**
 	 * @return the dopId
 	 */

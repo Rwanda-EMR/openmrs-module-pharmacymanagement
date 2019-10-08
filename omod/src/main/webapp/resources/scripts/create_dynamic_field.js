@@ -47,15 +47,24 @@ function createDrug(baseName, displayArray, valueArray, classAttr) {
 			"text").attr("name", "drugneeded_" + fieldGroupCount).attr("size",
 			"3");
 
-			// amount requisitioned
+	var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
+                			"text").attr("name", "reqReson_" + fieldGroupCount).attr("size",
+                			"20").attr("Value", "Provision").attr("readOnly","true");
+
+
+    var transferTypeSelectElement = $dsm(document.createElement("input")).attr("type",
+                                        			"text").attr("name", "transferType_" + fieldGroupCount).attr("size",
+                                        			"20").attr("Value", "requisition").attr("readOnly","true");
 
 	// delete button
 	var deleteButton = createDeleteButton(baseName);
 		
 	// adding row fields
 	table.append($dsm(document.createElement("tr")).attr("align", "center")
-			.append($dsm(document.createElement("td")).attr("width", "70%").append(optionSelectRow))
+			.append($dsm(document.createElement("td")).attr("width", "30%").append(optionSelectRow))
 			.append($dsm(document.createElement("td")).attr("width", "20%").append(amountReqInputElement))
+			.append($dsm(document.createElement("td")).attr("width", "20%").append(reqReasonInputElement))
+			.append($dsm(document.createElement("td")).attr("width", "20%").append(transferTypeSelectElement))
 			.append($dsm(document.createElement("td")).attr("width", "10%").append(deleteButton)));
 
 	// add the line separator between tables
@@ -71,7 +80,7 @@ function createDrug(baseName, displayArray, valueArray, classAttr) {
 	table.show(200);
 }
 
-function createDrugToAdjust(baseName, displayArray, valueArray, classAttr) {
+function createDrugToAdjust(baseName, displayArray, valueArray, classAttr,reasonDisplayArray,reasonValueArray) {
 	// the containing table
 	var table = $dsm(document.createElement("table")).attr("id",
 			baseName + "tableid_" + ++fieldGroupCount).attr("class", "drugs_tables").attr("width", "100%");
@@ -85,19 +94,26 @@ function createDrugToAdjust(baseName, displayArray, valueArray, classAttr) {
 			"text").attr("name", "drugneeded_" + fieldGroupCount).attr("size",
 			"3");
 
-			// amount requisitioned
-     var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
-            			"text").attr("name", "reqReson_" + fieldGroupCount).attr("size",
-            			"20").attr("Value", "Provision of drug");
+
+     var transferTypeSelectElement = $dsm(document.createElement("input")).attr("type",
+            			"text").attr("name", "transferType_" + fieldGroupCount).attr("size",
+            			"20").attr("Value", "adjustment").attr("readOnly","true");
+
+
+   var reqReasonInputElement=createNakedOptionSelect("reqReson_" + fieldGroupCount,
+                                  			reasonDisplayArray, reasonValueArray, "dynamicAdjstReason");
+
+
 
 	// delete button
 	var deleteButton = createDeleteButton(baseName);
 
 	// adding row fields
-	table.append($dsm(document.createElement("tr")).attr("align", "center")
-			.append($dsm(document.createElement("td")).attr("width", "50%").append(optionSelectRow))
+	table.append($dsm(document.createElement("tr")).attr("align", "left")
+			.append($dsm(document.createElement("td")).attr("width", "30%").append(optionSelectRow))
 			.append($dsm(document.createElement("td")).attr("width", "20%").append(amountReqInputElement))
 			.append($dsm(document.createElement("td")).attr("width", "20%").append(reqReasonInputElement))
+			.append($dsm(document.createElement("td")).attr("width", "20%").append(transferTypeSelectElement))
 			.append($dsm(document.createElement("td")).attr("width", "10%").append(deleteButton)));
 
 	// add the line separator between tables
@@ -128,6 +144,16 @@ function createConsumable(baseName, displayArray, valueArray, classAttr) {
 			"3");
 
 
+var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
+                			"text").attr("name", "ConsreqReson_" + fieldGroupCount).attr("size",
+                			"20").attr("Value", "Provision").attr("readOnly","true");
+
+
+    var transferTypeSelectElement = $dsm(document.createElement("input")).attr("type",
+                                        			"text").attr("name", "ConstransferType_" + fieldGroupCount).attr("size",
+                                        			"20").attr("Value", "requisition").attr("readOnly","true");
+
+
 	// delete button
 	var deleteButton = createDeleteButton(baseName);
 		
@@ -135,6 +161,8 @@ function createConsumable(baseName, displayArray, valueArray, classAttr) {
 	table.append($dsm(document.createElement("tr")).attr("align", "center")
 			.append($dsm(document.createElement("td")).attr("width", "70%").append(optionSelectRow))
 			.append($dsm(document.createElement("td")).attr("width", "20%").append(amountReqInputElement))
+			.append($dsm(document.createElement("td")).attr("width", "20%").append(reqReasonInputElement))
+			.append($dsm(document.createElement("td")).attr("width", "20%").append(transferTypeSelectElement))
 			.append($dsm(document.createElement("td")).attr("width", "10%").append(deleteButton)));
 
 	// add the line separator between tables
@@ -150,7 +178,7 @@ function createConsumable(baseName, displayArray, valueArray, classAttr) {
 	table.show(200);
 }
 
-function createConsumableToAdjust(baseName, displayArray, valueArray, classAttr) {
+function createConsumableToAdjust(baseName, displayArray, valueArray, classAttr,transferDisplayArray,transferValueArray) {
 	// the containing table
 	var table = $dsm(document.createElement("table")).attr("id",
 			baseName + "tableid_" + ++fieldGroupCount).attr("class", "consumable_tables").attr("width", "100%");
@@ -163,19 +191,24 @@ function createConsumableToAdjust(baseName, displayArray, valueArray, classAttr)
 	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
 			"text").attr("name", "consneeded_" + fieldGroupCount).attr("size",
 			"3");
-			// amount requisitioned
-     var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
-            			"text").attr("name", "ConsreqReson_" + fieldGroupCount).attr("size",
-            			"3");
+
+var transferTypeSelectElement = $dsm(document.createElement("input")).attr("type",
+            			"text").attr("name", "ConstransferType_" + fieldGroupCount).attr("size",
+            			"20").attr("Value", "adjustment").attr("readOnly","true");
+
+
+var reqReasonInputElement=createNakedOptionSelect("ConsreqReson_" + fieldGroupCount,
+                                  			reasonDisplayArray, reasonValueArray, "dynamicAdjstReason");
 
 	// delete button
 	var deleteButton = createDeleteButton(baseName);
 
 	// adding row fields
-	table.append($dsm(document.createElement("tr")).attr("align", "center")
-			.append($dsm(document.createElement("td")).attr("width", "50%").append(optionSelectRow))
+	table.append($dsm(document.createElement("tr")).attr("align", "left")
+			.append($dsm(document.createElement("td")).attr("width", "30%").append(optionSelectRow))
 			.append($dsm(document.createElement("td")).attr("width", "20%").append(amountReqInputElement))
 			.append($dsm(document.createElement("td")).attr("width", "20%").append(reqReasonInputElement))
+			.append($dsm(document.createElement("td")).attr("width", "20%").append(transferTypeSelectElement))
 			.append($dsm(document.createElement("td")).attr("width", "10%").append(deleteButton)));
 
 	// add the line separator between tables

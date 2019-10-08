@@ -43,6 +43,23 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
     	consArray.push("<c:out value="${cs.conceptId.name.name}"/>");
     	consIdArray.push(<c:out value="${cs.drugproductId}"/>);
     </c:forEach>
+
+
+    // transfer option
+
+
+        var reasonDisplayArray = new Array();
+         var reasonValueArray = new Array();
+
+         reasonDisplayArray.push("Damaged");
+         reasonValueArray.push("damaged");
+
+         reasonDisplayArray.push("Bad quality");
+         reasonValueArray.push("bad_quality");
+
+         reasonDisplayArray.push("Counting mistake");
+         reasonValueArray.push("counting_mistake");
+
     
 	/************************************************************************** 
 	*	function for adding options to the select.
@@ -77,12 +94,12 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 			    });
 			    	
 				$dsm("#adddrugid").click(function(){
-					createDrugToAdjust("drugs",drugsArray,drugsIdArray,"dynamicDrug");
+					createDrugToAdjust("drugs",drugsArray,drugsIdArray,"dynamicDrug",reasonDisplayArray,reasonValueArray);
 					$dsm("#hiddenfield").attr("value", fieldGroupCount);
 				});
 							
 				$dsm("#addconsumableid").click(function() {
-					createConsumableToAdjust("consumable",consArray,consIdArray,"dynamicConsumable");
+					createConsumableToAdjust("consumable",consArray,consIdArray,"dynamicConsumable",reasonDisplayArray,reasonValueArray);
 				});
 				
 				$dsm('#drugstore').salidate({
@@ -160,11 +177,12 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 <div id="drugs">
 	<table width="100%">
 		<tr>
-			<td class="designation"><spring:message code="pharmacymanagement.designation" /></td>
-			<td class="qr"><spring:message code="pharmacymanagement.qntyReq" /></td>
-		    <td class="res">Reason</td>
+			<td width="30"><spring:message code="pharmacymanagement.designation" /></td>
+			<td width="20"><spring:message code="pharmacymanagement.qntyReq" /></td>
+		    <td width="20">Reason</td>
+		    <td  width="20">Type</td>
 
-			<td class="del">&nbsp;</td>
+			<td  width="10" >&nbsp;</td>
 		</tr>
 	</table>
 </div>
@@ -175,11 +193,11 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 <div id="consumable">
 	<table width="100%">
 		<tr>
-			<td class="designation"><spring:message code="pharmacymanagement.designation" /></td>
-			<td class="qr"><spring:message code="pharmacymanagement.qntyReq" /></td>
-		    <td class="res">Reason</td>
-
-			<td class="del">&nbsp;</td>
+			<td><spring:message code="pharmacymanagement.designation" /></td>
+			<td><spring:message code="pharmacymanagement.qntyReq" /></td>
+		    <td>Reason</td>
+		    <td>Type</td>
+			<td>&nbsp;</td>
 		</tr>
 	</table>
 </div>

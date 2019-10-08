@@ -4,6 +4,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Drug;
 import org.openmrs.Location;
+import org.openmrs.User;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.context.Context;
@@ -37,6 +38,8 @@ public class PharmacyRequestAdjustForm
         DrugProduct drugProduct = null;
         DrugProduct currDP = null;
         Drug drug = null;
+
+
 
         DrugOrderService serviceDrug = (DrugOrderService)Context.getService(DrugOrderService.class);
         LocationService locationService = Context.getLocationService();
@@ -158,7 +161,12 @@ public class PharmacyRequestAdjustForm
                         String id = request.getParameter("drugs_" + suffixId);
                         String drugneeded = request.getParameter("drugneeded_" +
                                 suffixId);
-                        String reqReasonOfDrug="Adjustment: "+request.getParameter("reqReson_" +suffixId);
+                        String reqReasonOfDrug=request.getParameter("reqReson_" +suffixId);
+
+                        User requestedBy=Context.getAuthenticatedUser();
+                        Date dateRequested=new Date();
+                        String transferType=request.getParameter("transferType_"+suffixId);
+
                         if ((count == 1) && (!id.equals("")) &&
                                 (!drugneeded.equals(""))) {
                             serviceDrug.saveCmdDrug(cmdDrug);
@@ -179,6 +187,15 @@ public class PharmacyRequestAdjustForm
                         drugProduct.setComments(reqReasonOfDrug);
                         drugProduct.setCmddrugId(cmdDrug);
 
+
+                       /* User requestedBy=Context.getAuthenticatedUser();
+                        Date dateRequested=new Date();
+                        String transferType=request.getParameter("transferType_"+suffixId);*/
+                        drugProduct.setRequestedBy(requestedBy);
+                        drugProduct.setReqDate(dateRequested);
+                        drugProduct.setTransferType(transferType);
+
+
                         serviceDrug.saveDrugProduct(drugProduct);
                         hasSaved = true;
                         count++;
@@ -187,7 +204,10 @@ public class PharmacyRequestAdjustForm
                         String id = request.getParameter("consumable_" +
                                 suffixId);
                         String consneeded = request.getParameter("consneeded_" +suffixId);
-                        String reqReasonOfConsum="Adjustment: "+request.getParameter("ConsreqReson_" +suffixId);
+                        String reqReasonOfConsum=request.getParameter("ConsreqReson_" +suffixId);
+                        User requestedBy=Context.getAuthenticatedUser();
+                        Date dateRequested=new Date();
+                        String transferType=request.getParameter("ConstransferType_"+suffixId);
 
                         if ((count == 1) && (!id.equals("")) &&
                                 (!consneeded.equals(""))) {
@@ -210,6 +230,13 @@ public class PharmacyRequestAdjustForm
                         drugProduct.setQntyReq(amountreq);
                         drugProduct.setComments(reqReasonOfConsum);
                         drugProduct.setCmddrugId(cmdDrug);
+
+
+                        drugProduct.setRequestedBy(requestedBy);
+                        drugProduct.setReqDate(dateRequested);
+                        drugProduct.setTransferType(transferType);
+
+
                         serviceDrug.saveDrugProduct(drugProduct);
                         hasSaved = true;
                         count++;

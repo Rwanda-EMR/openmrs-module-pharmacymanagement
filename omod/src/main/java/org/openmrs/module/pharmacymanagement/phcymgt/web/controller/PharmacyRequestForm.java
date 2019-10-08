@@ -171,6 +171,14 @@ public class PharmacyRequestForm
                         String id = request.getParameter("drugs_" + suffixId);
                         String drugneeded = request.getParameter("drugneeded_" +
                                 suffixId);
+
+                        String reqReasonOfDrug=request.getParameter("reqReson_" +suffixId);
+
+                        User requestedBy=Context.getAuthenticatedUser();
+                        Date dateRequested=new Date();
+                        String transferType=request.getParameter("transferType_"+suffixId);
+
+
                         if ((count == 1) && (!id.equals("")) &&
                                 (!drugneeded.equals(""))) {
                             serviceDrug.saveCmdDrug(cmdDrug);
@@ -188,8 +196,15 @@ public class PharmacyRequestForm
 
                         drugProduct.setStoreQnty(storeqnty);
                         drugProduct.setQntyReq(amountreq);
-                        drugProduct.setCmddrugId(cmdDrug);
 
+
+
+                        drugProduct.setRequestedBy(requestedBy);
+                        drugProduct.setReqDate(dateRequested);
+                        drugProduct.setComments(reqReasonOfDrug);
+                        drugProduct.setTransferType(transferType);
+
+                        drugProduct.setCmddrugId(cmdDrug);
                         serviceDrug.saveDrugProduct(drugProduct);
                         hasSaved = true;
                         count++;
@@ -199,6 +214,12 @@ public class PharmacyRequestForm
                                 suffixId);
                         String consneeded = request.getParameter("consneeded_" +
                                 suffixId);
+
+                        String reqReasonOfConsum=request.getParameter("ConsreqReson_" +suffixId);
+                        User requestedBy=Context.getAuthenticatedUser();
+                        Date dateRequested=new Date();
+                        String transferType=request.getParameter("ConstransferType_"+suffixId);
+
                         if ((count == 1) && (!id.equals("")) &&
                                 (!consneeded.equals(""))) {
                             serviceDrug.saveCmdDrug(cmdDrug);
@@ -218,6 +239,12 @@ public class PharmacyRequestForm
                             amountreq = Integer.parseInt(consneeded);
                         }
                         drugProduct.setQntyReq(amountreq);
+
+
+                        drugProduct.setRequestedBy(requestedBy);
+                        drugProduct.setReqDate(dateRequested);
+                        drugProduct.setTransferType(transferType);
+                        drugProduct.setComments(reqReasonOfConsum);
 
                         drugProduct.setCmddrugId(cmdDrug);
                         serviceDrug.saveDrugProduct(drugProduct);

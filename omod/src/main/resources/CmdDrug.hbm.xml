@@ -31,7 +31,7 @@
 		<property name="expiryDate" column="expiry_date" type="date" />
 		<property name="lotNo" column="lot_no" />
 		<property name="comments" column="comments" />
-		<property name="transferType" column="transferType" />
+		<property name="transferType" column="transferType" type="java.lang.String"/>
 		<property name="reqDate" column="req_date" type="date" />
 
 
@@ -105,7 +105,10 @@
 		<property name="entree" column="entree" />
 		<property name="sortie" column="sortie" />
 		<property name="solde" column="solde" />
-		
+		<property name="adjustedOldSolde" column="adjusted_Old_Solde" />
+
+
+
 		<many-to-one name="dopId" class="org.openmrs.module.pharmacymanagement.DrugOrderPrescription" column="dop_id" />
 		<many-to-one name="drugproductId" class="org.openmrs.module.pharmacymanagement.DrugProduct" not-null="true" column="drugproduct_id" fetch="join" />
 		<many-to-one name="cpId" class="org.openmrs.module.pharmacymanagement.ConsumableDispense" column="cp_id" />
