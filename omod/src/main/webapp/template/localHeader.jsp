@@ -24,5 +24,21 @@
 		<a
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/storeSearch.form">
 		<spring:message code="Store Search" /></a></li>
-	</openmrs:hasPrivilege>	
+	</openmrs:hasPrivilege>
+
+	<openmrs:hasPrivilege privilege="View Drug Store Adjustment">
+    		<li
+    			class="first<c:if test='<%= request.getRequestURI().contains("drugAdjustmentForm") %>'> active</c:if>">
+    		<a
+    			href="${pageContext.request.contextPath}/module/pharmacymanagement/adjustmentrequest.form">
+    		<spring:message code="pharmacymanagement.drugAdjustment" /> (<spring:message code="@MODULE_ID@.stock" />)</a></li>
+    	</openmrs:hasPrivilege>
+
+    	<!-- <openmrs:hasPrivilege privilege="View Drug Store management">
+        		<li
+        			<c:if test='<%= request.getRequestURI().contains("findDrugToAdjust") %>'>class="active"</c:if>>
+        		<a
+        			href="${pageContext.request.contextPath}/module/pharmacymanagement/adjustmentSearch.form">
+        		<spring:message code="pharmacymanagement.findAdjReq" /> </a></li>
+        	</openmrs:hasPrivilege> -->
 </ul>

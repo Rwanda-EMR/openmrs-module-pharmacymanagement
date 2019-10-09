@@ -11,6 +11,16 @@ public class DrugProductInventory {
 	private int sortie;
 	private int solde;
 	private boolean isStore;
+	private int adjustedOldSolde;
+
+	public int getAdjustedOldSolde() {
+		return this.adjustedOldSolde;
+	}
+
+	public void setAdjustedOldSolde(final int adjustedOldSolde) {
+		this.adjustedOldSolde = adjustedOldSolde;
+	}
+
 	/**
 	 * @return the inventoryId
 	 */

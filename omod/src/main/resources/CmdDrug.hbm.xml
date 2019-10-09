@@ -53,6 +53,7 @@
 		<property name="sortie" column="sortie" />
 		<property name="solde" column="solde" />
 		<property name="isStore" column="is_store" />
+		<property name="adjustedOldSolde" column="adjusted_Old_Solde" />
 
 		<many-to-one name="drugproductId" class="org.openmrs.module.pharmacymanagement.DrugProduct" not-null="true" column="drugproduct_id" fetch="join" />
 

@@ -235,11 +235,11 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		if (conceptId != null && !conceptId.equals(""))
 			sb.append(" AND dp.concept_id = '" + conceptId + "' ");
 
-		if (expiryDate != null && !expiryDate.equals(""))
-			sb.append(" AND dp.expiry_date = '" + expiryDate + "' ");
+		/*if (expiryDate != null && !expiryDate.equals(""))
+			sb.append(" AND dp.expiry_date = '" + expiryDate + "' ");*/
 
-		if (lotNo != null && !lotNo.equals(""))
-			sb.append(" AND dp.lot_no = '" + lotNo + "' ");
+		/*if (lotNo != null && !lotNo.equals(""))
+			sb.append(" AND dp.lot_no = '" + lotNo + "' ");*/
 
 		sb.append(" ORDER BY dpi.inventory_id DESC LIMIT 1");
 

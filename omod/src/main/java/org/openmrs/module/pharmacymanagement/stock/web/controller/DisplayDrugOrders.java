@@ -204,7 +204,11 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 				// when operating on the level of the main store
 				if (lcation != null) {
 					if (locations.contains(lcation)) {
+						if(dp.getTransferType()!=null &&dp.getTransferType().equals("adjustment"))
+							dpi.setEntree(0);
+						else
 						dpi.setEntree(qntAcc);
+
 						dpi.setIsStore(true);
 						total = currSolde + qntAcc;
 					}

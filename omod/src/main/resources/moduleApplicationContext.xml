@@ -81,6 +81,7 @@
 				<prop key="module/@MODULE_ID@/cmdUpdate.form">cmdProductUpdate</prop>
 				<prop key="module/@MODULE_ID@/storeSearch.form">storeSearchForm</prop>
 				<prop key="**/drugOrderPortlet.portlet">drugOrderPortletController</prop>
+				<prop key="module/@MODULE_ID@/adjustmentrequest.form">drugAdjustmentFormController</prop>
 			</props>
 		</property>
 	</bean>
@@ -225,8 +226,9 @@
 	
 	<bean id="drugOrderPortletController"
 		class="org.openmrs.module.pharmacymanagement.phcymgt.web.controller.DrugOrderPortletController" />
-	
-    
+	<bean id="drugAdjustmentFormController" class="@MODULE_PACKAGE@.stock.web.controller.DrugAdjustmentFormController" />
+
+
 	<!-- /Controllers -->
 	
 	
