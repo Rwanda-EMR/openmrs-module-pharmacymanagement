@@ -217,14 +217,14 @@ $(document).ready( function() {
     <td class="simple">${consommation.value.maxQnty}</td>
     <td class="simple">${consommation.value.qntyToOrder}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.isDelivered == false ? '' : consommation.value.drugProduct.deliveredQnty}&nbsp;</td>
-    <td class="simpleSpan">${consommation.value.drugProduct.qntyReq}&nbsp;</td>
+    <td class="simpleSpan">${consommation.value.drugProduct.qntyReq}  ${consommation.value.drugProduct.lotNo}</td>
     <td class="simpleSpan">${consommation.value.drugProduct.requestedBy.names}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.transfereBy.names}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.comments}&nbsp;</td>
 
     <td class="non-printable">
     	<c:if test="${!consommation.value.drugProduct.isDelivered}">
-			<center><img id="${counter}" class="basic" src="${pageContext.request.contextPath}/images/problem.gif" style="cursor: pointer;" /></center>
+			<center><img id="${counter}" class="basic" src="${pageContext.request.contextPath}/images/problem.gif" style="cursor: pointer;"></center>
 		</c:if>
 		<c:if test="${consommation.value.drugProduct.isDelivered}">
 			<center><img src="${pageContext.request.contextPath}/images/checkmark.png" /></center>
@@ -264,6 +264,7 @@ $(document).ready( function() {
      <td class="simpleSpan">${consommation.value.drugProduct.comments}&nbsp;</td>
 
     <td class="non-printable">
+
     	<c:if test="${!consommation.value.drugProduct.isDelivered}">
 			<center><img id="${counter}" class="basic" src="${pageContext.request.contextPath}/images/problem.gif" style="cursor: pointer;" /></center>
 		</c:if>

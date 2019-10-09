@@ -32,15 +32,15 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
     var drugsArray = new Array();
     var drugsIdArray = new Array();
     <c:forEach var="dp" items="${dpSet}">
-    	drugsArray.push("<c:out value="${dp.drugId.name}"/>");
-    	drugsIdArray.push(<c:out value="${dp.drugproductId}"/>);
+    	drugsArray.push("<c:out value="${dp.drugId.name}"/> (Lot:<c:out value="${dp.lotNo}"/>)");
+    	drugsIdArray.push("<c:out value="${dp.drugproductId}"/>-<c:out value="${dp.lotNo}"/>");
     </c:forEach>
 
 	//Consumable options
 	var consArray = new Array();
     var consIdArray = new Array();
     <c:forEach var="cs" items="${consumableSet}">
-    	consArray.push("<c:out value="${cs.conceptId.name.name}"/>");
+    	consArray.push("<c:out value="${cs.conceptId.name.name}"/> (Lot:<c:out value="${cs.lotNo}"/>)");
     	consIdArray.push(<c:out value="${cs.drugproductId}"/>);
     </c:forEach>
 

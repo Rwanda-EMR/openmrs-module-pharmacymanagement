@@ -49,7 +49,9 @@ public class PharmacyRequestAdjustForm
 
         List<Location> locations = locationService.getAllLocations();
 
-        Map<Integer, DrugProduct> drugMap = new HashMap();
+       // Map<Integer, DrugProduct> drugMap = new HashMap();
+        Map<String, DrugProduct> drugMap = new HashMap();
+
         Map<Integer, DrugProduct> consumableMap = new HashMap();
 
         Collection<DrugProduct> dpList = serviceDrug.getAllProducts();
@@ -158,7 +160,9 @@ public class PharmacyRequestAdjustForm
 
                     if (drugSuffix.equals(str))
                     {
-                        String id = request.getParameter("drugs_" + suffixId);
+                        String id = (request.getParameter("drugs_" + suffixId)).split("-")[0];
+                        String lotNo = (request.getParameter("drugs_" + suffixId)).split("-")[1];
+
                         String drugneeded = request.getParameter("drugneeded_" +
                                 suffixId);
                         String reqReasonOfDrug=request.getParameter("reqReson_" +suffixId);
@@ -195,6 +199,9 @@ public class PharmacyRequestAdjustForm
                         drugProduct.setReqDate(dateRequested);
                         drugProduct.setTransferType(transferType);
 
+                        if(lotNo!=null && !lotNo.equals("")){
+                            drugProduct.setLotNo(lotNo);
+                        }
 
                         serviceDrug.saveDrugProduct(drugProduct);
                         hasSaved = true;
@@ -302,7 +309,8 @@ public class PharmacyRequestAdjustForm
 
 
         for (DrugProduct drugproduct : dpSet) {
-            drugMap.put(drugproduct.getDrugId().getDrugId(), drugproduct);
+            drugMap.put(drugproduct.getLotNo(), drugproduct);
+
         }
 
 
