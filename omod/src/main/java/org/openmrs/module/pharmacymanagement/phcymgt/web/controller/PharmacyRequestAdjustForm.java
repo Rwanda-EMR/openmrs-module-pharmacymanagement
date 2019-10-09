@@ -208,8 +208,9 @@ public class PharmacyRequestAdjustForm
                         count++;
                     } else if (consSuffix.equals(str))
                     {
-                        String id = request.getParameter("consumable_" +
-                                suffixId);
+                        String id = (request.getParameter("consumable_" +suffixId)).split("-")[0];
+                        String lotNo = (request.getParameter("consumable_" + suffixId)).split("-")[1];
+
                         String consneeded = request.getParameter("consneeded_" +suffixId);
                         String reqReasonOfConsum=request.getParameter("ConsreqReson_" +suffixId);
                         User requestedBy=Context.getAuthenticatedUser();
@@ -243,7 +244,9 @@ public class PharmacyRequestAdjustForm
                         drugProduct.setReqDate(dateRequested);
                         drugProduct.setTransferType(transferType);
 
-
+                        if(lotNo!=null && !lotNo.equals("")){
+                            drugProduct.setLotNo(lotNo);
+                        }
                         serviceDrug.saveDrugProduct(drugProduct);
                         hasSaved = true;
                         count++;

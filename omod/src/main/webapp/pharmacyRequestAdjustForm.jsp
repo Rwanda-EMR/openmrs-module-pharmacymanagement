@@ -41,7 +41,7 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
     var consIdArray = new Array();
     <c:forEach var="cs" items="${consumableSet}">
     	consArray.push("<c:out value="${cs.conceptId.name.name}"/> (Lot:<c:out value="${cs.lotNo}"/>)");
-    	consIdArray.push(<c:out value="${cs.drugproductId}"/>);
+    	consIdArray.push("<c:out value="${cs.drugproductId}"/>-<c:out value="${cs.lotNo}"/>");
     </c:forEach>
 
 

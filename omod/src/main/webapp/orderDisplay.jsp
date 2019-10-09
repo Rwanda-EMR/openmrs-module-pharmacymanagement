@@ -258,7 +258,7 @@ $(document).ready( function() {
     <td class="simple">${consommation.value.maxQnty}</td>
     <td class="simple">${consommation.value.qntyToOrder}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.isDelivered == false ? '' : consommation.value.drugProduct.deliveredQnty}&nbsp;</td>
-    <td class="simpleSpan">${consommation.value.drugProduct.qntyReq}&nbsp;</td>
+    <td class="simpleSpan">${consommation.value.drugProduct.qntyReq}&nbsp; ${consommation.value.drugProduct.lotNo}</td>
     <td class="simpleSpan">${consommation.value.drugProduct.requestedBy.names}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.transfereBy.names}&nbsp;</td>
      <td class="simpleSpan">${consommation.value.drugProduct.comments}&nbsp;</td>
