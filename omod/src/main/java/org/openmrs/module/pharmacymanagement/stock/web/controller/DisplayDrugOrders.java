@@ -133,9 +133,6 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 					dateStr = strDateArr[2] + "-" + strDateArr[1] + "-"
 							+ strDateArr[0];
 				}
-
-//				dateStr = strDateArr[2] + "-" + strDateArr[1] + "-"
-//						+ strDateArr[0];
 			}
 
 			if (request.getParameter("prodFromLot") != null
@@ -243,12 +240,9 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 					if(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment")){
 						total = currSolde;
 						solde = qntAcc;
-						System.out.println("Adjustment Innnnnnnnnnnnnnnnnnnnnn");
 					}else {
 						total = currSolde - qntAcc;
 						solde = qntAcc + currStat;
-						System.out.println("Adjustment Outttttttttttttt");
-
 					}
 
 				//	int solde = qntAcc + currStat;

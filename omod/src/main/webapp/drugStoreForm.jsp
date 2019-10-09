@@ -148,11 +148,13 @@
 <div id="fragment-1">
 <div id="drugs">
 	<table width="100%">
-		<tr align="center">
-			<td class="designation"><spring:message code="pharmacymanagement.designation" /></td>
-			<td class="qr"><spring:message code="pharmacymanagement.qntyReq" /></td>
-			<td class="del">&nbsp;</td>
-		</tr>
+		<tr align="left">
+        			<th style="width:30%"><spring:message code="pharmacymanagement.designation" /></th>
+        			<th style="width:20%"><spring:message code="pharmacymanagement.qntyReq" /></th>
+                    <th style="width:20%">Reason</th>
+                    <th style="width:20%">Type</th>
+        			<th style="width:10%">Cancel</th>
+        		</tr>
 	</table>
 </div>
 	<p id="adddrugid" class="greenbox"></p>
@@ -161,11 +163,13 @@
 <div id="fragment-2">
 <div id="consumable">
 	<table width="100%">
-		<tr align="center">
-			<td class="designation"><spring:message code="pharmacymanagement.designation" /></td>
-			<td class="qr"><spring:message code="pharmacymanagement.qntyReq" /></td>
-			<td class="del">&nbsp;</td>
-		</tr>
+		<tr align="left">
+        			<th style="width:30%"><spring:message code="pharmacymanagement.designation" /></th>
+        			<th style="width:20%"><spring:message code="pharmacymanagement.qntyReq" /></th>
+                    <th style="width:20%">Reason</th>
+                    <th style="width:20%">Type</th>
+        			<th style="width:10%">Cancel</th>
+        </tr>
 	</table>
 </div>
 	<p id="addconsumableid" class="greenbox"></p>

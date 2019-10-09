@@ -24,7 +24,7 @@ function addOptionsToSelect(selectElement, displayArray, valueArray) {
 
 function createNakedOptionSelect(nameValue, displayArray, valueArray, classAttr) {
 	var selectElement = $dsm(document.createElement("select")).attr("id",
-			fieldGroupCount).attr("class", classAttr).attr("name", nameValue);
+			fieldGroupCount).attr("class", classAttr).attr("name", nameValue).attr("style","width:150px");
 	addOptionsToSelect(selectElement, displayArray, valueArray);
 	var tableRow = $dsm(document.createElement("tr")).append(
 			$dsm(document.createElement("td"))).append(
@@ -45,7 +45,7 @@ function createDrug(baseName, displayArray, valueArray, classAttr) {
 	// amount requisitioned
 	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
 			"text").attr("name", "drugneeded_" + fieldGroupCount).attr("size",
-			"3");
+			"20");
 
 	var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
                 			"text").attr("name", "reqReson_" + fieldGroupCount).attr("size",
@@ -60,7 +60,7 @@ function createDrug(baseName, displayArray, valueArray, classAttr) {
 	var deleteButton = createDeleteButton(baseName);
 		
 	// adding row fields
-	table.append($dsm(document.createElement("tr")).attr("align", "center")
+	table.append($dsm(document.createElement("tr")).attr("align", "left")
 			.append($dsm(document.createElement("td")).attr("width", "30%").append(optionSelectRow))
 			.append($dsm(document.createElement("td")).attr("width", "20%").append(amountReqInputElement))
 			.append($dsm(document.createElement("td")).attr("width", "20%").append(reqReasonInputElement))
@@ -92,10 +92,10 @@ function createDrugToAdjust(baseName, displayArray, valueArray, classAttr,reason
 	// amount requisitioned
 	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
 			"text").attr("name", "drugneeded_" + fieldGroupCount).attr("size",
-			"3");
+			"20");
 
 
-     var transferTypeSelectElement = $dsm(document.createElement("input")).attr("type",
+    var transferTypeSelectElement = $dsm(document.createElement("input")).attr("type",
             			"text").attr("name", "transferType_" + fieldGroupCount).attr("size",
             			"20").attr("Value", "adjustment").attr("readOnly","true");
 
@@ -141,10 +141,10 @@ function createConsumable(baseName, displayArray, valueArray, classAttr) {
 	// amount requisitioned
 	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
 			"text").attr("name", "consneeded_" + fieldGroupCount).attr("size",
-			"3");
+			"20");
 
 
-var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
+    var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
                 			"text").attr("name", "ConsreqReson_" + fieldGroupCount).attr("size",
                 			"20").attr("Value", "Provision").attr("readOnly","true");
 
@@ -158,8 +158,8 @@ var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
 	var deleteButton = createDeleteButton(baseName);
 		
 	// adding row fields
-	table.append($dsm(document.createElement("tr")).attr("align", "center")
-			.append($dsm(document.createElement("td")).attr("width", "70%").append(optionSelectRow))
+	table.append($dsm(document.createElement("tr")).attr("align", "left")
+			.append($dsm(document.createElement("td")).attr("width", "30%").append(optionSelectRow))
 			.append($dsm(document.createElement("td")).attr("width", "20%").append(amountReqInputElement))
 			.append($dsm(document.createElement("td")).attr("width", "20%").append(reqReasonInputElement))
 			.append($dsm(document.createElement("td")).attr("width", "20%").append(transferTypeSelectElement))
@@ -190,7 +190,7 @@ function createConsumableToAdjust(baseName, displayArray, valueArray, classAttr,
 	// amount requisitioned
 	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
 			"text").attr("name", "consneeded_" + fieldGroupCount).attr("size",
-			"3");
+			"20");
 
 var transferTypeSelectElement = $dsm(document.createElement("input")).attr("type",
             			"text").attr("name", "ConstransferType_" + fieldGroupCount).attr("size",

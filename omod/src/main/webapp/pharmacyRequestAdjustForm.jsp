@@ -176,14 +176,13 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 <div id="fragment-1">
 <div id="drugs">
 	<table width="100%">
-		<tr>
-			<td width="30"><spring:message code="pharmacymanagement.designation" /></td>
-			<td width="20"><spring:message code="pharmacymanagement.qntyReq" /></td>
-		    <td width="20">Reason</td>
-		    <td  width="20">Type</td>
-
-			<td  width="10" >&nbsp;</td>
-		</tr>
+	      <tr align="left">
+          			<th style="width:30%"><spring:message code="pharmacymanagement.designation" /></th>
+          			<th style="width:20%"><spring:message code="pharmacymanagement.qntyReq" /></th>
+                      <th style="width:20%">Reason</th>
+                      <th style="width:20%">Type</th>
+          			<th style="width:10%">Cancel</th>
+          		</tr>
 	</table>
 </div>
 	<p id="adddrugid" class="greenbox"></p>
@@ -192,13 +191,13 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 <div id="fragment-2">
 <div id="consumable">
 	<table width="100%">
-		<tr>
-			<td><spring:message code="pharmacymanagement.designation" /></td>
-			<td><spring:message code="pharmacymanagement.qntyReq" /></td>
-		    <td>Reason</td>
-		    <td>Type</td>
-			<td>&nbsp;</td>
-		</tr>
+            <tr align="left">
+            			<th style="width:30%"><spring:message code="pharmacymanagement.designation" /></th>
+            			<th style="width:20%"><spring:message code="pharmacymanagement.qntyReq" /></th>
+                        <th style="width:20%">Reason</th>
+                        <th style="width:20%">Type</th>
+            			<th style="width:10%">Cancel</th>
+            		</tr>
 	</table>
 </div>
 	<p id="addconsumableid" class="greenbox"></p>

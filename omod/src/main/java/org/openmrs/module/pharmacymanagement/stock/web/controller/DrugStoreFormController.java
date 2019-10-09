@@ -138,6 +138,8 @@ public class DrugStoreFormController extends AbstractController {
 					// saving the drug product
 					String id = request.getParameter("drugs_" + suffixId);
 					String drugneeded = request.getParameter("drugneeded_"+suffixId);
+					String reqReson = request.getParameter("reqReson_"+suffixId);
+					String transferType = request.getParameter("transferType_"+suffixId);
 					if(count == 1)
 						service.saveCmdDrug(cmdDrug);
 					
@@ -149,6 +151,10 @@ public class DrugStoreFormController extends AbstractController {
 							.getLocationId().getLocationId()+"", null, cmdDrug.getCmddrugId()+"");
 					drugProduct.setStoreQnty(storeqnty);
 					drugProduct.setCmddrugId(cmdDrug);
+					drugProduct.setComments(reqReson);
+					drugProduct.setTransferType(transferType);
+					drugProduct.setRequestedBy(Context.getAuthenticatedUser());
+					drugProduct.setReqDate(new Date());
 					service.saveDrugProduct(drugProduct);
 					hasSaved = true;
 					count++;
@@ -156,6 +162,8 @@ public class DrugStoreFormController extends AbstractController {
 					// saving the consumable product
 					String id = request.getParameter("consumable_" + suffixId);
 					String consneeded = request.getParameter("consneeded_"+suffixId);
+					String consreqReson= request.getParameter("ConsreqReson_"+suffixId);
+					String transferType = request.getParameter("ConstransferType_"+suffixId);
 					
 					if(count == 1)
 						service.saveCmdDrug(cmdDrug);
@@ -169,6 +177,10 @@ public class DrugStoreFormController extends AbstractController {
 					storeqnty = service.getCurrSolde(null, consneeded, cmdDrug.getLocationId().getLocationId()+"", null, null, cmdDrug.getCmddrugId()+"");
 					drugProduct.setStoreQnty(storeqnty);
 					drugProduct.setQntyReq(Integer.parseInt(consneeded));
+					drugProduct.setComments(consreqReson);
+					drugProduct.setTransferType(transferType);
+					drugProduct.setRequestedBy(Context.getAuthenticatedUser());
+					drugProduct.setReqDate(new Date());
 					drugProduct.setCmddrugId(cmdDrug);
 					service.saveDrugProduct(drugProduct);
 					hasSaved = true;
