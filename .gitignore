@@ -8,3 +8,10 @@ target
 *.jar
 *.war
 *.ear
+/.idea/compiler.xml
+/.idea/misc.xml
+/.idea/modules.xml
+/pharmacymanagement.iml
+/api/pharmacymanagement-api.iml
+/omod/pharmacymanagement-omod.iml
+/.idea/workspace.xml

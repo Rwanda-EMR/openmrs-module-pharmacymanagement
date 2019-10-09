@@ -239,8 +239,8 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 					dpi.setIsStore(true);
 					dpi.setSortie(qntAcc);
 					int solde;
+					int balance= qntAcc- currStat;
 					if(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment")){
-					//if(dpi.getDrugproductId()!=null && dpi.getDrugproductId().getTransferType().equals("adjustment")){
 						total = currSolde;
 						solde = qntAcc;
 						System.out.println("Adjustment Innnnnnnnnnnnnnnnnnnnnn");
@@ -263,8 +263,17 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 						pi.setDrugproductId(dp);
 						pi.setSolde(solde);
 
-						if(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment")){
+						if(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment") && balance>0){
 							pi.setAdjustedOldSolde(currStat);
+							pi.setEntree(balance);
+							pi.setSortie(0);
+
+						}
+						if(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment") && balance<0){
+							pi.setAdjustedOldSolde(currStat);
+							pi.setEntree(0);
+							pi.setSortie(balance*(-1));
+
 						}
 
 						if (total >= 0) {
@@ -290,7 +299,24 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 					dpi.setDrugproductId(dp);
 					dpi.setSolde(total);
 					service.saveDrugProduct(dp);
-					service.saveInventory(dpi);
+
+					if(!(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment"))) {
+						service.saveInventory(dpi);
+					}
+					int storeBalance=qntAcc-currSolde;
+					if(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment") && dp.getCmddrugId().getPharmacy()==null) {
+						dpi.setSolde(qntAcc);
+						if(storeBalance<0) {
+							dpi.setSortie(storeBalance * (-1));
+							dpi.setEntree(0);
+						}else {
+							dpi.setEntree(storeBalance);
+							dpi.setSortie(0);
+
+						}
+						service.saveInventory(dpi);
+					}
+
 					mav.addObject("msg",
 							"The order has been updated successfully");
 
