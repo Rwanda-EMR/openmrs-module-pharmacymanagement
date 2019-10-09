@@ -106,8 +106,7 @@ public class DrugAdjustmentFormController extends AbstractController {
                         || !request.getParameter("month").equals("")) {
                     Location from = locationService.getLocation(Integer
                             .valueOf(request.getParameter("fosaName")));
-                    Location to = locationService.getLocation(Integer
-                            .valueOf(request.getParameter("destination")));
+                    Location to = locationService.getLocation(request.getParameter("destination"));
                     cmdDrug.setLocationId(from);
                     cmdDrug.setDestination(to);
                     cmdDrug.setSupportingProg(request.getParameter("supporter"));

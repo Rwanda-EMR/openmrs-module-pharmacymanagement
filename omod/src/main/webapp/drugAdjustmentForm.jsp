@@ -136,11 +136,14 @@
 		<tr>
 			<td><spring:message code="pharmacymanagement.to" /></td>
 			<td>
-			<select name="destination">
+			<!-- <select name="destination">
 				<c:forEach var="location" items="${locations}">
 					<option value="${location.locationId}">${location.name}</option>
 				</c:forEach>
-			</select></td>
+			</select> -->
+			<input type="text" name="destination" value="${dftLoc.name}" readonly="readonly" size="${fn:length(dftLoc.name) + 5}"/>
+
+			</td>
 		</tr>
 		<tr>
 			<td><spring:message code="pharmacymanagement.supportProg" /></td>
