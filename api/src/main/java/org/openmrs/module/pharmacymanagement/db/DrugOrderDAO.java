@@ -461,5 +461,7 @@ public interface DrugOrderDAO {
 	public List<ConsumableDispense> getAllConsumableDipsense();
 
     public abstract Integer getReturnedItemsByDates(String paramString1, String paramString2, DrugProduct paramDrugProduct, String paramString3);
-		
+
+	public List<Object[]> getStoreStatus();
+
 }

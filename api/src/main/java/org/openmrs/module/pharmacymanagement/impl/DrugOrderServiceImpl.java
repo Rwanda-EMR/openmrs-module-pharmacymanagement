@@ -267,7 +267,7 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 
 		@Override
 	public Object[] getSumEntreeSortieByFromToDrugLocation(String from,
-			String to, String drugId, String conceptId, String locationId) {
+														   String to, String drugId, String conceptId, String locationId) {
 		return drugOrderDAO.getSumEntreeSortieByFromToDrugLocation(from, to, drugId, conceptId, locationId);
 	}
 
@@ -357,5 +357,10 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 	@Override
 	public List<ConsumableDispense> getAllConsumableDipsense() {
 		return drugOrderDAO.getAllConsumableDipsense();
+	}
+
+	@Override
+	public List<Object[]> getStoreStatus() {
+		return drugOrderDAO.getStoreStatus();
 	}
 }

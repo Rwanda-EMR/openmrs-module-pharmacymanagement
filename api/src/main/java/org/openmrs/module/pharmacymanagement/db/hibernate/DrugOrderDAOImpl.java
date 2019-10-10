@@ -238,8 +238,8 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		/*if (expiryDate != null && !expiryDate.equals(""))
 			sb.append(" AND dp.expiry_date = '" + expiryDate + "' ");*/
 
-		/*if (lotNo != null && !lotNo.equals(""))
-			sb.append(" AND dp.lot_no = '" + lotNo + "' ");*/
+		if (lotNo != null && !lotNo.equals(""))
+			sb.append(" AND dp.lot_no = '" + lotNo + "' ");
 
 		sb.append(" ORDER BY dpi.inventory_id DESC LIMIT 1");
 
@@ -1097,5 +1097,22 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		}
 
 		return Integer.valueOf(sum);
+	}
+
+	@Override
+	public List<Object[]> getStoreStatus() {
+
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("select dpdpi.lot_no,sum(dpdpi.entree) as entree,sum(dpdpi.sortie) as sortie,(sum(dpdpi.entree)-sum(dpdpi.sortie)) as solde,dpdpi.expiry_date,dpdpi.drug_id,dpdpi.concept_id from (select dp.drugproduct_id,dpi.entree,dpi.sortie,dp.lot_no,dp.expiry_date,dp.drug_id,dp.concept_id from pharmacymanagement_drug_product dp " +
+				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id) dpdpi group by dpdpi.lot_no");
+
+		Session session = sessionFactory.getCurrentSession();
+
+		Query query = session.createSQLQuery(sb.toString());
+
+		List<Object[]> list = query.list();
+
+		return list;
 	}
 }

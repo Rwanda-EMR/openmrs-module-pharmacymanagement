@@ -60,14 +60,8 @@ public class StoreSearchForm extends ParameterizableViewController {
 						+ "";
 				name = dpi.getDrugproductId().getConceptId().getName()
 						.getName();
-				Object outStr1 = service
-						.getSumEntreeSortieByFromToDrugLocation(null,
-								new Date() + "", drugId, consumableId,
-								locationStr)[1];
-				Object inStr1 = service
-						.getSumEntreeSortieByFromToDrugLocation(null,
-								new Date() + "", drugId, consumableId,
-								locationStr)[0];
+				Object outStr1 = service.getSumEntreeSortieByFromToDrugLocation(null,new Date() + "", drugId, consumableId,locationStr )[1];
+				Object inStr1 = service.getSumEntreeSortieByFromToDrugLocation(null,new Date() + "", drugId, consumableId,locationStr )[0];
 
 				if (inStr1 != null)
 					in = Integer.valueOf(inStr1 + "");
@@ -82,7 +76,7 @@ public class StoreSearchForm extends ParameterizableViewController {
 								.getDrugproductId().getExpiryDate()
 								+ "");
 
-				itemMap.put(name, storeWarning);
+				//itemMap.put(name, storeWarning);
 				drugId = null;
 				consumableId = null;
 			}
@@ -93,13 +87,9 @@ public class StoreSearchForm extends ParameterizableViewController {
 				name = dpi.getDrugproductId().getDrugId().getName();
 
 				Object inStr3 = service
-						.getSumEntreeSortieByFromToDrugLocation(null,
-								new Date() + "", drugId, consumableId,
-								locationStr)[0];
+						.getSumEntreeSortieByFromToDrugLocation(null,new Date() + "", drugId, consumableId,locationStr)[0];
 				Object outStr3 = service
-						.getSumEntreeSortieByFromToDrugLocation(null,
-								new Date() + "", drugId, consumableId,
-								locationStr)[1];
+						.getSumEntreeSortieByFromToDrugLocation(null,new Date() + "", drugId, consumableId,locationStr)[1];
 
 				if (inStr3 != null)
 					in = Integer.valueOf(inStr3 + "");
@@ -114,15 +104,65 @@ public class StoreSearchForm extends ParameterizableViewController {
 						.getDrugproductId().getLotNo(), dpi
 						.getDrugproductId().getExpiryDate() + "");
 
-				itemMap.put(name, storeWarning);
+			//	itemMap.put(name, storeWarning);
 				drugId = null;
 				consumableId = null;
 				in = 0;
 				out = 0;
 			}
 		}
-		
-		
+
+
+		List<Object[]> storeStatus=service.getStoreStatus();
+
+		for (Object[] objList:storeStatus) {
+
+		/*	Object obLotNo=objList[0];
+			Object obEntree=objList[1];
+			Object obSortie=objList[2];
+			Object obSolde=objList[3];
+			Object obExpiryDate=objList[4];
+			Object obDrugId=objList[5];
+			Object obConceptID=objList[6];*/
+
+			String obLotNo=objList[0].toString();
+			int obEntree=Integer.valueOf(objList[1]+"");
+			int obSortie=Integer.valueOf(objList[2]+"");
+			int obSolde=Integer.valueOf(objList[3]+"");
+			String obExpiryDate=objList[4].toString();
+			//int obDrugId=Integer.valueOf(objList[5]+"");
+			//int obConceptID=Integer.valueOf(objList[6]+"");
+
+			System.out.println("LotNo: "+obLotNo+" Entree: "+obEntree);
+
+
+			StoreWarning storeWarningObj = new StoreWarning();
+			if (obLotNo!=null)
+			storeWarningObj.setLotNo(obLotNo);
+			if (obEntree!=0)
+			storeWarningObj.setIn(obEntree);
+			if (obSortie!=0)
+			storeWarningObj.setConsumed(obSortie);
+			if (obExpiryDate!=null)
+			storeWarningObj.setExpirationDate(obExpiryDate);
+			if (obSolde!=0)
+			storeWarningObj.setStore(obSolde);
+
+			if(objList[5]!=null) {
+				storeWarningObj.setDrugName(Context.getConceptService().getDrug(Integer.valueOf(objList[5]+"")).getName());
+				name=Context.getConceptService().getDrug(Integer.valueOf(objList[5]+"")).getName()+obLotNo+".";
+			}
+			if(objList[6]!=null) {
+				storeWarningObj.setDrugName(Context.getConceptService().getConcept(Integer.valueOf(objList[6]+"")).getName().getName());
+				name=Context.getConceptService().getConcept(Integer.valueOf(objList[6]+"")).getName().getName()+obLotNo+".";
+			}
+
+			itemMap.put(name,storeWarningObj);
+		}
+
+
+
+
 		
 //		if (request.getParameter("consumable") != null
 //				&& !request.getParameter("consumable").equals("")) {

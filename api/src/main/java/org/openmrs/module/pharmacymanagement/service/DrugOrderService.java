@@ -158,4 +158,7 @@ public interface DrugOrderService {
 	public void saveOrUpdateConsumableDispense(ConsumableDispense var1);
 
 	public List<ConsumableDispense> getAllConsumableDipsense();
+
+	public List<Object[]> getStoreStatus();
+
 }
