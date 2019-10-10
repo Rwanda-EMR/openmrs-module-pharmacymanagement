@@ -303,9 +303,11 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 						if(storeBalance<0) {
 							dpi.setSortie(storeBalance * (-1));
 							dpi.setEntree(0);
+							dpi.setAdjustedOldSolde(currSolde);
 						}else {
 							dpi.setEntree(storeBalance);
 							dpi.setSortie(0);
+							dpi.setAdjustedOldSolde(currSolde);
 
 						}
 						service.saveInventory(dpi);

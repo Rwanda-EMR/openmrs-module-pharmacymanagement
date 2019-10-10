@@ -11,7 +11,7 @@
 
 <%@ include file="template/localHeader.jsp"%>
 
-<!--  
+<!--
 <openmrs:htmlInclude file="/moduleResources/pharmacymanagement/dataentrystyle.css" />
 <openmrs:htmlInclude file="/moduleResources/pharmacymanagement/jquery.js" />
 <openmrs:htmlInclude file="/moduleResources/pharmacymanagement/jquery.validate.js" />
@@ -20,7 +20,7 @@
 -->
 
 	<script type="text/javascript">
-	
+
 	var $dsm = jQuery.noConflict();
 	$dsm(function() {
 		$dsm('#productCategory').tabs();
@@ -29,15 +29,15 @@
 		function fgc() {
 			return fieldGroupCount;
 		}
-		
+
 		//var storeQnty = 233;
-			
+
 		// drugs options
 	    var drugsArray = new Array();
 	    var drugsIdArray = new Array();
 	    <c:forEach var="drug" items="${drugs}">
-	    	drugsArray.push("<c:out value="${drug.value}"/>");
-	    	drugsIdArray.push(<c:out value="${drug.key}"/>);
+	    	drugsArray.push("<c:out value="${drug.drugId.name}"/> (Lot:<c:out value="${drug.lotNo}"/>)");
+            drugsIdArray.push("<c:out value="${drug.drugproductId}"/>-<c:out value="${drug.lotNo}"/>");
 	    </c:forEach>
 
 	    //Transfer Options
@@ -61,15 +61,15 @@
 		var consArray = new Array();
 	    var consIdArray = new Array();
 	    <c:forEach var="cs" items="${css}">
-	    	consArray.push("<c:out value="${cs.answerConcept.name.name}"/>");
-	    	consIdArray.push(<c:out value="${cs.answerConcept.conceptId}"/>);
+	    	consArray.push("<c:out value="${cs.conceptId.name.name}"/> (Lot:<c:out value="${cs.lotNo}"/>)");
+            consIdArray.push("<c:out value="${cs.drugproductId}"/>-<c:out value="${cs.lotNo}"/>");
 	    </c:forEach>
-	    
-		/************************************************************************** 
+
+		/**************************************************************************
 		*	function for adding options to the select.
 		***************************************************************************/
-		
-	    var condUnitArray = new Array(    	    
+
+	    var condUnitArray = new Array(
 	                         "1 boite(270 ces)",
 	                         "1 boite(180 ces)",
 	                         "1 boite(90 ces)",
@@ -83,28 +83,28 @@
 	                         "1 flacon de 100 ml"
 	                         );
 	    var condUnitIdArray = new Array("1","2","3","4","5","6","7","8","9","10","11");
-	    
-	   
-		
+
+
+
 		$dsm(document).ready(
-				function(){		
+				function(){
 					$dsm("input").focus(function () {
 				         $dsm(this).css('background-color','#abcdef');
 				    });
-	
+
 					$dsm("input").blur(function () {
 				         $dsm(this).css('background-color','white');
 				    });
-							
+
 					$dsm("#adddrugid").click(function(){
 						createDrugToAdjust("drugs",drugsArray,drugsIdArray,"dynamicDrug",reasonDisplayArray,reasonValueArray);
 						$dsm("#hiddenfield").attr("value", fieldGroupCount);
 					});
-								
+
 					$dsm("#addconsumableid").click(function() {
 						 createConsumableToAdjust("consumable",consArray,consIdArray,"dynamicConsumable",reasonDisplayArray,reasonValueArray);
 					});
-						
+
 					$dsm('#drugstore').salidate({
 				        'fosaName' : {
 				            callback: 'required',
@@ -114,17 +114,17 @@
 				            callback: 'required',
 				            msg: 'The Month is required.'
 				        }
-				    });						
+				    });
 	});
-	
+
 	</script>
-	
-	
+
+
 	<form method="post" id="drugstore" action="adjustmentrequest.form">
-	
+
 	<fieldset id="parent_field"><legend><spring:message code="pharmacymanagement.hfAdjForm" /></legend> <input
 		id="hiddenfield" type="hidden" name="fieldCount" />
-	
+
 	<table>
 		<tr>
 			<td><spring:message code="pharmacymanagement.from" /></td>
@@ -142,7 +142,6 @@
 				</c:forEach>
 			</select> -->
 			<input type="text" name="destination" value="${dftLoc.name}" readonly="readonly" size="${fn:length(dftLoc.name) + 5}"/>
-
 			</td>
 		</tr>
 		<tr>
@@ -154,7 +153,7 @@
 			<td><input type="text" name="month" onfocus="showCalendar(this)" size="10" /></td>
 		</tr>
 	</table>
-	
+
 <!-- Tabs -->
 <div id="productCategory">
 
@@ -203,7 +202,7 @@
 		<td><input id="formSubmitId" type="submit" value="Enter" class="send" /></td>
 	</tr>
 </table>
-	
+
 </form>
 </div>
 <div style="clear: both;"></div>
