@@ -229,7 +229,7 @@
 		<date>October 08th 2019</date>
 		<description>Add another attributes in pharmacymanagement_pharmacy_inventory table</description>
 		<sql>
-			ALTER TABLE pharmacymanagement_pharmacy_inventory ADD COLUMN adjusted_Old_Solde INT(11) NULL DEFAULT NULL AFTER cp_id;
+			ALTER TABLE pharmacymanagement_pharmacy_inventory ADD COLUMN adjusted_Old_Solde INT(11) NULL DEFAULT 0 AFTER cp_id;
 
 		</sql>
 	</diff>
@@ -239,7 +239,7 @@
 		<date>October 08th 2019</date>
 		<description>Add another attributes in pharmacymanagement_drugproduct_inventory table</description>
 		<sql>
-			ALTER TABLE pharmacymanagement_drugproduct_inventory ADD COLUMN adjusted_Old_Solde INT(11) NULL DEFAULT NULL AFTER is_store;
+			ALTER TABLE pharmacymanagement_drugproduct_inventory ADD COLUMN adjusted_Old_Solde INT(11) NULL DEFAULT 0 AFTER is_store;
 
 		</sql>
 	</diff>

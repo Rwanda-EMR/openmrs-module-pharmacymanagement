@@ -912,11 +912,25 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		if (to != null && !to.equals(""))
 			sb.append(" AND pi.date <= '" + to + "' ");
 
-		if (pharmacyId != null && !pharmacyId.equals(""))
+		/*if (pharmacyId != null && !pharmacyId.equals(""))
 			sb
 					.append(" AND cd.pharmacy = '"
 							+ pharmacyId
 							+ "' AND (pi.dop_id IS NOT NULL or pi.cp_id is not null) ORDER BY pi.pharmacyinventory_id desc) pio group by pio.drugproduct_id ");
+*/
+
+		if (pharmacyId != null && !pharmacyId.equals("")) {
+			sb
+					.append(" AND cd.pharmacy = '"
+							+ pharmacyId
+							+ "' ORDER BY pi.pharmacyinventory_id desc) pio group by pio.drugproduct_id ");
+
+		}else{
+			sb
+					.append(" ORDER BY pi.pharmacyinventory_id desc) pio group by pio.drugproduct_id ");
+		}
+
+		System.out.println(sb.toString());
 
 		Session session = sessionFactory.getCurrentSession();
 
@@ -1105,7 +1119,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append("select dpdpi.lot_no,sum(dpdpi.entree) as entree,sum(dpdpi.sortie) as sortie,(sum(dpdpi.entree)-sum(dpdpi.sortie)) as solde,dpdpi.expiry_date,dpdpi.drug_id,dpdpi.concept_id from (select dp.drugproduct_id,dpi.entree,dpi.sortie,dp.lot_no,dp.expiry_date,dp.drug_id,dp.concept_id from pharmacymanagement_drug_product dp " +
-				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id) dpdpi group by dpdpi.lot_no");
+				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id) dpdpi group by dpdpi.lot_no,dpdpi.drug_id,dpdpi.concept_id");
 
 		Session session = sessionFactory.getCurrentSession();
 

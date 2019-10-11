@@ -77,11 +77,13 @@ public class PharmacyReport extends ParameterizableViewController {
 				String toArr[] = toParam.split("/");
 				to = toArr[2] + "-" + toArr[1] + "-" + toArr[0];
 			}
-			if (request.getParameter("pharmacyId") != null
-					&& !request.getParameter("pharmacyId").equals("")) {
+			/*if (request.getParameter("pharmacyId") != null
+					&& !request.getParameter("pharmacyId").equals("")) {*/
 				pharmacyId = request.getParameter("pharmacyId");
-				pharmacy = service.getPharmacyById(Integer.valueOf(pharmacyId));
 
+				if(!pharmacyId.equals("") && Integer.valueOf(pharmacyId)!=0) {
+					pharmacy = service.getPharmacyById(Integer.valueOf(pharmacyId));
+				}
 				piList = service.getPharmacyInventoryByFromToLocation(from, to,
 						pharmacyId);
 				for (PharmacyInventory pi : piList) {
@@ -178,13 +180,15 @@ public class PharmacyReport extends ParameterizableViewController {
 					key = ca.getDrugId().toString() + "_" + pharmacyId;
 					consommationMap.put(key, ca);
 				}
-				if (fromParam != null && !fromParam.equals("")
-						&& toParam != null && !toParam.equals(""))
+				if (fromParam != null && !fromParam.equals("") && toParam != null && !toParam.equals("") && pharmacy!=null) {
 					fromto = "(From: " + fromParam + " To: " + toParam + ") "
 							+ pharmacy.getName();
-			}else {
+				}else{
+					fromto = "(From: " + fromParam + " To: " + toParam + ") ";
+				}
+			/*}else {
 				mav.addObject("msg", "Complete all the fields");
-		}
+		}*/
 		}
 
 		mav.addObject("pharmacyId", pharmacyId);

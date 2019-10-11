@@ -91,7 +91,7 @@ function subSevenDaysToFrom() {
 		<td><spring:message code="pharmacymanagement.pharmacy" /></td>
 		<td>: 
 			<select name="pharmacyId">
-				<option value="">-- select --</option>
+				<option value="">All Pharmacy</option>
 				<c:forEach items="${pharmacyList}" var="pharmacy">
 					<option value="${pharmacy.pharmacyId}" ${pharmacy.pharmacyId eq pharmacyId ? "selected='selected'" : "" }>${pharmacy.name}</option>
 				</c:forEach>
