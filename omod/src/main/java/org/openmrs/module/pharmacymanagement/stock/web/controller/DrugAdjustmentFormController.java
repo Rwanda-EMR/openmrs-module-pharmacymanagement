@@ -206,7 +206,7 @@ public class DrugAdjustmentFormController extends AbstractController {
 
                     drugProduct.setConceptId(currDP.getConceptId());
 
-                    drugProduct.setConceptId(cs.getConcept(Integer.valueOf(id)));
+                    //drugProduct.setConceptId(cs.getConcept(Integer.valueOf(id)));
                     drugProduct.setComments(consreqReson);
                     storeqnty = service.getCurrSolde(null, consneeded, cmdDrug.getLocationId().getLocationId()+"", null, null, cmdDrug.getCmddrugId()+"");
                     drugProduct.setStoreQnty(storeqnty);
