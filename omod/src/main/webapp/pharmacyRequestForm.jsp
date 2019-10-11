@@ -88,7 +88,13 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 			            callback: 'required',
 			            msg: 'The Month is required.'
 			        }
-			    });	
+			    });
+			     $dsm('#drugstore').salidate({
+                    'pharmacy' : {
+                        callback: 'required',
+                        msg: 'The pharmacy is required.'
+                    }
+                });
 
 				$dsm("#locat").html(dftLocationName);
 			    $dsm("#destin").attr("value", dftLocationId);
