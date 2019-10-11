@@ -24,7 +24,7 @@ function addOptionsToSelect(selectElement, displayArray, valueArray) {
 
 function createNakedOptionSelect(nameValue, displayArray, valueArray, classAttr) {
 	var selectElement = $dsm(document.createElement("select")).attr("id",
-			fieldGroupCount).attr("class", classAttr).attr("name", nameValue).attr("style","width:150px");
+			fieldGroupCount).attr("class", classAttr).attr("name", nameValue).attr("style","width:150px").attr("required","required");
 	addOptionsToSelect(selectElement, displayArray, valueArray);
 	var tableRow = $dsm(document.createElement("tr")).append(
 			$dsm(document.createElement("td"))).append(
@@ -40,12 +40,12 @@ function createDrug(baseName, displayArray, valueArray, classAttr) {
 
 	// designation selector
 	var optionSelectRow = createNakedOptionSelect("drugs_" + fieldGroupCount,
-			displayArray, valueArray, classAttr);
+			displayArray, valueArray, classAttr).attr("required","required");
 
 	// amount requisitioned
 	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
 			"text").attr("name", "drugneeded_" + fieldGroupCount).attr("size",
-			"20");
+			"20").attr("required","required");
 
 	var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
                 			"text").attr("name", "reqReson_" + fieldGroupCount).attr("size",
@@ -87,12 +87,12 @@ function createDrugToAdjust(baseName, displayArray, valueArray, classAttr,reason
 
 	// designation selector
 	var optionSelectRow = createNakedOptionSelect("drugs_" + fieldGroupCount,
-			displayArray, valueArray, classAttr);
+			displayArray, valueArray, classAttr).attr("required","required");
 
 	// amount requisitioned
 	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
 			"text").attr("name", "drugneeded_" + fieldGroupCount).attr("size",
-			"20");
+			"20").attr("required","required");
 
 
     var transferTypeSelectElement = $dsm(document.createElement("input")).attr("type",
@@ -136,12 +136,12 @@ function createConsumable(baseName, displayArray, valueArray, classAttr) {
 
 	// designation selector
 	var optionSelectRow = createNakedOptionSelect("consumable_" + fieldGroupCount,
-			displayArray, valueArray, classAttr);
+			displayArray, valueArray, classAttr).attr("required","required");
 
 	// amount requisitioned
 	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
 			"text").attr("name", "consneeded_" + fieldGroupCount).attr("size",
-			"20");
+			"20").attr("required","required");
 
 
     var reqReasonInputElement = $dsm(document.createElement("input")).attr("type",
@@ -185,12 +185,12 @@ function createConsumableToAdjust(baseName, displayArray, valueArray, classAttr,
 
 	// designation selector
 	var optionSelectRow = createNakedOptionSelect("consumable_" + fieldGroupCount,
-			displayArray, valueArray, classAttr);
+			displayArray, valueArray, classAttr).attr("required","required");
 
 	// amount requisitioned
 	var amountReqInputElement = $dsm(document.createElement("input")).attr("type",
 			"text").attr("name", "consneeded_" + fieldGroupCount).attr("size",
-			"20");
+			"20").attr("required","required");
 
 var transferTypeSelectElement = $dsm(document.createElement("input")).attr("type",
             			"text").attr("name", "ConstransferType_" + fieldGroupCount).attr("size",
