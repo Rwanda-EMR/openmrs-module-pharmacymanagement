@@ -104,8 +104,11 @@ $(document).ready( function() {
 				alert("Updated Successfully");
 			});
 		});
-	});	
+	});
+
 });
+
+
 </script>
 <select id="printSelect">
 	<option value="">--Print--</option>
@@ -298,7 +301,7 @@ $(document).ready( function() {
 
 <!-- update order modal -->
 <div id="basic-modal-content">
-<form method="post" action="order.list?orderId=${cmdDrug.cmddrugId}" >
+<form method="post" action="order.list?orderId=${cmdDrug.cmddrugId}"  >
 <input type="hidden" id="ordre"  name="ordre" size="5" />
 <input type="hidden" name="pharmacyId" value="${cmdDrug.pharmacy.pharmacyId}" id="pharmacyId" />
 <table>
@@ -306,24 +309,24 @@ $(document).ready( function() {
 		<td><spring:message code="pharmacymanagement.inventoryDate" /></td>
 		<td><input type="hidden" name="now" id="nowId" value="<openmrs:formatDate date="${now}" type='textbox' />" />
 			<input type="text" name="invDate" id="invDateId" onchange="CompareDates('<openmrs:datePattern />');"
-				onfocus="showCalendar(this)" class="date" size="11" /><span id="msgId"></span></td>
+				onfocus="showCalendar(this)" class="date" size="11" required /><span id="msgId"></span></td>
 	</tr>
 	
 	<tr>
 		<td><spring:message code="pharmacymanagement.givenQnty" /></td>
-		<td><input type="text" name="qntAcc" size="5" /></td>
+		<td><input type="text" name="qntAcc" size="5"  required /></td>
 	</tr>
 	
 	<tr>
 		<td><spring:message code="pharmacymanagement.lotNr" /></td>
-		<td><div id="lotNoId"><input type="text" name="noLotStock" /></div>
+		<td><div id="lotNoId"><input type="text" name="noLotStock" required /></div>
 			
 		</td>
 	</tr>
 	
 	<tr>
 		<td><spring:message code="pharmacymanagement.expDate" /></td>
-		<td><div id="expirationId"><input type="text" name="expDate" onfocus="showCalendar(this)" class="date" size="11" /></div></td>
+		<td><div id="expirationId"><input type="text" name="expDate" onfocus="showCalendar(this)" class="date"  required size="11"  r/></div></td>
 	</tr>
 
 	<tr>
