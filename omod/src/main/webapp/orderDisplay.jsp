@@ -169,8 +169,7 @@ $(document).ready( function() {
 	<td rowspan="2" style="width:100px" class="simpleRSpan"><spring:message code="Requested Quantity" /></td>
 	<td rowspan="2" style="width:100px" class="simpleRSpan">Requested By </td>
 	<td rowspan="2" style="width:100px" class="simpleRSpan">Approved By </td>
-
-
+    <td rowspan="2" style="width:100px" class="simpleRSpan">Transfer Type</td>
 	<td rowspan="2" style="width:100px" class="simpleRSpan">Reason</td>
     <td class="non-printable" rowspan="2"><spring:message code="pharmacymanagement.status" /></td>
 </tr>
@@ -223,15 +222,30 @@ $(document).ready( function() {
     <td class="simpleSpan">${consommation.value.drugProduct.qntyReq}  ${consommation.value.drugProduct.lotNo}</td>
     <td class="simpleSpan">${consommation.value.drugProduct.requestedBy.names}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.transfereBy.names}&nbsp;</td>
+    <td class="simpleSpan">${consommation.value.drugProduct.transferType}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.comments}&nbsp;</td>
-
+     <c:set var="transferType" value="${consommation.value.drugProduct.transferType}" />=
     <td class="non-printable">
+    <c:if test="${transferType=='requisition'}">
+    <openmrs:hasPrivilege privilege="View Drugs Requests">
     	<c:if test="${!consommation.value.drugProduct.isDelivered}">
 			<center><img id="${counter}" class="basic" src="${pageContext.request.contextPath}/images/problem.gif" style="cursor: pointer;"></center>
 		</c:if>
 		<c:if test="${consommation.value.drugProduct.isDelivered}">
 			<center><img src="${pageContext.request.contextPath}/images/checkmark.png" /></center>
 		</c:if>
+	</openmrs:hasPrivilege>
+	</c:if>
+	<c:if test="${transferType=='adjustment'}">
+        <openmrs:hasPrivilege privilege="View Adjustment Requests">
+        	<c:if test="${!consommation.value.drugProduct.isDelivered}">
+    			<center><img id="${counter}" class="basic" src="${pageContext.request.contextPath}/images/problem.gif" style="cursor: pointer;"></center>
+    		</c:if>
+    		<c:if test="${consommation.value.drugProduct.isDelivered}">
+    			<center><img src="${pageContext.request.contextPath}/images/checkmark.png" /></center>
+    		</c:if>
+    	</openmrs:hasPrivilege>
+    	</c:if>
 	</td>
   </tr>
   </c:if>

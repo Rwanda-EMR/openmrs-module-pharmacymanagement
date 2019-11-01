@@ -59,15 +59,17 @@ public class CmdSearch extends ParameterizableViewController {
 							.getParameter("supporter"), month, null, "STORE");
 
 			Collection<CmdDrug> cmds=new ArrayList<CmdDrug>();
+			//if (request.getParameter("status").equals("completed") || request.getParameter("status").equals("approved")){
 			if (request.getParameter("status").equals("completed")){
-				for (CmdDrug cmd:orders) {
+			for (CmdDrug cmd:orders) {
 					if(cmd.getIsAchieved()){
 						cmds.add(cmd);
 					}
 				}
 			}
+			//else if (request.getParameter("status").equals("incomplete") || request.getParameter("status").equals("not approved")){
 			else if (request.getParameter("status").equals("incomplete")){
-				for (CmdDrug cmd:orders) {
+			for (CmdDrug cmd:orders) {
 					if(!cmd.getIsAchieved()){
 						cmds.add(cmd);
 					}

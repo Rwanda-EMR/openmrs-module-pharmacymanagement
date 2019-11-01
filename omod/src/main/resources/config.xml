@@ -79,7 +79,35 @@
 		<description>Able to view the Drug Order Section</description>
 	</privilege>
 
+	<privilege>
+		<name>View Pharmacy Drug Store Adjustment</name>
+		<description>View Pharmacy Drug Store Adjustment</description>
+	</privilege>
+	<privilege>
+		<name>View Pharmacy Drug Dispensing Adjustment</name>
+		<description>View Pharmacy Drug Dispensing Adjustment</description>
+	</privilege>
+	<privilege>
+		<name>Dispensing Pharmacies Management</name>
+		<description>This privilege allow to manage Dispensing Pharmacies</description>
+	</privilege>
 
+	<privilege>
+		<name>View Adjustment Requests</name>
+		<description>This Privilege Allow to View Adjustment Requisitions</description>
+	</privilege>
+	<privilege>
+		<name>View Drugs Requests</name>
+		<description>This Privilege Allow to View drug Requisitions</description>
+	</privilege>
+	<privilege>
+		<name>View Drug Store management sublist</name>
+		<description>This Privilege Allow to View drug Requisitions sublist</description>
+	</privilege>
+	<privilege>
+		<name>View Pharmacy management sublist</name>
+		<description>This Privilege Allow to View drug Requisitions sublist</description>
+	</privilege>
 	<!-- Required Global Properties -->
 	<globalProperty>
 		<property>@MODULE_ID@.pharmacyEncounter</property>
