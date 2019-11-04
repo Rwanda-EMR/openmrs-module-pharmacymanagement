@@ -20,9 +20,17 @@ $(document).ready( function() {
 			function() {
 				var target = this.id;
 				$("#ordre").attr("value", target);
+				var qntreqId="qntreqId_"+target;
+				var expirationDateId="expiryDate_"+target;
+				var qntreq = document.getElementById(qntreqId).innerHTML;
+				var expirationDate = document.getElementById(expirationDateId).innerHTML;
+				$("#qntreqid").attr("value", qntreq);
+				$("#expirationDateId").attr("value", expirationDate);
 				<c:if test="${cmdDrug.locationId.locationId != dftLoc.locationId}">
 					$("#lotNoId").empty().html('Loading...');
 					$("#lotNoId").load("patOrders.list?drugproductId="+target+" #lots");
+					$("#selectLotId").append($(document.createElement("option")).attr("value", "").text("-- Select --"));
+
 				</c:if>
 	});
 
@@ -104,8 +112,11 @@ $(document).ready( function() {
 				alert("Updated Successfully");
 			});
 		});
-	});	
+	});
+
 });
+
+
 </script>
 <select id="printSelect">
 	<option value="">--Print--</option>
@@ -153,6 +164,7 @@ $(document).ready( function() {
     <td class="non-printable" rowspan="2"><spring:message code="Edit" /></td>
 	<td rowspan="2"><spring:message code="pharmacymanagement.productName" /></td>
 	<td rowspan="2" style="width:100px"><spring:message code="pharmacymanagement.unit" /></td>
+	<!--
 	<td style="width:100px" class="simple"><spring:message code="pharmacymanagement.stockOnHandAtBeginning" /></td>
 	<td id="qtyReceivedDuringMonthId" style="width:100px" class="simpleSpan"><spring:message code="pharmacymanagement.qtyReceivedDuringMonth" /></td>
 	<td style="width:100px" class="simple"><spring:message code="pharmacymanagement.qtyDispDuringMonth" /></td>
@@ -161,17 +173,20 @@ $(document).ready( function() {
 	<td style="width:100px" class="simple"><spring:message code="pharmacymanagement.stockOutDaysDuringMonth" /></td>
 	<td style="width:100px" class="simple"><spring:message code="pharmacymanagement.adjMonthlyConsumption" /></td>
 	<td style="width:100px" class="simple"><spring:message code="pharmacymanagement.maxQty" /></td>
+	-->
 	<td style="width:100px" class="simple"><spring:message code="pharmacymanagement.qty2Order" /></td>
 	<td id="qtyReceivedId" style="width:100px" class="simpleSpan"><spring:message code="pharmacymanagement.qtyReceived" /></td>
 	<td rowspan="2" style="width:100px" class="simpleRSpan"><spring:message code="Requested Quantity" /></td>
+	<td rowspan="2" style="width:100px" class="simpleRSpan">Expiration Date</td>
+	<td rowspan="2" style="width:100px" class="simpleRSpan">Request Type </td>
 	<td rowspan="2" style="width:100px" class="simpleRSpan">Requested By </td>
 	<td rowspan="2" style="width:100px" class="simpleRSpan">Approved By </td>
-
-
+    <td rowspan="2" style="width:100px" class="simpleRSpan">Transfer Type</td>
 	<td rowspan="2" style="width:100px" class="simpleRSpan">Reason</td>
     <td class="non-printable" rowspan="2"><spring:message code="pharmacymanagement.status" /></td>
 </tr>
 <tr>
+<!--
     <td class="simple">A</td>
     <td class="simple">B</td>
     <td class="simple">C</td>
@@ -181,11 +196,12 @@ $(document).ready( function() {
     <td class="simple">F</td>
     <td class="simple">G</td>
     <td class="simple">H</td>
+-->
     <td class="simple">I</td>
     <td class="simple">J</td>
   </tr>
 <tr>
-<td colspan="21" style="background-color: #c0c0c0"><center><spring:message code="pharmacymanagement.drug" />s ${empty drugMap ? '(no record)' : '' }</center></td>
+<td colspan="23" style="background-color: #c0c0c0"><center><spring:message code="pharmacymanagement.drug" />s ${empty drugMap ? '(no record)' : '' }</center></td>
 </tr>
 <c:forEach var="consommation" items="${drugMap}" varStatus="num">
 <c:if test="${consomation.value.drugProduct.conceptId.conceptId == null}">
@@ -206,6 +222,7 @@ $(document).ready( function() {
 	</td>
    <td><a href="${pageContext.request.contextPath}/module/pharmacymanagement/stocksecurity.list?drugId=${consommation.value.drugId}&locationId=${consommation.value.locationId}">${consommation.value.drugName}</a></td>
     <td>${consommation.value.conditUnitaire}&nbsp;</td>
+<!--
     <td class="simple">${consommation.value.qntPremJour}&nbsp;</td>
    <td class="simpleSpan">${consommation.value.qntRecuMens}&nbsp;</td>
    <td class="simple">${consommation.value.qntConsomMens}&nbsp;</td>
@@ -215,20 +232,38 @@ $(document).ready( function() {
     <td class="simple">${consommation.value.stockOut}</td>
     <td class="simple">${consommation.value.adjustMonthlyConsumption}</td>
     <td class="simple">${consommation.value.maxQnty}</td>
+-->
     <td class="simple">${consommation.value.qntyToOrder}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.isDelivered == false ? '' : consommation.value.drugProduct.deliveredQnty}&nbsp;</td>
-    <td class="simpleSpan">${consommation.value.drugProduct.qntyReq}  ${consommation.value.drugProduct.lotNo}</td>
+    <td class="simpleSpan"><span id="qntreqId_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.qntyReq}</span>  ${consommation.value.drugProduct.lotNo}</td>
+    <td class="simpleSpan"><span id="expiryDate_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.expiryDate}</span></td>
+    <td class="simpleSpan">${consommation.value.drugProduct.transferType}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.requestedBy.names}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.transfereBy.names}&nbsp;</td>
+    <td class="simpleSpan">${consommation.value.drugProduct.transferType}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.comments}&nbsp;</td>
-
+     <c:set var="transferType" value="${consommation.value.drugProduct.transferType}" />=
     <td class="non-printable">
+    <c:if test="${transferType=='requisition'}">
+    <openmrs:hasPrivilege privilege="View Drugs Requests">
     	<c:if test="${!consommation.value.drugProduct.isDelivered}">
 			<center><img id="${counter}" class="basic" src="${pageContext.request.contextPath}/images/problem.gif" style="cursor: pointer;"></center>
 		</c:if>
 		<c:if test="${consommation.value.drugProduct.isDelivered}">
 			<center><img src="${pageContext.request.contextPath}/images/checkmark.png" /></center>
 		</c:if>
+	</openmrs:hasPrivilege>
+	</c:if>
+	<c:if test="${transferType=='adjustment'}">
+        <openmrs:hasPrivilege privilege="View Adjustment Requests">
+        	<c:if test="${!consommation.value.drugProduct.isDelivered}">
+    			<center><img id="${counter}" class="basic" src="${pageContext.request.contextPath}/images/problem.gif" style="cursor: pointer;"></center>
+    		</c:if>
+    		<c:if test="${consommation.value.drugProduct.isDelivered}">
+    			<center><img src="${pageContext.request.contextPath}/images/checkmark.png" /></center>
+    		</c:if>
+    	</openmrs:hasPrivilege>
+    	</c:if>
 	</td>
   </tr>
   </c:if>
@@ -247,6 +282,7 @@ $(document).ready( function() {
 	</td>
    <td><a href="${pageContext.request.contextPath}/module/pharmacymanagement/stocksecurity.list?conceptId=${consommation.value.conceptId}&locationId=${consommation.value.locationId}">${consommation.value.drugName}</a></td>
     <td>${consommation.value.conditUnitaire}&nbsp;</td>
+<!--
     <td class="simple">${consommation.value.qntPremJour}&nbsp;</td>
    <td class="simpleSpan">${consommation.value.qntRecuMens}&nbsp;</td>
    <td class="simple">${consommation.value.qntConsomMens}&nbsp;</td>
@@ -256,9 +292,14 @@ $(document).ready( function() {
     <td class="simple">${consommation.value.stockOut}</td>
     <td class="simple">${consommation.value.adjustMonthlyConsumption}</td>
     <td class="simple">${consommation.value.maxQnty}</td>
+-->
     <td class="simple">${consommation.value.qntyToOrder}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.isDelivered == false ? '' : consommation.value.drugProduct.deliveredQnty}&nbsp;</td>
-    <td class="simpleSpan">${consommation.value.drugProduct.qntyReq}&nbsp; ${consommation.value.drugProduct.lotNo}</td>
+    <td class="simpleSpan"><span id="qntreqId_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.qntyReq}</span>&nbsp; ${consommation.value.drugProduct.lotNo}</td>
+    
+     <td class="simpleSpan"><span id="expiryDate_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.expiryDate}</span></td>
+    <td class="simpleSpan">${consommation.value.drugProduct.transferType}&nbsp;</td>
+    
     <td class="simpleSpan">${consommation.value.drugProduct.requestedBy.names}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.transfereBy.names}&nbsp;</td>
      <td class="simpleSpan">${consommation.value.drugProduct.comments}&nbsp;</td>
@@ -298,7 +339,7 @@ $(document).ready( function() {
 
 <!-- update order modal -->
 <div id="basic-modal-content">
-<form method="post" action="order.list?orderId=${cmdDrug.cmddrugId}" >
+<form method="post" action="order.list?orderId=${cmdDrug.cmddrugId}"  >
 <input type="hidden" id="ordre"  name="ordre" size="5" />
 <input type="hidden" name="pharmacyId" value="${cmdDrug.pharmacy.pharmacyId}" id="pharmacyId" />
 <table>
@@ -306,24 +347,24 @@ $(document).ready( function() {
 		<td><spring:message code="pharmacymanagement.inventoryDate" /></td>
 		<td><input type="hidden" name="now" id="nowId" value="<openmrs:formatDate date="${now}" type='textbox' />" />
 			<input type="text" name="invDate" id="invDateId" onchange="CompareDates('<openmrs:datePattern />');"
-				onfocus="showCalendar(this)" class="date" size="11" /><span id="msgId"></span></td>
+				onfocus="showCalendar(this)" class="date" size="11" required /><span id="msgId"></span></td>
 	</tr>
 	
 	<tr>
 		<td><spring:message code="pharmacymanagement.givenQnty" /></td>
-		<td><input type="text" name="qntAcc" size="5" /></td>
+		<td><input type="text" id="qntreqid" name="qntAcc" size="5"  required /></td>
 	</tr>
 	
 	<tr>
 		<td><spring:message code="pharmacymanagement.lotNr" /></td>
-		<td><div id="lotNoId"><input type="text" name="noLotStock" /></div>
+		<td><div id="lotNoId"><input type="text" name="noLotStock" required /></div>
 			
 		</td>
 	</tr>
 	
 	<tr>
 		<td><spring:message code="pharmacymanagement.expDate" /></td>
-		<td><div id="expirationId"><input type="text" name="expDate" onfocus="showCalendar(this)" class="date" size="11" /></div></td>
+		<td><div id="expirationId"><input type="text" name="expDate" onfocus="showCalendar(this)" class="date"  required size="11"  r/></div></td>
 	</tr>
 
 	<tr>

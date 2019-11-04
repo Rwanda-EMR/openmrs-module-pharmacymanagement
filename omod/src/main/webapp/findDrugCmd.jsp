@@ -70,7 +70,7 @@ var $ = jQuery.noConflict();
 				<th><spring:message code="pharmacymanagement.fosaPharma" /></th>
 				<th><spring:message code="pharmacymanagement.supportProg" /></th>
 				<th><spring:message code="pharmacymanagement.month" /></th>
-				<th>Transfer Type</th>
+				<!--<th>Transfer Type</th>-->
 
 				<th><spring:message code="pharmacymanagement.status" /></th>
 			</tr>
@@ -83,10 +83,11 @@ var $ = jQuery.noConflict();
 					<td>${order.supportingProg}</td>
 					<!-- <td>${order.monthPeriod}</td> -->
 					<td><openmrs:formatDate date="${order.monthPeriod}" type="textbox" /></td>
-					<td>
+					<!--<td>
 					<c:forEach items="${order.drugProducts}" var="dp" varStatus="num">
+					<c:out value="inner loop count: ${num.count}"/>
 					${dp.transferType}</br>
-					</c:forEach></td>
+					</c:forEach></td>-->
 
 					<td><a
 						href="${pageContext.request.contextPath}/module/pharmacymanagement/order.list?orderId=${order.cmddrugId}">

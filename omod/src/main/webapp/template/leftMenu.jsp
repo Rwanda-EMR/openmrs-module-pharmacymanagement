@@ -33,7 +33,9 @@ var $e = jQuery.noConflict();
 <ul id="browser" class="filetree treeview-famfamfam">
 	<openmrs:hasPrivilege privilege="View Drug Store management">
 		<li class="closed"><span class="folder"><spring:message code="pharmacymanagement.storeMgt"/></span>
-		<ul>
+	</openmrs:hasPrivilege>
+			<ul>
+	<openmrs:hasPrivilege privilege="View Drug Store management sublist">
 			<li><span class="file"><a
 				href="${pageContext.request.contextPath}/module/pharmacymanagement/storequest.form"><spring:message code="pharmacymanagement.drugReq" /> (<spring:message code="pharmacymanagement.stock" />)</a></span></li>
 			<li><span class="file"><a
@@ -42,14 +44,19 @@ var $e = jQuery.noConflict();
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/return.form"><spring:message code="pharmacymanagement.returnForm"/></a></span></li>
 			<li><span class="file"><a
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/storeSearch.form"><spring:message code="Store Search"/></a></span></li>
+	</openmrs:hasPrivilege>
+
+		<openmrs:hasPrivilege privilege="View Pharmacy Drug Store Adjustment">
 		    <li><span class="file"><a
             			href="${pageContext.request.contextPath}/module/pharmacymanagement/adjustmentrequest.form"><spring:message code="pharmacymanagement.drugAdjustment"/></a></span></li>
+	    </openmrs:hasPrivilege>
 		</ul>
 		</li>
-	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="View Pharmacy management">
 		<li class="closed"><span class="folder"><spring:message code="pharmacymanagement.phcyMgt"/></span>
+	</openmrs:hasPrivilege>
 		<ul>
+			<openmrs:hasPrivilege privilege="View Pharmacy management sublist">
 			<li><span class="file"><a
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/pharmacyrequest.form"><spring:message code="pharmacymanagement.drugReq" /> (<spring:message code="pharmacymanagement.pharmacy" />)</a></span></li>
 			<li><span class="file"><a
@@ -60,11 +67,15 @@ var $e = jQuery.noConflict();
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/drugOrder.list"><spring:message code="pharmacymanagement.orderList"/></a></span></li>
 			<li><span class="file"><a
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/consumabledispensation.htm"><spring:message code="pharmacymanagement.consumableDispensing"/></a></span></li>
+            </openmrs:hasPrivilege>
+
+            <openmrs:hasPrivilege privilege="View Pharmacy Drug Dispensing Adjustment">
 			<li><span class="file"><a
             			href="${pageContext.request.contextPath}/module/pharmacymanagement/pharmacyrequestAdjust.form">Adjust Dispensing Pharmacy</a></span></li>
-		</ul> 
+			</openmrs:hasPrivilege>
+		</ul>
 		</li>
-	</openmrs:hasPrivilege>
+
 	<openmrs:hasPrivilege privilege="View Drug store alert">
 		<li class="closed"><span class="folder"><spring:message code="pharmacymanagement.storeAlert"/></span>
 		<ul>
@@ -73,7 +84,7 @@ var $e = jQuery.noConflict();
 		</ul>
 		</li>
 	</openmrs:hasPrivilege>
-	<openmrs:hasPrivilege privilege="View Administration Functions">
+	<openmrs:hasPrivilege privilege="Dispensing Pharmacies Management">
 		<li class="closed"><span class="folder"><spring:message code="pharmacymanagement.phcy"/></span>
 		<ul>
 			<li><span class="file"><a
