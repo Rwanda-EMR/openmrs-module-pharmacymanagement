@@ -118,7 +118,6 @@ public class PharmacyRequestAdjustForm
             {
                 Pharmacy from = serviceDrug.getPharmacyById(
                         Integer.valueOf(request.getParameter("pharmacy")).intValue());
-
                 Location to = Context.getLocationService().getLocation(
                         from.getLocationId().getLocationId());
 
@@ -160,8 +159,13 @@ public class PharmacyRequestAdjustForm
 
                     if (drugSuffix.equals(str))
                     {
-                        String id = (request.getParameter("drugs_" + suffixId)).split("-")[0];
-                        String lotNo = (request.getParameter("drugs_" + suffixId)).split("-")[1];
+                        String id = (request.getParameter("drugs_" + suffixId)).split("@")[0];
+                        String lotNo = (request.getParameter("drugs_" + suffixId)).split("@")[1];
+                        String expiryDateStr = (request.getParameter("drugs_" + suffixId)).split("@")[2];
+                        SimpleDateFormat sdfexp = new SimpleDateFormat("yyyy-MM-dd");
+
+                        Date expiryDate= sdfexp.parse(expiryDateStr);
+
 
                         String drugneeded = request.getParameter("drugneeded_" +
                                 suffixId);
@@ -181,6 +185,8 @@ public class PharmacyRequestAdjustForm
                         drug = cs.getDrug(currDP.getDrugId().getDrugId());
 
                         drugProduct.setDrugId(drug);
+
+                        drugProduct.setExpiryDate(expiryDate);
 
                         amountreq = Integer.parseInt(drugneeded);
 
@@ -208,8 +214,13 @@ public class PharmacyRequestAdjustForm
                         count++;
                     } else if (consSuffix.equals(str))
                     {
-                        String id = (request.getParameter("consumable_" +suffixId)).split("-")[0];
-                        String lotNo = (request.getParameter("consumable_" + suffixId)).split("-")[1];
+                        String id = (request.getParameter("consumable_" +suffixId)).split("@")[0];
+                        String lotNo = (request.getParameter("consumable_" + suffixId)).split("@")[1];
+                        String expiryDateStr = (request.getParameter("consumable_" + suffixId)).split("@")[2];
+
+                        SimpleDateFormat sdfexp = new SimpleDateFormat("yyyy-MM-dd");
+                        Date expiryDate= sdfexp.parse(expiryDateStr);
+
 
                         String consneeded = request.getParameter("consneeded_" +suffixId);
                         String reqReasonOfConsum=request.getParameter("ConsreqReson_" +suffixId);
@@ -224,6 +235,9 @@ public class PharmacyRequestAdjustForm
                         drugProduct = new DrugProduct();
                         currDP = serviceDrug.getDrugProductById(
                                 Integer.valueOf(id).intValue());
+
+
+                        drugProduct.setExpiryDate(expiryDate);
 
                         drugProduct.setConceptId(currDP.getConceptId());
                         int storeqnty = serviceDrug.getCurrSolde(null,

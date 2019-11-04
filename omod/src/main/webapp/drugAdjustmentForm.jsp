@@ -37,7 +37,7 @@
 	    var drugsIdArray = new Array();
 	    <c:forEach var="drug" items="${drugs}">
 	    	drugsArray.push("<c:out value="${drug.drugId.name}"/> (Lot:<c:out value="${drug.lotNo}"/>)");
-            drugsIdArray.push("<c:out value="${drug.drugproductId}"/>-<c:out value="${drug.lotNo}"/>");
+            drugsIdArray.push("<c:out value="${drug.drugproductId}"/>@<c:out value="${drug.lotNo}"/>");
 	    </c:forEach>
 
 	    //Transfer Options
@@ -62,7 +62,7 @@
 	    var consIdArray = new Array();
 	    <c:forEach var="cs" items="${css}">
 	    	consArray.push("<c:out value="${cs.conceptId.name.name}"/> (Lot:<c:out value="${cs.lotNo}"/>)");
-            consIdArray.push("<c:out value="${cs.drugproductId}"/>-<c:out value="${cs.lotNo}"/>");
+            consIdArray.push("<c:out value="${cs.drugproductId}"/>@<c:out value="${cs.lotNo}"/>");
 	    </c:forEach>
 
 		/**************************************************************************

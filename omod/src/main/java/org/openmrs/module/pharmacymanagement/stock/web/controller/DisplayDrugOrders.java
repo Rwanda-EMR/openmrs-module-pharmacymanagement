@@ -368,7 +368,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 
 				Consommation drugReq = new Consommation();
 				Consommation consReq = new Consommation();
-				log.info("Start getLentDrugsDuringTheMonth(): " + new Date());
+				/*log.info("Start getLentDrugsDuringTheMonth(): " + new Date());
 				lentProd = Utils.getLentDrugsDuringTheMonth(cmddrug.getMonthPeriod(), dp).intValue();
 				log.info("End getLentDrugsDuringTheMonth(): " + new Date());
 
@@ -405,10 +405,10 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 					// } catch (NullPointerException npe) {
 					// }
 
-					/**
+					*//**
 					 * TO DO check on line 338 and see why it is returnin an
 					 * error of index out of bound
-					 */
+					 *//*
 					List<Pharmacy> pharmaList = service
 							.getPharmacyByLocation(dftLoc);
 					String pharmaStr = "";
@@ -679,7 +679,32 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 						consReq.setMaxQnty(h);
 						consReq.setQntyToOrder(i);
 					}
+				}*/
+
+
+
+
+				if (dp.getDrugId() != null) {
+
+					drugReq.setDrugName(dp.getDrugId().getName());
+					drugReq.setDrugId(dp.getDrugId().getDrugId() + "");
+					drugReq.setConditUnitaire(dp.getDrugId().getUnits() + "");
+					if (dp.getExpiryDate() != null)
+						drugReq.setExpirationDate(dp.getExpiryDate());
+					//drugReq.setLocationId(cmddrug.getLocationId().getLocationId());
+					drugReq.setDrugProduct(dp);
+				} else {
+
+					consReq.setDrugName(dp.getConceptId().getName().getName());
+					consReq.setConceptId(dp.getConceptId().getConceptId() + "");
+					consReq.setConditUnitaire("");
+					//consReq.setLocationId(cmddrug.getLocationId().getLocationId());
+					consReq.setDrugProduct(dp);
 				}
+
+
+
+
 
 				String key = "";
 				if (cmddrug.getLocationId() != null) {

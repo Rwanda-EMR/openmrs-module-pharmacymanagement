@@ -33,7 +33,7 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
     var drugsIdArray = new Array();
     <c:forEach var="dp" items="${dpSet}">
     	drugsArray.push("<c:out value="${dp.drugId.name}"/> (Lot:<c:out value="${dp.lotNo}"/>)");
-    	drugsIdArray.push("<c:out value="${dp.drugproductId}"/>-<c:out value="${dp.lotNo}"/>");
+    	drugsIdArray.push("<c:out value="${dp.drugproductId}"/>@<c:out value="${dp.lotNo}"/>@<c:out value="${dp.expiryDate}"/>");
     </c:forEach>
 
 	//Consumable options
@@ -41,7 +41,7 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
     var consIdArray = new Array();
     <c:forEach var="cs" items="${consumableSet}">
     	consArray.push("<c:out value="${cs.conceptId.name.name}"/> (Lot:<c:out value="${cs.lotNo}"/>)");
-    	consIdArray.push("<c:out value="${cs.drugproductId}"/>-<c:out value="${cs.lotNo}"/>");
+    	consIdArray.push("<c:out value="${cs.drugproductId}"/>@<c:out value="${cs.lotNo}"/>@<c:out value="${cs.expiryDate}"/>");
     </c:forEach>
 
 

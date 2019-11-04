@@ -153,8 +153,8 @@ public class DrugAdjustmentFormController extends AbstractController {
 
                 if (drugSuffix.equals(str)) {
 
-                    String id = (request.getParameter("drugs_" + suffixId)).split("-")[0];
-                    String lotNo = (request.getParameter("drugs_" + suffixId)).split("-")[1];
+                    String id = (request.getParameter("drugs_" + suffixId)).split("@")[0];
+                    String lotNo = (request.getParameter("drugs_" + suffixId)).split("@")[1];
                     // saving the drug product
                     //String id = request.getParameter("drugs_" + suffixId);
                     String drugneeded = request.getParameter("drugneeded_"+suffixId);
@@ -186,8 +186,8 @@ public class DrugAdjustmentFormController extends AbstractController {
                     count++;
                 } else if (consSuffix.equals(str)) {
 
-                    String id = (request.getParameter("consumable_" +suffixId)).split("-")[0];
-                    String lotNo = (request.getParameter("consumable_" + suffixId)).split("-")[1];
+                    String id = (request.getParameter("consumable_" +suffixId)).split("@")[0];
+                    String lotNo = (request.getParameter("consumable_" + suffixId)).split("@")[1];
                     // saving the consumable product
                     //String id = request.getParameter("consumable_" + suffixId);
                     String consneeded = request.getParameter("consneeded_"+suffixId);

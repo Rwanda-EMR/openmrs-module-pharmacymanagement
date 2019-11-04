@@ -64,7 +64,7 @@ var $ = jQuery.noConflict();
 			<th><spring:message code="pharmacymanagement.lotNr" /></th>
 			<th><spring:message code="pharmacymanagement.expDate" /></th>
 			<th><spring:message code="pharmacymanagement.in" /></th>
-			<th><spring:message code="pharmacymanagement.out" /></th>
+			<th>Distributed/Lost</th>
 			<th><spring:message code="pharmacymanagement.solde" /></th>
 		</tr>
 	</thead>

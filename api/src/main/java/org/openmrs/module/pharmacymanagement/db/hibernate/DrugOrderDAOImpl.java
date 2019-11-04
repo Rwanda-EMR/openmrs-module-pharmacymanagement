@@ -817,7 +817,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		StringBuffer sb = new StringBuffer();
 		int solde = 0;
 
-		sb.append(" SELECT pi.solde FROM "
+		sb.append(" SELECT sum(pi.entree)-sum(pi.sortie) FROM "
 				+ PharmacyConstants.PHARMACY_INVENTORY + " pi INNER JOIN "
 				+ PharmacyConstants.DRUG_PRODUCT
 				+ " dp ON pi.drugproduct_id = dp.drugproduct_id INNER JOIN "
@@ -836,8 +836,14 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		if (pharmacyId != null && !pharmacyId.equals(""))
 			sb.append(" AND cd.pharmacy = '" + pharmacyId + "' ");
 
-		sb.append(" ORDER BY pi.pharmacyinventory_id DESC LIMIT 1 ;");
+		//sb.append(" ORDER BY pi.pharmacyinventory_id DESC LIMIT 1 ;");
+		sb.append(" ORDER BY pi.pharmacyinventory_id;");
+		/*if (drugId != null && !drugId.equals(""))
+			sb.append(" group by dp.drug_id");
 
+		if (conceptId != null && !conceptId.equals(""))
+			sb.append(" group by dp.concept_id");
+*/
 		Session session = sessionFactory.getCurrentSession();
 
 		Query query = session.createSQLQuery(sb.toString());
