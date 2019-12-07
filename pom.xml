@@ -12,10 +12,24 @@
 	<url>http://openmrs.org</url>
 
 	<scm>
-		<connection>scm:svn:http://svn.openmrs.org/openmrs-modules/pharmacymanagement/trunk/</connection>
-		<developerConnection>scm:svn:http://svn.openmrs.org/openmrs-modules/pharmacymanagement/trunk/</developerConnection>
-		<url>http://svn.openmrs.org/openmrs-modules/pharmacymanagement/trunk/</url>
+		<connection>scm:git:git@github.com:Rwanda-EMR/openmrs-module-pharmacymanagement.git</connection>
+		<developerConnection>scm:git:git@github.com:Rwanda-EMR/openmrs-module-pharmacymanagement.git</developerConnection>
+		<url>https://github.com/Rwanda-EMR/openmrs-module-pharmacymanagement/</url>
+		<tag>HEAD</tag>
 	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>openmrs-repo-modules</id>
+			<name>OpenMRS Modules</name>
+			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/modules</url>
+		</repository>
+		<snapshotRepository>
+			<id>openmrs-repo-snapshots</id>
+			<name>OpenMRS Snapshots</name>
+			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 	<modules>
 		<module>api</module>
