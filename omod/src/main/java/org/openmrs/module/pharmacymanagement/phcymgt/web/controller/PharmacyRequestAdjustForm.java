@@ -142,6 +142,9 @@ public class PharmacyRequestAdjustForm
                 } catch (ParseException e) {
                     mav.addObject("msg", "pharmacymanagement.date.missing");
                 }
+                String reqType = request.getParameter("requestType");
+                cmdDrug.setTransferType(reqType);
+                cmdDrug.setCreator(Context.getAuthenticatedUser());
             }
 
 

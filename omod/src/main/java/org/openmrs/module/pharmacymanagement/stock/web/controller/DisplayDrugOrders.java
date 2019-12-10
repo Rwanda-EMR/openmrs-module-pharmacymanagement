@@ -734,7 +734,10 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 				}
 			}
 		}
+		String locale = Context.getLocale().toString();
+		System.out.println("yesyesyesyesyesyesyesyesyesyes!!!!!!!!!!!!!!!!!!!!!!!!!!!"+locale);
 
+        mav.addObject("locale",locale);
 		mav.addObject("drugMap", drugMap);
 		mav.addObject("consommationMap", consommationMap);
 		mav.setViewName(getViewName());

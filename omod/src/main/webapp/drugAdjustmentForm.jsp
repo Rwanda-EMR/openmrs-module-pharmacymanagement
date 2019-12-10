@@ -37,7 +37,7 @@
 	    var drugsIdArray = new Array();
 	    <c:forEach var="drug" items="${drugs}">
 	    	drugsArray.push("<c:out value="${drug.drugId.name}"/> (Lot:<c:out value="${drug.lotNo}"/>)");
-            drugsIdArray.push("<c:out value="${drug.drugproductId}"/>@<c:out value="${drug.lotNo}"/>");
+            drugsIdArray.push("<c:out value="${drug.drugproductId}"/>@<c:out value="${drug.lotNo}"/>@<c:out value="${drug.expiryDate}"/>");
 	    </c:forEach>
 
 	    //Transfer Options
@@ -62,7 +62,7 @@
 	    var consIdArray = new Array();
 	    <c:forEach var="cs" items="${css}">
 	    	consArray.push("<c:out value="${cs.conceptId.name.name}"/> (Lot:<c:out value="${cs.lotNo}"/>)");
-            consIdArray.push("<c:out value="${cs.drugproductId}"/>@<c:out value="${cs.lotNo}"/>");
+            consIdArray.push("<c:out value="${cs.drugproductId}"/>@<c:out value="${cs.lotNo}"/>@<c:out value="${cs.expiryDate}"/>");
 	    </c:forEach>
 
 		/**************************************************************************
@@ -152,6 +152,10 @@
 			<td><spring:message code="pharmacymanagement.month" /></td>
 			<td><input type="text" name="month" onfocus="showCalendar(this)" size="10" /></td>
 		</tr>
+		<tr>
+        <td></td>
+            <td><input type="hidden" name="requestType" value="adjustment" size="10" /></td>
+        </tr>
 	</table>
 
 <!-- Tabs -->
@@ -169,7 +173,7 @@
 	<table width="100%">
 		<tr align="left">
 			<th style="width:30%"><spring:message code="pharmacymanagement.designation" /></th>
-			<th style="width:20%">Updated quality</th>
+			<th style="width:20%">Updated quantity</th>
             <th style="width:20%">Reason</th>
             <th style="width:20%">Type</th>
 			<th style="width:10%">Cancel</th>

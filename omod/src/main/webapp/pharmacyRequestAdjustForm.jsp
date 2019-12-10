@@ -161,6 +161,10 @@ var dftLocationId = "<c:out value="${dftLoc.locationId}"/>"
 		<td><input type="text" name="month" onfocus="showCalendar(this)"
 			size="10" /></td>
 	</tr>
+	<tr>
+         <td></td>
+         <td><input type="hidden" name="requestType" value="adjustment" size="10" /></td>
+     </tr>
 </table>
 
 <!-- Tabs -->

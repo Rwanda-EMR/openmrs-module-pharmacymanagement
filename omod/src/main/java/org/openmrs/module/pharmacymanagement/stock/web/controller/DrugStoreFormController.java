@@ -124,6 +124,9 @@ public class DrugStoreFormController extends AbstractController {
 				Date date = sdf.parse(request.getParameter("month"));
 
 				cmdDrug.setMonthPeriod(date);
+				String reqType = request.getParameter("requestType");
+				cmdDrug.setTransferType(reqType);
+				cmdDrug.setCreator(Context.getAuthenticatedUser());
 			}
 		}
 
