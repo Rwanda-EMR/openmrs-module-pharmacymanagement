@@ -243,4 +243,15 @@
 
 		</sql>
 	</diff>
+	<diff>
+		<version>1.6.7</version>
+		<author>Rwanda-Emr</author>
+		<date>November 12th 2019</date>
+		<description>Add another attributes in pharmacymanagement_drugproduct_inventory table</description>
+		<sql>
+			ALTER TABLE pharmacymanagement_cmd_drug ADD COLUMN transferType VARCHAR(45) NULL AFTER month_period;
+			ALTER TABLE pharmacymanagement_cmd_drug ADD creator int(11) DEFAULT NULL AFTER is_achieved;
+			ALTER TABLE pharmacymanagement_cmd_drug ADD CONSTRAINT fk_creator_dp FOREIGN KEY (creator) REFERENCES users(user_id);
+		</sql>
+	</diff>
 </sqldiff>

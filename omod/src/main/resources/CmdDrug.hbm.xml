@@ -11,6 +11,8 @@
 		<property name="supportingProg" column="supporting_prog" />
 		<property name="monthPeriod" column="month_period" type="date" />
 		<property name="isAchieved" column="is_achieved" />
+		<property name="transferType" column="transferType" type="java.lang.String"/>
+		<many-to-one  name="creator" class="org.openmrs.User"  column="creator" cascade="all" />
 		<many-to-one name="locationId" class="org.openmrs.Location" column="location_id" />
 		<many-to-one name="destination" class="org.openmrs.Location" column="destination" />
 		<many-to-one name="pharmacy" class="org.openmrs.module.pharmacymanagement.Pharmacy" column="pharmacy" />

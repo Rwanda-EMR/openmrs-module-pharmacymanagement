@@ -139,6 +139,9 @@ public class DrugAdjustmentFormController extends AbstractController {
                 Date date = sdf.parse(request.getParameter("month"));
 
                 cmdDrug.setMonthPeriod(date);
+                String reqType = request.getParameter("requestType");
+                cmdDrug.setTransferType(reqType);
+                cmdDrug.setCreator(Context.getAuthenticatedUser());
             }
         }
 
@@ -155,6 +158,10 @@ public class DrugAdjustmentFormController extends AbstractController {
 
                     String id = (request.getParameter("drugs_" + suffixId)).split("@")[0];
                     String lotNo = (request.getParameter("drugs_" + suffixId)).split("@")[1];
+                    String expiryDateStr = (request.getParameter("drugs_" + suffixId)).split("@")[2];
+                    SimpleDateFormat sdfexp = new SimpleDateFormat("yyyy-MM-dd");
+
+                    Date expiryDate= sdfexp.parse(expiryDateStr);
                     // saving the drug product
                     //String id = request.getParameter("drugs_" + suffixId);
                     String drugneeded = request.getParameter("drugneeded_"+suffixId);
@@ -181,6 +188,7 @@ public class DrugAdjustmentFormController extends AbstractController {
                     if(lotNo!=null && !lotNo.equals("")){
                         drugProduct.setLotNo(lotNo);
                     }
+                    drugProduct.setExpiryDate(expiryDate);
                     service.saveDrugProduct(drugProduct);
                     hasSaved = true;
                     count++;

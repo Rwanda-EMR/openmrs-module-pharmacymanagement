@@ -137,6 +137,10 @@
 			<td><spring:message code="pharmacymanagement.month" /></td>
 			<td><input type="text" name="month" onfocus="showCalendar(this)" size="10" /></td>
 		</tr>
+		<tr>
+        	<td></td>
+        	<td><input type="hidden" name="requestType" value="requisition" size="10" /></td>
+        </tr>
 	</table>
 	
 <!-- Tabs -->

@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.openmrs.Location;
+import org.openmrs.User;
 
 /**
  *@author Eric D.
@@ -19,7 +20,33 @@ public class CmdDrug {
 	private Set<DrugProduct> drugProducts = new HashSet<DrugProduct>();	
 	private boolean isAchieved;
 	private Pharmacy pharmacy;
-	
+	private String transferType;
+	private User creator;
+
+	public boolean isAchieved() {
+		return this.isAchieved;
+	}
+
+	public void setAchieved(final boolean achieved) {
+		this.isAchieved = achieved;
+	}
+
+	public String getTransferType() {
+		return this.transferType;
+	}
+
+	public void setTransferType(final String transferType) {
+		this.transferType = transferType;
+	}
+
+	public User getCreator() {
+		return this.creator;
+	}
+
+	public void setCreator(final User creator) {
+		this.creator = creator;
+	}
+
 	/**
 	 * @return the isAchieved
 	 */

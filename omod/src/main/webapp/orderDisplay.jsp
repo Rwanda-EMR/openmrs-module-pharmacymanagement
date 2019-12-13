@@ -1,5 +1,6 @@
 <%@ include file="/WEB-INF/template/include.jsp"%>
 <%@ include file="/WEB-INF/template/header.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <openmrs:require privilege="View Drug Store management" otherwise="/login.htm" redirect="/module/pharmacymanagement/order.list"/>
 
 
@@ -132,7 +133,7 @@ $(document).ready( function() {
 </div>
 <br />
 <br />
-
+<c:set var="locales" value="${locale}"/>
 <table width="100%" style="">
 	<tr>
 		<td width="15%"><spring:message code="pharmacymanagement.fosaPharma" />:</td>
@@ -236,13 +237,22 @@ $(document).ready( function() {
     <td class="simple">${consommation.value.qntyToOrder}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.isDelivered == false ? '' : consommation.value.drugProduct.deliveredQnty}&nbsp;</td>
     <td class="simpleSpan"><span id="qntreqId_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.qntyReq}</span>  ${consommation.value.drugProduct.lotNo}</td>
-    <td class="simpleSpan"><span id="expiryDate_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.expiryDate}</span></td>
+    <td class="simpleSpan"><span id="expiryDate_${consommation.value.drugProduct.drugproductId}">
+    <c:choose>
+         <c:when test="${(locales=='en_US') || (locales=='en')}">
+           <fmt:formatDate pattern="MM/dd/yyyy" value="${consommation.value.drugProduct.expiryDate}"/>
+          </c:when>
+         <c:otherwise>
+             <fmt:formatDate pattern="dd/MM/yyyy" value="${consommation.value.drugProduct.expiryDate}"/>
+          </c:otherwise>
+    </c:choose>
+    </td>
     <td class="simpleSpan">${consommation.value.drugProduct.transferType}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.requestedBy.names}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.transfereBy.names}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.transferType}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.comments}&nbsp;</td>
-     <c:set var="transferType" value="${consommation.value.drugProduct.transferType}" />=
+    <c:set var="transferType" value="${consommation.value.drugProduct.transferType}" />
     <td class="non-printable">
     <c:if test="${transferType=='requisition'}">
     <openmrs:hasPrivilege privilege="View Drugs Requests">
@@ -364,7 +374,7 @@ $(document).ready( function() {
 	
 	<tr>
 		<td><spring:message code="pharmacymanagement.expDate" /></td>
-		<td><div id="expirationId"><input type="text" name="expDate" onfocus="showCalendar(this)" class="date"  required size="11"  r/></div></td>
+		<td><div id="expirationId"><input type="text" id="expirationDateId" name="expDate" onfocus="showCalendar(this)" class="date"  required size="11"  r/></div></td>
 	</tr>
 
 	<tr>
