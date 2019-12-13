@@ -280,7 +280,7 @@ $(document).ready( function() {
   </c:forEach>
 
 <tr>
-<td colspan="21" style="background-color: #c0c0c0"><center><spring:message code="pharmacymanagement.consumable" /> ${empty consommationMap ? '(no record)' : '' }</center></td>
+<td colspan="23" style="background-color: #c0c0c0"><center><spring:message code="pharmacymanagement.consumable" /> ${empty consommationMap ? '(no record)' : '' }</center></td>
 </tr>
 <c:forEach var="consommation" items="${consommationMap}" varStatus="num">
 <c:if test="${consomation.value.drugProduct.conceptId.conceptId == null}">
