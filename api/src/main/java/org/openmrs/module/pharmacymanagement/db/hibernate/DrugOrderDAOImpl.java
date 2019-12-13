@@ -1124,8 +1124,17 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 
 		StringBuffer sb = new StringBuffer();
 
-		sb.append("select dpdpi.lot_no,sum(dpdpi.entree) as entree,sum(dpdpi.sortie) as sortie,(sum(dpdpi.entree)-sum(dpdpi.sortie)) as solde,dpdpi.expiry_date,dpdpi.drug_id,dpdpi.concept_id from (select dp.drugproduct_id,dpi.entree,dpi.sortie,dp.lot_no,dp.expiry_date,dp.drug_id,dp.concept_id from pharmacymanagement_drug_product dp " +
+		//Before ordering
+		/*sb.append("select dpdpi.lot_no,sum(dpdpi.entree) as entree,sum(dpdpi.sortie) as sortie,(sum(dpdpi.entree)-sum(dpdpi.sortie)) as solde,dpdpi.expiry_date,dpdpi.drug_id,dpdpi.concept_id from (select dp.drugproduct_id,dpi.entree,dpi.sortie,dp.lot_no,dp.expiry_date,dp.drug_id,dp.concept_id from pharmacymanagement_drug_product dp " +
 				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id) dpdpi group by dpdpi.lot_no,dpdpi.drug_id,dpdpi.concept_id");
+*/
+		//After ordering
+		sb.append("select dpdpi.lot_no,sum(dpdpi.entree) as entree,sum(dpdpi.sortie) as sortie,(sum(dpdpi.entree)-sum(dpdpi.sortie)) as solde,dpdpi.expiry_date,dpdpi.drug_id,dpdpi.concept_id,cn.name,d.name from (select dp.drugproduct_id,dpi.entree,dpi.sortie,dp.lot_no,dp.expiry_date,dp.drug_id,dp.concept_id from pharmacymanagement_drug_product dp " +
+				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id) dpdpi " +
+				"left join concept_name cn on cn.concept_id=dpdpi.concept_id " +
+				"left join drug d on d.drug_id=d.dpdpi.drug_id " +
+				"group by dpdpi.lot_no,dpdpi.drug_id,dpdpi.concept_id order by cn.name,d.name");
+
 
 		Session session = sessionFactory.getCurrentSession();
 
@@ -1135,4 +1144,20 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 
 		return list;
 	}
+
+    @Override
+    public List<Object[]> getLotNumberByDrugProductId(int drugProductId) {
+        StringBuffer sb = new StringBuffer();
+
+        sb.append(" SELECT DISTINCT dp.lot_no, dp.expiry_date, dp.drugproduct_id FROM pharmacymanagement_drug_product dp WHERE ");
+
+            sb.append(" dp.drugproduct_id = '" + drugProductId + "' ");
+
+        Session session = sessionFactory.getCurrentSession();
+
+        Query query = session.createSQLQuery(sb.toString());
+
+        List<Object[]> list = query.list();
+
+        return list;    }
 }

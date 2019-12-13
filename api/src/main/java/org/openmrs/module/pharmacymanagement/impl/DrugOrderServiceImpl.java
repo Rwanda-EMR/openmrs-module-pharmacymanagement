@@ -363,4 +363,10 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 	public List<Object[]> getStoreStatus() {
 		return drugOrderDAO.getStoreStatus();
 	}
+
+	@Override
+	public List<Object[]> getLotNumberByDrugProductId(int drugProductId){
+		return drugOrderDAO.getLotNumberByDrugProductId(drugProductId);
+	}
+
 }

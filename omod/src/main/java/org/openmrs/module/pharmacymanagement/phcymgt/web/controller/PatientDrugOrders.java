@@ -163,7 +163,7 @@ public class PatientDrugOrders extends ParameterizableViewController {
 				&& !request.getParameter("drugproductId").equals("")) {
 			drugproduct = service.getDrugProductById(Integer.valueOf(request
 					.getParameter("drugproductId")));
-			if (drugproduct != null) {
+			if (drugproduct != null && !drugproduct.getTransferType().equalsIgnoreCase("adjustment")) {
 				if(drugproduct.getCmddrugId() != null) {
 					if (drugproduct.getCmddrugId().getDestination().getLocationId() == dftLoc.getLocationId()) {
 						if (drugproduct.getDrugId() != null)
@@ -188,7 +188,11 @@ public class PatientDrugOrders extends ParameterizableViewController {
 					}
 				}
 			}
-			mav.addObject("lots", lots);
+			if (drugproduct != null && drugproduct.getTransferType().equalsIgnoreCase("adjustment")) {
+				lots=service.getLotNumberByDrugProductId(drugproduct.getDrugproductId());
+
+			}
+				mav.addObject("lots", lots);
 		}
 
 		if (request.getParameter("dpFromGet") != null

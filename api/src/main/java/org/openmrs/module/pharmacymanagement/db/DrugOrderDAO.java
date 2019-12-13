@@ -464,4 +464,5 @@ public interface DrugOrderDAO {
 
 	public List<Object[]> getStoreStatus();
 
+    public List<Object[]> getLotNumberByDrugProductId(int drugProductId);
 }
