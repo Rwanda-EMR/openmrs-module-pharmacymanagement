@@ -700,7 +700,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 			sbPharmInv.append("SELECT sum(dpr.quantity) FROM pharmacymanagement_drug_product dp,pharmacymanagement_drug_order_prescription dpr where 1 = 1 and dp.drugproduct_id=dpr.drugproduct_id and dp.concept_id=" + conceptId + ";");
 		}
 
-		Session session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.getCurrentSession( );
 
 		Query query = session.createSQLQuery(sb.toString());
 
@@ -1130,7 +1130,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 */
 		//After ordering
 		sb.append("select dpdpi.lot_no,sum(dpdpi.entree) as entree,sum(dpdpi.sortie) as sortie,(sum(dpdpi.entree)-sum(dpdpi.sortie)) as solde,dpdpi.expiry_date,dpdpi.drug_id,dpdpi.concept_id,cn.name,d.name from (select dp.drugproduct_id,dpi.entree,dpi.sortie,dp.lot_no,dp.expiry_date,dp.drug_id,dp.concept_id from pharmacymanagement_drug_product dp " +
-				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id) dpdpi " +
+				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id  where dp.lot_no is not null and dp.expiry_date is not null) dpdpi " +
 				"left join concept_name cn on cn.concept_id=dpdpi.concept_id " +
 				"left join drug d on d.drug_id=d.dpdpi.drug_id " +
 				"group by dpdpi.lot_no,dpdpi.drug_id,dpdpi.concept_id order by cn.name,d.name");
