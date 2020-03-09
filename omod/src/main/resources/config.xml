@@ -54,6 +54,10 @@
 		<description>Able to view Drug Store management</description>
 	</privilege>
 	<privilege>
+		<name>View Drug Store</name>
+		<description>Able to view Drug Store management</description>
+	</privilege>
+	<privilege>
 		<name>View Pharmacy management</name>
 		<description>Able to view Pharmacy management</description>
 	</privilege>

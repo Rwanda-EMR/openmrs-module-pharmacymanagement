@@ -190,6 +190,8 @@ public class DrugAdjustmentFormController extends AbstractController {
                     }
                     drugProduct.setExpiryDate(expiryDate);
                     service.saveDrugProduct(drugProduct);
+                    currDP.setIsDelivered(false);
+                    service.saveDrugProduct(currDP);
                     hasSaved = true;
                     count++;
                 } else if (consSuffix.equals(str)) {
@@ -227,6 +229,8 @@ public class DrugAdjustmentFormController extends AbstractController {
                         drugProduct.setLotNo(lotNo);
                     }
                     service.saveDrugProduct(drugProduct);
+                    currDP.setIsDelivered(false);
+                    service.saveDrugProduct(currDP);
                     hasSaved = true;
                     count++;
                 } else {

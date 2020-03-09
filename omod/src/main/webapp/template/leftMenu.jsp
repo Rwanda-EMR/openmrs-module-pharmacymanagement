@@ -42,9 +42,11 @@ var $e = jQuery.noConflict();
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/cmdsearch.form"><spring:message code="pharmacymanagement.findCmd"/></a></span></li>
 			<li><span class="file"><a
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/return.form"><spring:message code="pharmacymanagement.returnForm"/></a></span></li>
-			<li><span class="file"><a
-			href="${pageContext.request.contextPath}/module/pharmacymanagement/storeSearch.form"><spring:message code="Store Search"/></a></span></li>
-	</openmrs:hasPrivilege>
+			</openmrs:hasPrivilege>
+	<openmrs:hasPrivilege privilege="View Drug Store">
+	<li><span class="file"><a
+    			href="${pageContext.request.contextPath}/module/pharmacymanagement/storeSearch.form"><spring:message code="Store Search"/></a></span></li>
+    	</openmrs:hasPrivilege>
 
 		<openmrs:hasPrivilege privilege="View Pharmacy Drug Store Adjustment">
 		    <li><span class="file"><a

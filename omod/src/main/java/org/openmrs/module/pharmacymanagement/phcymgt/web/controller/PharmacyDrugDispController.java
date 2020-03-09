@@ -1,10 +1,7 @@
 package org.openmrs.module.pharmacymanagement.phcymgt.web.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -230,7 +227,9 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 								int solde = currStat - quantity;
 								if (solde >= 0) {
 									//auto expire the regimen to remove from the list which appears when dispensing what have been prescribed
-									drugOrder.setAutoExpireDate(drugOrder.getStartDate());
+									//drugOrder.setAutoExpireDate(drugOrder.getStartDate());
+									drugOrder.setDiscontinued(true);
+									drugOrder.setDiscontinuedDate(atEndOfDay(new Date()));
 									
 									if (count == 1) {
 										encounterService
@@ -303,4 +302,17 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 
 		return mav;
 	}
+
+
+
+	public Date atEndOfDay(Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		//calendar.set(Calendar.MILLISECOND, 999);
+		return calendar.getTime();
+	}
+
 }

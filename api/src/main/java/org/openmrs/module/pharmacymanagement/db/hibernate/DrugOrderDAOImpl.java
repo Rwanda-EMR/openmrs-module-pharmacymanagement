@@ -681,6 +681,8 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	public Integer getSoldeByDrugOrConcept(String drugId, String conceptId) {
 
 		StringBuffer sb = new StringBuffer();
+		StringBuffer sbAdjustment = new StringBuffer();
+
 		StringBuffer sbPharmInv = new StringBuffer();
 
 
@@ -689,6 +691,8 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		if (drugId != null && !drugId.equals("")) {
 			sb.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.drug_id=" + drugId + " and cmd.pharmacy is null;");
 
+			//sbAdjustment.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.drug_id=" + drugId + " and dp.transferType like '%adjustment%' and cmd.pharmacy is null;");
+
 
 			sbPharmInv.append("SELECT sum(dpr.quantity) FROM pharmacymanagement_drug_product dp,pharmacymanagement_drug_order_prescription dpr where 1 = 1 and dp.drugproduct_id=dpr.drugproduct_id and dp.drug_id=" + drugId + ";");
 		}
@@ -696,11 +700,13 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		if ((drugId == null || drugId.equals("")) && (conceptId != null && !conceptId.equals("")) ) {
 			sb.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.concept_id=" + conceptId + " and cmd.pharmacy is null;");
 
+			//sbAdjustment.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.concept_id=" + conceptId + " and dp.transferType like '%adjustment%' and cmd.pharmacy is null;");
+
 
 			sbPharmInv.append("SELECT sum(dpr.quantity) FROM pharmacymanagement_drug_product dp,pharmacymanagement_drug_order_prescription dpr where 1 = 1 and dp.drugproduct_id=dpr.drugproduct_id and dp.concept_id=" + conceptId + ";");
 		}
 
-		Session session = sessionFactory.getCurrentSession( );
+		Session session = sessionFactory.getCurrentSession();
 
 		Query query = session.createSQLQuery(sb.toString());
 
@@ -709,6 +715,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 
 		List<Object> list = query.list();
 		List<Object> listPharmInv = queryPharmInv.list();
+		//List<Object> listAdjustment = (session.createSQLQuery(sbAdjustment.toString())).list();
 
 		if (list.size() > 0) {
 			solde = Integer.valueOf(list.get(0).toString());
@@ -716,6 +723,9 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		if (listPharmInv.size() > 0 && listPharmInv.get(0)!=null) {
 			solde -= Integer.valueOf(listPharmInv.get(0).toString());
 		}
+		/*if (listAdjustment.size() > 0 && listAdjustment.get(0)!=null) {
+			solde = Integer.valueOf(listAdjustment.get(0).toString());
+		}*/
 		return solde;
 	}
 
@@ -1131,7 +1141,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		//After ordering
 		sb.append("select dpdpi.lot_no,sum(dpdpi.entree) as entree,sum(dpdpi.sortie) as sortie,(sum(dpdpi.entree)-sum(dpdpi.sortie)) as solde,dpdpi.expiry_date,dpdpi.drug_id,dpdpi.concept_id,cn.name,d.name from (select dp.drugproduct_id,dpi.entree,dpi.sortie,dp.lot_no,dp.expiry_date,dp.drug_id,dp.concept_id from pharmacymanagement_drug_product dp " +
 				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id  where dp.lot_no is not null and dp.expiry_date is not null) dpdpi " +
-				"left join concept_name cn on cn.concept_id=dpdpi.concept_id " +
+				"left join concept_name cn on cn.concept_id=dpdpi.concept_id  and cn.locale='en' and concept_name_type='FULLY_SPECIFIED'" +
 				"left join drug d on d.drug_id=d.dpdpi.drug_id " +
 				"group by dpdpi.lot_no,dpdpi.drug_id,dpdpi.concept_id order by cn.name,d.name");
 
