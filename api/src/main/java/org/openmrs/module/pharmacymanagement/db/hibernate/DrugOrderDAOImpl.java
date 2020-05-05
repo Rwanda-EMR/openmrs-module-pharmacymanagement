@@ -689,21 +689,89 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		int solde = 0;
 
 		if (drugId != null && !drugId.equals("")) {
-			sb.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.drug_id=" + drugId + " and cmd.pharmacy is null;");
-
-			//sbAdjustment.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.drug_id=" + drugId + " and dp.transferType like '%adjustment%' and cmd.pharmacy is null;");
 
 
-			sbPharmInv.append("SELECT sum(dpr.quantity) FROM pharmacymanagement_drug_product dp,pharmacymanagement_drug_order_prescription dpr where 1 = 1 and dp.drugproduct_id=dpr.drugproduct_id and dp.drug_id=" + drugId + ";");
+			sb.append("SELECT (SUM(dpi.entree) - SUM(dpi.sortie)) FROM "
+					+ PharmacyConstants.DRUGPRODUCT_INVENTORY + " dpi INNER JOIN "
+					+ PharmacyConstants.DRUG_PRODUCT
+					+ " dp ON dpi.drugproduct_id=dp.drugproduct_id INNER JOIN "
+					+ PharmacyConstants.CMD_DRUG
+					+ " cd ON dp.cmddrug_id = cd.cmddrug_id LEFT JOIN "
+					+ PharmacyConstants.PHARMACY
+					+ " p ON cd.pharmacy = p.pharmacy_id ");
+
+			sb.append(" WHERE 1 = 1 ");
+
+			if (drugId != null && !drugId.equals(""))
+				sb.append(" AND dp.drug_id = '" + drugId + "' ");
+
+			if (conceptId != null && !conceptId.equals(""))
+				sb.append(" AND dp.concept_id = '" + conceptId + "' ");
+
+
+
+			//sb.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.drug_id=" + drugId + " and cmd.pharmacy is null;");
+
+		/*	//sbAdjustment.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.drug_id=" + drugId + " and dp.transferType like '%adjustment%' and cmd.pharmacy is null;");
+*/
+
+
+			sbPharmInv.append("SELECT (sum(pi.entree)-sum(pi.sortie)) FROM pharmacymanagement_pharmacy_inventory pi INNER JOIN pharmacymanagement_drug_product dp ON pi.drugproduct_id = dp.drugproduct_id INNER JOIN pharmacymanagement_cmd_drug cd ON dp.cmddrug_id = cd.cmddrug_id ");
+
+			if (drugId != null && !drugId.equals(""))
+				sbPharmInv.append(" AND dp.drug_id = '" + drugId + "' ");
+
+			if (conceptId != null && !conceptId.equals(""))
+				sbPharmInv.append(" AND dp.concept_id = '" + conceptId + "' ");
+			sbPharmInv.append(" ORDER BY pi.pharmacyinventory_id");
+
+			//sbPharmInv.append("SELECT sum(dpr.quantity) FROM pharmacymanagement_drug_product dp,pharmacymanagement_drug_order_prescription dpr where 1 = 1 and dp.drugproduct_id=dpr.drugproduct_id and dp.drug_id=" + drugId + ";");
 		}
 
 		if ((drugId == null || drugId.equals("")) && (conceptId != null && !conceptId.equals("")) ) {
-			sb.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.concept_id=" + conceptId + " and cmd.pharmacy is null;");
+
+
+
+			sb.append("SELECT (SUM(dpi.entree) - SUM(dpi.sortie)) FROM "
+					+ PharmacyConstants.DRUGPRODUCT_INVENTORY + " dpi INNER JOIN "
+					+ PharmacyConstants.DRUG_PRODUCT
+					+ " dp ON dpi.drugproduct_id=dp.drugproduct_id INNER JOIN "
+					+ PharmacyConstants.CMD_DRUG
+					+ " cd ON dp.cmddrug_id = cd.cmddrug_id LEFT JOIN "
+					+ PharmacyConstants.PHARMACY
+					+ " p ON cd.pharmacy = p.pharmacy_id ");
+
+			sb.append(" WHERE 1 = 1 ");
+
+			if (drugId != null && !drugId.equals(""))
+				sb.append(" AND dp.drug_id = '" + drugId + "' ");
+
+			if (conceptId != null && !conceptId.equals(""))
+				sb.append(" AND dp.concept_id = '" + conceptId + "' ");
+
+
+
+
+			//sb.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.concept_id=" + conceptId + " and cmd.pharmacy is null;");
+/*
 
 			//sbAdjustment.append("SELECT sum(dp.deliv_qnty) FROM pharmacymanagement_drug_product dp,pharmacymanagement_cmd_drug cmd where 1 = 1 and cmd.cmddrug_id=dp.cmddrug_id and dp.is_deliv=1 and dp.concept_id=" + conceptId + " and dp.transferType like '%adjustment%' and cmd.pharmacy is null;");
 
+*/
 
-			sbPharmInv.append("SELECT sum(dpr.quantity) FROM pharmacymanagement_drug_product dp,pharmacymanagement_drug_order_prescription dpr where 1 = 1 and dp.drugproduct_id=dpr.drugproduct_id and dp.concept_id=" + conceptId + ";");
+
+			sbPharmInv.append("SELECT (sum(pi.entree)-sum(pi.sortie)) FROM pharmacymanagement_pharmacy_inventory pi INNER JOIN pharmacymanagement_drug_product dp ON pi.drugproduct_id = dp.drugproduct_id INNER JOIN pharmacymanagement_cmd_drug cd ON dp.cmddrug_id = cd.cmddrug_id ");
+
+
+			if (drugId != null && !drugId.equals(""))
+				sbPharmInv.append(" AND dp.drug_id = '" + drugId + "' ");
+
+			if (conceptId != null && !conceptId.equals(""))
+				sbPharmInv.append(" AND dp.concept_id = '" + conceptId + "' ");
+			sbPharmInv.append(" ORDER BY pi.pharmacyinventory_id");
+
+
+			//sbPharmInv.append("SELECT sum(dpr.quantity) FROM pharmacymanagement_drug_product dp,pharmacymanagement_drug_order_prescription dpr where 1 = 1 and dp.drugproduct_id=dpr.drugproduct_id and dp.concept_id=" + conceptId + ";");
 		}
 
 		Session session = sessionFactory.getCurrentSession();
@@ -716,12 +784,16 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		List<Object> list = query.list();
 		List<Object> listPharmInv = queryPharmInv.list();
 		//List<Object> listAdjustment = (session.createSQLQuery(sbAdjustment.toString())).list();
+        System.out.println("Stockkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk: "+list.get(0).toString());
+		System.out.println("Pharmacyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy: "+listPharmInv.get(0).toString());
 
 		if (list.size() > 0) {
 			solde = Integer.valueOf(list.get(0).toString());
 		}
 		if (listPharmInv.size() > 0 && listPharmInv.get(0)!=null) {
-			solde -= Integer.valueOf(listPharmInv.get(0).toString());
+			//solde -= Integer.valueOf(listPharmInv.get(0).toString());
+			solde += Integer.valueOf(listPharmInv.get(0).toString());
+
 		}
 		/*if (listAdjustment.size() > 0 && listAdjustment.get(0)!=null) {
 			solde = Integer.valueOf(listAdjustment.get(0).toString());

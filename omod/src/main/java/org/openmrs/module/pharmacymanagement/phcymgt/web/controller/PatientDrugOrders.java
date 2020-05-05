@@ -102,7 +102,7 @@ public class PatientDrugOrders extends ParameterizableViewController {
 			List<DrugOrder> drugOrders1 = new ArrayList<DrugOrder>();
 			for (DrugOrder drOr : drugOrderList) {
 			//	if (!drugIdss.contains(drOr.getDrug().getDrugId()) && drOr.getAutoExpireDate() == null) {
-				if (!(drOr.getAutoExpireDate() != null || drOr.getDiscontinuedDate()!=null) && drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
+				if ((!(drOr.getAutoExpireDate() != null || drOr.getDiscontinuedDate()!=null)) && drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
 
 					dld = new DrugLotDate();
 					drugOrders1.add(drOr);
@@ -141,10 +141,11 @@ public class PatientDrugOrders extends ParameterizableViewController {
 					}
 
 				}
-				drugIdss.add(drOr.getDrug().getDrugId());
+				//drugIdss.add(drOr.getDrug().getDrugId());
 
-				if(!availNotAvailOrderedDrug.containsKey(drOr.getDrug().getName().toString())) {
-					availNotAvailOrderedDrug.put(drOr.getDrug().getName().toString(),"Not Available");
+				if(drOr.getDrug()!=null && !availNotAvailOrderedDrug.containsKey(drOr.getDrug().getName().toString()) ) {
+					if (drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE)
+					availNotAvailOrderedDrug.put(drOr.getDrug().getName().toString(),"Not Available (OrderId: "+drOr.getOrderId()+", Date: "+drOr.getStartDate()+", Orderer: "+drOr.getOrderer().getNames()+")");
 				}
 			}
 
