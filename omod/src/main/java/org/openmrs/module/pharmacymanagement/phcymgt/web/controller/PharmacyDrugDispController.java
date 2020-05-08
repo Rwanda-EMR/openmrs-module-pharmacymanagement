@@ -229,8 +229,10 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 									//auto expire the regimen to remove from the list which appears when dispensing what have been prescribed
 									//drugOrder.setAutoExpireDate(drugOrder.getStartDate());
 									drugOrder.setDiscontinued(true);
-									drugOrder.setDiscontinuedDate(atEndOfDay(new Date()));
-									
+									//drugOrder.setDiscontinuedDate(atEndOfDay(new Date()));
+									drugOrder.setDiscontinuedDate(getNextDay(drugOrder.getStartDate()));
+
+
 									if (count == 1) {
 										encounterService
 												.saveEncounter(encounter);
@@ -308,6 +310,16 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 	public Date atEndOfDay(Date date) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTime(date);
+		calendar.set(Calendar.HOUR_OF_DAY, 23);
+		calendar.set(Calendar.MINUTE, 59);
+		calendar.set(Calendar.SECOND, 59);
+		//calendar.set(Calendar.MILLISECOND, 999);
+		return calendar.getTime();
+	}
+	public Date getNextDay(Date date) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(date);
+		calendar.add(Calendar.DATE,1);
 		calendar.set(Calendar.HOUR_OF_DAY, 23);
 		calendar.set(Calendar.MINUTE, 59);
 		calendar.set(Calendar.SECOND, 59);
