@@ -1,13 +1,13 @@
 <component name="libraryTable">
   <library name="Maven: org.openmrs.module:mohappointment-omod:0.3-SNAPSHOT">
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/openmrs/module/mohappointment-omod/0.3-SNAPSHOT/mohappointment-omod-0.3-20191207.093048-1.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/openmrs/module/mohappointment-omod/0.3-SNAPSHOT/mohappointment-omod-0.3-SNAPSHOT.jar!/" />
     </CLASSES>
     <JAVADOC>
-      <root url="jar://$MAVEN_REPOSITORY$/org/openmrs/module/mohappointment-omod/0.3-SNAPSHOT/mohappointment-omod-0.3-20191207.093048-1-javadoc.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/openmrs/module/mohappointment-omod/0.3-SNAPSHOT/mohappointment-omod-0.3-SNAPSHOT-javadoc.jar!/" />
     </JAVADOC>
     <SOURCES>
-      <root url="jar://$MAVEN_REPOSITORY$/org/openmrs/module/mohappointment-omod/0.3-SNAPSHOT/mohappointment-omod-0.3-20191207.093048-1-sources.jar!/" />
+      <root url="jar://$MAVEN_REPOSITORY$/org/openmrs/module/mohappointment-omod/0.3-SNAPSHOT/mohappointment-omod-0.3-SNAPSHOT-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

@@ -16,29 +16,29 @@ package org.openmrs.module.pharmacymanagement;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.module.Activator;
-
+import org.openmrs.module.BaseModuleActivator;
 
 
 /**
  * This class contains the logic that is run every time this module
  * is either started or shutdown
  */
-public class PharmacyManagementModuleActivator implements Activator {
+public class PharmacyManagementModuleActivator extends BaseModuleActivator {
 
-	private Log log = LogFactory.getLog(this.getClass());
+	protected Log log = LogFactory.getLog(this.getClass());
 
 	/**
-	 * @see Activator#startup()
-	 */
-	public void startup() {
-		log.info("Starting Drug Store Management and Dispensing Rwanda Module");
+	 * @see BaseModuleActivator#started()
+	 * */
+	public void started() {
+		log.info("Drug Store Management and Dispensing Rwanda Module started");
 	}
 	
 	/**
-	 *  @see Activator#shutdown()
-	 */
-	public void shutdown() {
-		log.info("Shutting down Drug Store Management and Dispensing Rwanda Module");
+	 *  @see BaseModuleActivator#stopped()
+	 * */
+	public void stopped() {
+		log.info("Drug Store Management and Dispensing Rwanda Module stopped");
 	}
 	
 }
