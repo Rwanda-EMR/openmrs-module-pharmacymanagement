@@ -163,4 +163,8 @@ public interface DrugOrderService {
 
 	public List<Object[]> getLotNumberByDrugProductId(int drugProductId);
 
+	public Boolean checkIfOneDrugOrConsummableUseOneLotNo(String drugId,String conceptId,String lotNo);
+	public Collection<DrugProduct> getPharmacyDrugProducts();
+	public Collection<DrugProduct> getPharmacyConsummableProducts();
+
 }

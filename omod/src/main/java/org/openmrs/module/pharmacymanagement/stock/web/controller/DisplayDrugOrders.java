@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.hibernate.HibernateException;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Drug;
 import org.openmrs.Location;
@@ -33,6 +34,7 @@ import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
 import org.openmrs.module.pharmacymanagement.utils.Utils;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.WebConstants;
+import org.springframework.orm.hibernate3.HibernateSystemException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
@@ -117,7 +119,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 
 			if (request.getParameter("noLotStock") != null
 					&& !request.getParameter("noLotStock").equals(""))
-				noLot = request.getParameter("noLotStock");
+				noLot = request.getParameter("noLotStock").trim();
 
 			String strDate = null;
 			String dateStr = null;
@@ -180,158 +182,185 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 				}
 			}
 
-			if (qntAcc <= dp.getQntyReq()) {
-				if (request.getParameter("invDate") != null
-						&& !request.getParameter("invDate").equals("")) {
-					String inventoryDateStr = request.getParameter("invDate");
-					invDate = sdf.parse(inventoryDateStr);
-				}
+            String checkDrugId=null, checkConceptId=null;
 
-				dpi.setInventoryDate(invDate);
+			if(dp.getDrugId()==null){
+				checkDrugId="";
+			}else {
+				checkDrugId=dp.getDrugId().getDrugId()+"";
+			}
+			if(dp.getConceptId()==null){
+				checkConceptId="";
+			}else {
+				checkConceptId=dp.getConceptId().getConceptId()+"";
+			}
 
-				Location lcation = null;
+			if(service.checkIfOneDrugOrConsummableUseOneLotNo(checkDrugId,checkConceptId,noLot)) {
 
-				if (dp.getCmddrugId() != null) {
-					lcation = dp.getCmddrugId().getLocationId();
-				} else {
-					lcation = service.getReturnStockByDP(dp).get(0)
-							.getDestination();
-				}
+				if (qntAcc <= dp.getQntyReq()) {
+					if (request.getParameter("invDate") != null
+							&& !request.getParameter("invDate").equals("")) {
+						String inventoryDateStr = request.getParameter("invDate");
+						invDate = sdf.parse(inventoryDateStr);
+					}
 
-				// when operating on the level of the main store
-				if (lcation != null) {
-					if (locations.contains(lcation)) {
-						if(dp.getTransferType()!=null &&dp.getTransferType().equals("adjustment"))
-							dpi.setEntree(0);
+					dpi.setInventoryDate(invDate);
+
+					Location lcation = null;
+
+					if (dp.getCmddrugId() != null) {
+						lcation = dp.getCmddrugId().getLocationId();
+					} else {
+						lcation = service.getReturnStockByDP(dp).get(0)
+								.getDestination();
+					}
+
+					// when operating on the level of the main store
+					if (lcation != null) {
+						if (locations.contains(lcation)) {
+							if (dp.getTransferType() != null && dp.getTransferType().equals("adjustment"))
+								dpi.setEntree(0);
+							else
+								dpi.setEntree(qntAcc);
+
+							dpi.setIsStore(true);
+							total = currSolde + qntAcc;
+						}
+						if (cmddrug.getDestination().getLocationId() == dftLoc
+								.getLocationId()
+								&& cmddrug.getLocationId().getLocationId() != null) {
+							dpiCurrSortie.setInventoryDate(invDate);
+							dpiCurrSortie.setSortie(qntAcc);
+							dpiCurrSortie.setIsStore(true);
+							total1 = currentSolde - qntAcc;
+
+						}
+					} else {
+						// operating on the level of the pharmacy(dispensing)
+						int currStat = 0;
+						if (dp.getDrugId() != null)
+							currStat = service.getCurrSoldeDisp(dp.getDrugId()
+									.getDrugId()
+									+ "", null, cmddrug.getPharmacy()
+									.getPharmacyId()
+									+ "", dateStr, noLot, null);
 						else
-						dpi.setEntree(qntAcc);
+							currStat = service.getCurrSoldeDisp(null, dp
+									.getConceptId().getConceptId()
+									+ "", cmddrug.getPharmacy().getPharmacyId()
+									+ "", dateStr, noLot, null);
 
 						dpi.setIsStore(true);
-						total = currSolde + qntAcc;
-					}
-					if (cmddrug.getDestination().getLocationId() == dftLoc
-							.getLocationId()
-							&& cmddrug.getLocationId().getLocationId() != null) {
-						dpiCurrSortie.setInventoryDate(invDate);
-						dpiCurrSortie.setSortie(qntAcc);
-						dpiCurrSortie.setIsStore(true);
-						total1 = currentSolde - qntAcc;
+						dpi.setSortie(qntAcc);
+						int solde;
+						int balance = qntAcc - currStat;
+						if (dp.getTransferType() != null && dp.getTransferType().equals("adjustment")) {
+							total = currSolde;
+							solde = qntAcc;
+						} else {
+							total = currSolde - qntAcc;
+							solde = qntAcc + currStat;
+						}
 
-					}
-				} else {
-					// operating on the level of the pharmacy(dispensing)
-					int currStat = 0;
-					if (dp.getDrugId() != null)
-						currStat = service.getCurrSoldeDisp(dp.getDrugId()
-								.getDrugId()
-								+ "", null, cmddrug.getPharmacy()
-								.getPharmacyId()
-								+ "", dateStr, noLot, null);
-					else
-						currStat = service.getCurrSoldeDisp(null, dp
-								.getConceptId().getConceptId()
-								+ "", cmddrug.getPharmacy().getPharmacyId()
-								+ "", dateStr, noLot, null);
-
-					dpi.setIsStore(true);
-					dpi.setSortie(qntAcc);
-					int solde;
-					int balance= qntAcc- currStat;
-					if(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment")){
-						total = currSolde;
-						solde = qntAcc;
-					}else {
-						total = currSolde - qntAcc;
-						solde = qntAcc + currStat;
-					}
-
-				//	int solde = qntAcc + currStat;
+						//	int solde = qntAcc + currStat;
 
 
-					// saving in the pharmacy inventory table
-					if (solde >= 0 && dp.getCmddrugId().getPharmacy() != null) {
-						PharmacyInventory pi = new PharmacyInventory();
-						pi.setDate(invDate);
-						pi.setEntree(qntAcc);
-						pi.setSortie(0);
-						pi.setDrugproductId(dp);
-						pi.setSolde(solde);
-
-						if(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment") && balance>0){
-							pi.setAdjustedOldSolde(currStat);
-							pi.setEntree(balance);
+						// saving in the pharmacy inventory table
+						if (solde >= 0 && dp.getCmddrugId().getPharmacy() != null) {
+							PharmacyInventory pi = new PharmacyInventory();
+							pi.setDate(invDate);
+							pi.setEntree(qntAcc);
 							pi.setSortie(0);
+							pi.setDrugproductId(dp);
+							pi.setSolde(solde);
 
-						}
-						if(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment") && balance<0){
-							pi.setAdjustedOldSolde(currStat);
-							pi.setEntree(0);
-							pi.setSortie(balance*(-1));
+							if (dp.getTransferType() != null && dp.getTransferType().equals("adjustment") && balance > 0) {
+								pi.setAdjustedOldSolde(currStat);
+								pi.setEntree(balance);
+								pi.setSortie(0);
 
-						}
+							}
+							if (dp.getTransferType() != null && dp.getTransferType().equals("adjustment") && balance < 0) {
+								pi.setAdjustedOldSolde(currStat);
+								pi.setEntree(0);
+								pi.setSortie(balance * (-1));
 
-						if (total >= 0) {
-							service.savePharmacyInventory(pi);
+							}
+
+							if (total >= 0) {
+								service.savePharmacyInventory(pi);
+							}
 						}
 					}
-				}
 
-				if (total >= 0) {
-					dp.setDeliveredQnty(qntAcc);
-					//dp.setComments("Testttttttttttttt");
-					dp.setLotNo(noLot);
-					if (strDate != null) {
-						Date date = sdf.parse(strDate);
-						dp.setExpiryDate(date);
-					}
-
-					dp.setIsDelivered(true);
-					dp.setCmddrugId(cmddrug);
-
-					dp.setTransfereBy(Context.getAuthenticatedUser());
-
-					dpi.setDrugproductId(dp);
-					dpi.setSolde(total);
-					service.saveDrugProduct(dp);
-
-					if(!(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment"))) {
-						service.saveInventory(dpi);
-					}
-					int storeBalance=qntAcc-currSolde;
-					if(dp.getTransferType()!=null && dp.getTransferType().equals("adjustment") && dp.getCmddrugId().getPharmacy()==null) {
-						dpi.setSolde(qntAcc);
-						if(storeBalance<0) {
-							dpi.setSortie(storeBalance * (-1));
-							dpi.setEntree(0);
-							dpi.setAdjustedOldSolde(currSolde);
-						}else {
-							dpi.setEntree(storeBalance);
-							dpi.setSortie(0);
-							dpi.setAdjustedOldSolde(currSolde);
-
+					if (total >= 0) {
+						dp.setDeliveredQnty(qntAcc);
+						//dp.setComments("Testttttttttttttt");
+						dp.setLotNo(noLot);
+						if (strDate != null) {
+							Date date = sdf.parse(strDate);
+							dp.setExpiryDate(date);
 						}
-						service.saveInventory(dpi);
+
+						dp.setIsDelivered(true);
+						dp.setCmddrugId(cmddrug);
+
+						dp.setTransfereBy(Context.getAuthenticatedUser());
+
+						dpi.setDrugproductId(dp);
+						dpi.setSolde(total);
+						try{
+							service.saveDrugProduct(dp);
+						} catch (HibernateSystemException hbrn) {
+							//mav.addObject("msg", "No consumable in the system");
+							throw new HibernateSystemException(new HibernateException(hbrn));
+						}
+						if (!(dp.getTransferType() != null && dp.getTransferType().equals("adjustment"))) {
+							service.saveInventory(dpi);
+						}
+						int storeBalance = qntAcc - currSolde;
+						if (dp.getTransferType() != null && dp.getTransferType().equals("adjustment") && dp.getCmddrugId().getPharmacy() == null) {
+							dpi.setSolde(qntAcc);
+							if (storeBalance < 0) {
+								dpi.setSortie(storeBalance * (-1));
+								dpi.setEntree(0);
+								dpi.setAdjustedOldSolde(currSolde);
+							} else {
+								dpi.setEntree(storeBalance);
+								dpi.setSortie(0);
+								dpi.setAdjustedOldSolde(currSolde);
+
+							}
+							service.saveInventory(dpi);
+						}
+
+						mav.addObject("msg",
+								"The order has been updated successfully");
+
+					} else if (total1 >= 0
+							&& cmddrug.getDestination().getLocationId() == dftLoc
+							.getLocationId()
+							&& cmddrug.getLocationId() != null) {
+						dpiCurrSortie.setDrugproductId(dp);
+						dpiCurrSortie.setSolde(total1);
+
+						service.saveInventory(dpiCurrSortie);
+					} else {
+						httpSession.removeAttribute(WebConstants.OPENMRS_ERROR_ATTR);
+						httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+								"The quantity requested is greater than what is in store: " + currentSolde);
 					}
-
-					mav.addObject("msg",
-							"The order has been updated successfully");
-
-				} else if (total1 >= 0
-						&& cmddrug.getDestination().getLocationId() == dftLoc
-								.getLocationId()
-						&& cmddrug.getLocationId() != null) {
-					dpiCurrSortie.setDrugproductId(dp);
-					dpiCurrSortie.setSolde(total1);
-
-					service.saveInventory(dpiCurrSortie);
 				} else {
-					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
-							"The quantity requested is greater than what is in store: "+currentSolde);
+					httpSession.removeAttribute(WebConstants.OPENMRS_ERROR_ATTR);
+					httpSession
+							.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+									"The Given Quantity has to be less or equal to the number requested");
 				}
-			} else {
+			}else {
+				httpSession.removeAttribute(WebConstants.OPENMRS_ERROR_ATTR);
 				httpSession
 						.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
-								"The Given Quantity has to be less or equal to the number requested");
+								"The Lot Number: "+noLot+" is used by other Drug or Consummable product");
 			}
 
 		}
@@ -710,11 +739,11 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 				if (cmddrug.getLocationId() != null) {
 					if (drugReq.getDrugId() != null) {
 						key = drugReq.getDrugId().toString() + "_"
-								+ cmddrug.getLocationId().getLocationId();
+								+ cmddrug.getLocationId().getLocationId()+"_"+dp.getDrugproductId();
 						drugMap.put(key, drugReq);
 					} else {
 						key = consReq.getConceptId().toString() + "_"
-								+ cmddrug.getLocationId().getLocationId();
+								+ cmddrug.getLocationId().getLocationId()+"_"+dp.getDrugproductId();
 						consommationMap.put(key, consReq);
 					}
 				} else {
@@ -722,13 +751,13 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 						key = drugReq.getDrugId().toString()
 								+ "_"
 								+ cmddrug.getPharmacy().getLocationId()
-										.getLocationId();
+										.getLocationId()+"_"+dp.getDrugproductId();
 						drugMap.put(key, drugReq);
 					} else {
 						key = consReq.getConceptId().toString()
 								+ "_"
 								+ cmddrug.getPharmacy().getLocationId()
-										.getLocationId();
+										.getLocationId()+"_"+dp.getDrugproductId();
 						consommationMap.put(key, consReq);
 					}
 				}

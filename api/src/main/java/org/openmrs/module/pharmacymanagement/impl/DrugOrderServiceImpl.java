@@ -369,4 +369,19 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 		return drugOrderDAO.getLotNumberByDrugProductId(drugProductId);
 	}
 
+	@Override
+	public Boolean checkIfOneDrugOrConsummableUseOneLotNo(String drugId, String conceptId, String lotNo) {
+		return drugOrderDAO.checkIfOneDrugOrConsummableUseOneLotNo(drugId, conceptId, lotNo);
+	}
+
+	@Override
+	public Collection<DrugProduct> getPharmacyDrugProducts() {
+		return drugOrderDAO.getPharmacyDrugProducts();
+	}
+
+	@Override
+	public Collection<DrugProduct> getPharmacyConsummableProducts() {
+		return drugOrderDAO.getPharmacyConsummableProducts();
+	}
+
 }

@@ -254,4 +254,13 @@
 			ALTER TABLE pharmacymanagement_cmd_drug ADD CONSTRAINT fk_creator_dp FOREIGN KEY (creator) REFERENCES users(user_id);
 		</sql>
 	</diff>
+	<diff>
+		<version>1.6.8</version>
+		<author>Rwanda-Emr</author>
+		<date>May 28th 2020</date>
+		<description>Add UNIQUE constraint on the "order_id" column in pharmacymanagement_drug_order_prescription table</description>
+		<sql>
+			ALTER TABLE pharmacymanagement_drug_order_prescription ADD UNIQUE (order_id);
+		</sql>
+	</diff>
 </sqldiff>

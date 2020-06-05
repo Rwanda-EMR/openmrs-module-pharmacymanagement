@@ -26,13 +26,22 @@ $(document).ready( function() {
 				var qntreq = document.getElementById(qntreqId).innerHTML;
 				var expirationDate = document.getElementById(expirationDateId).innerHTML;
 				$("#qntreqid").attr("value", qntreq);
-				$("#expirationDateId").attr("value", expirationDate);
+				var dpLotNo="dpLotNo_"+target;
+				var lotNo = $('#'+dpLotNo).text();
+				var expiryDate = $('#'+expirationDateId).text().trim();
+
+				//$("#expirationDateId").attr("value", expirationDate);
+				$("#expirationDateId").attr("value", expiryDate);
+
 				<c:if test="${cmdDrug.locationId.locationId != dftLoc.locationId}">
 					$("#lotNoId").empty().html('Loading...');
 					$("#lotNoId").load("patOrders.list?drugproductId="+target+" #lots");
 					$("#selectLotId").append($(document.createElement("option")).attr("value", "").text("-- Select --"));
-
 				</c:if>
+               if(lotNo!=null || lotNo!=""){
+								$("#lotNoid").attr("value", lotNo);
+								$("#expirationDateId").attr("value", expiryDate);
+					}
 	});
 
 	$("#lotNoId").change(function() {
@@ -236,7 +245,7 @@ $(document).ready( function() {
 -->
     <td class="simple">${consommation.value.qntyToOrder}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.isDelivered == false ? '' : consommation.value.drugProduct.deliveredQnty}&nbsp;</td>
-    <td class="simpleSpan"><span id="qntreqId_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.qntyReq}</span>  ${consommation.value.drugProduct.lotNo}</td>
+    <td class="simpleSpan"><span id="qntreqId_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.qntyReq}</span>  <span id="dpLotNo_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.lotNo}</span></td>
     <td class="simpleSpan"><span id="expiryDate_${consommation.value.drugProduct.drugproductId}">
     <c:choose>
          <c:when test="${(locales=='en_US') || (locales=='en')}">
@@ -246,6 +255,7 @@ $(document).ready( function() {
              <fmt:formatDate pattern="dd/MM/yyyy" value="${consommation.value.drugProduct.expiryDate}"/>
           </c:otherwise>
     </c:choose>
+    </span>
     </td>
     <td class="simpleSpan">${consommation.value.drugProduct.transferType}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.requestedBy.names}&nbsp;</td>
@@ -305,9 +315,20 @@ $(document).ready( function() {
 -->
     <td class="simple">${consommation.value.qntyToOrder}&nbsp;</td>
     <td class="simpleSpan">${consommation.value.drugProduct.isDelivered == false ? '' : consommation.value.drugProduct.deliveredQnty}&nbsp;</td>
-    <td class="simpleSpan"><span id="qntreqId_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.qntyReq}</span>&nbsp; ${consommation.value.drugProduct.lotNo}</td>
+    <td class="simpleSpan"><span id="qntreqId_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.qntyReq}</span>&nbsp; <span id="dpLotNo_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.lotNo}</span></td>
     
-     <td class="simpleSpan"><span id="expiryDate_${consommation.value.drugProduct.drugproductId}">${consommation.value.drugProduct.expiryDate}</span></td>
+     <td class="simpleSpan"><span id="expiryDate_${consommation.value.drugProduct.drugproductId}">
+
+     <c:choose>
+              <c:when test="${(locales=='en_US') || (locales=='en')}">
+                <fmt:formatDate pattern="MM/dd/yyyy" value="${consommation.value.drugProduct.expiryDate}"/>
+               </c:when>
+              <c:otherwise>
+                  <fmt:formatDate pattern="dd/MM/yyyy" value="${consommation.value.drugProduct.expiryDate}"/>
+               </c:otherwise>
+     </c:choose>
+
+     </span></td>
     <td class="simpleSpan">${consommation.value.drugProduct.transferType}&nbsp;</td>
     
     <td class="simpleSpan">${consommation.value.drugProduct.requestedBy.names}&nbsp;</td>
@@ -367,7 +388,7 @@ $(document).ready( function() {
 	
 	<tr>
 		<td><spring:message code="pharmacymanagement.lotNr" /></td>
-		<td><div id="lotNoId"><input type="text" name="noLotStock" required /></div>
+		<td><div id="lotNoId"><input type="text" name="noLotStock" id="lotNoid" required /></div>
 			
 		</td>
 	</tr>

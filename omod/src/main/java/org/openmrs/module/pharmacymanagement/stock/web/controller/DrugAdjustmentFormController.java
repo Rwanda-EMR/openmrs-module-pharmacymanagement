@@ -198,6 +198,12 @@ public class DrugAdjustmentFormController extends AbstractController {
 
                     String id = (request.getParameter("consumable_" +suffixId)).split("@")[0];
                     String lotNo = (request.getParameter("consumable_" + suffixId)).split("@")[1];
+                    String expiryDateStr = (request.getParameter("consumable_" + suffixId)).split("@")[2];
+
+                    SimpleDateFormat sdfexp = new SimpleDateFormat("yyyy-MM-dd");
+
+                    Date expiryDate= sdfexp.parse(expiryDateStr);
+
                     // saving the consumable product
                     //String id = request.getParameter("consumable_" + suffixId);
                     String consneeded = request.getParameter("consneeded_"+suffixId);
@@ -228,6 +234,7 @@ public class DrugAdjustmentFormController extends AbstractController {
                     if(lotNo!=null && !lotNo.equals("")){
                         drugProduct.setLotNo(lotNo);
                     }
+                    drugProduct.setExpiryDate(expiryDate);
                     service.saveDrugProduct(drugProduct);
                     currDP.setIsDelivered(false);
                     service.saveDrugProduct(currDP);

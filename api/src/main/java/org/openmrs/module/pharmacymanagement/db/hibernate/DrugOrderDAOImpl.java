@@ -26,6 +26,7 @@ import org.openmrs.module.pharmacymanagement.PharmacyConstants;
 import org.openmrs.module.pharmacymanagement.PharmacyInventory;
 import org.openmrs.module.pharmacymanagement.db.DrugOrderDAO;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
+import org.springframework.transaction.annotation.Transactional;
 
 public class DrugOrderDAOImpl implements DrugOrderDAO {
 	private SessionFactory sessionFactory;
@@ -87,6 +88,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		session.update(product);
 	}
 
+	@Transactional
 	public void saveDrugProduct(DrugProduct drugProduct) {
 		if (drugProduct.getStoreQnty() >= 0) {
 			sessionFactory.getCurrentSession().saveOrUpdate(drugProduct);
@@ -1242,4 +1244,60 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
         List<Object[]> list = query.list();
 
         return list;    }
+
+	@Override
+	public Boolean checkIfOneDrugOrConsummableUseOneLotNo(String drugId, String conceptId, String lotNo) {
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("select * from pharmacymanagement_drug_product where lot_no='"+lotNo+"' ");
+
+		if(drugId!=null && !drugId.equals("")){
+			sb.append(" and drug_id!= '" + drugId + "' ");
+
+		}
+		if(conceptId!=null && !conceptId.equals("")){
+			sb.append(" and drug_id!= '" + conceptId + "' ");
+
+		}
+		Session session = sessionFactory.getCurrentSession();
+
+		Query query = session.createSQLQuery(sb.toString());
+
+		List<Object[]> list = query.list();
+
+		if(list.size()>0){
+		return false;
+		}
+		return true;
+	}
+	@Override
+	public Collection<DrugProduct> getPharmacyDrugProducts() {
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("SELECT dp.* FROM pharmacymanagement_drug_product dp " +
+				"INNER JOIN pharmacymanagement_pharmacy_inventory pi ON dp.drugproduct_id = pi.drugproduct_id " +
+				"where dp.drug_id is not null and lot_no is not null");
+
+		Session session = sessionFactory.getCurrentSession();
+
+		Collection<DrugProduct> dpList = session.createSQLQuery(sb.toString())
+				.addEntity("dp", DrugProduct.class).list();
+
+		return dpList;
+	}
+	@Override
+	public Collection<DrugProduct> getPharmacyConsummableProducts() {
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("SELECT dp.* FROM pharmacymanagement_drug_product dp " +
+				"INNER JOIN pharmacymanagement_pharmacy_inventory pi ON dp.drugproduct_id = pi.drugproduct_id " +
+				"where dp.concept_id is not null and lot_no is not null");
+
+		Session session = sessionFactory.getCurrentSession();
+
+		Collection<DrugProduct> dpList = session.createSQLQuery(sb.toString())
+				.addEntity("dp", DrugProduct.class).list();
+
+		return dpList;
+	}
 }
