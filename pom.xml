@@ -56,7 +56,8 @@
 	</dependencyManagement>
 
 	<properties>
-		<openMRSVersion>1.9.11</openMRSVersion>
+		<openMRSVersion>2.3.0</openMRSVersion>
+		<legacyuiVersion>1.6.0</legacyuiVersion>
 		<mohappointmentVersion>0.2</mohappointmentVersion>
 		<mohorderentrybridgeVersion>1.0.1</mohorderentrybridgeVersion>
 	</properties>
