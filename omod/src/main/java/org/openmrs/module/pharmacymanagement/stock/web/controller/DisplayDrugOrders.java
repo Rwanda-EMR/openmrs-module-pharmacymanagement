@@ -382,7 +382,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 					drugReq.setReturnedProduct(retProd);
 					drugReq.setDrugName(dp.getDrugId().getName());
 					drugReq.setDrugId(dp.getDrugId().getDrugId() + "");
-					drugReq.setConditUnitaire(dp.getDrugId().getUnits() + "");
+					drugReq.setConditUnitaire(dp.getDrugId().getDoseLimitUnits().getDisplayString() + "");
 					if (dp.getExpiryDate() != null)
 						drugReq.setExpirationDate(dp.getExpiryDate());
 				} else {
@@ -688,7 +688,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 
 					drugReq.setDrugName(dp.getDrugId().getName());
 					drugReq.setDrugId(dp.getDrugId().getDrugId() + "");
-					drugReq.setConditUnitaire(dp.getDrugId().getUnits() + "");
+					drugReq.setConditUnitaire(dp.getDrugId().getDoseLimitUnits().getDisplayString() + "");
 					if (dp.getExpiryDate() != null)
 						drugReq.setExpirationDate(dp.getExpiryDate());
 					//drugReq.setLocationId(cmddrug.getLocationId().getLocationId());

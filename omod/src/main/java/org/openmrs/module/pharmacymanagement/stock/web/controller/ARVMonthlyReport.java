@@ -77,7 +77,7 @@ public class ARVMonthlyReport extends ParameterizableViewController {
 
 				ca.setDrugName(dp.getDrugId().getName());
 				ca.setDrugId(dp.getDrugId().getDrugId().toString());
-				ca.setConditUnitaire(dp.getDrugId().getUnits());
+				ca.setConditUnitaire(dp.getDrugId().getDoseLimitUnits().getDisplayString());
 				ca.setExpirationDate(dp.getExpiryDate());
 				if (cmdDrug.getLocationId() != null) {
 					if(dp.getDrugId() != null)
