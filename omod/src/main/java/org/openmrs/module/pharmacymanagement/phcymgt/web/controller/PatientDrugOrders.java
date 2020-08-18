@@ -145,7 +145,7 @@ public class PatientDrugOrders extends ParameterizableViewController {
 
 				if(drOr.getDrug()!=null && !availNotAvailOrderedDrug.containsKey(drOr.getDrug().getName().toString()) ) {
 					if (drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE)
-					availNotAvailOrderedDrug.put(drOr.getDrug().getName().toString(),"Not Available (OrderId: "+drOr.getOrderId()+", Date: "+drOr.getStartDate()+", Orderer: "+drOr.getOrderer().getNames()+")");
+					availNotAvailOrderedDrug.put(drOr.getDrug().getName().toString(),"Not Available (OrderId: "+drOr.getOrderId()+", Date: "+drOr.getDateActivated()+", Orderer: "+drOr.getOrderer().getNames()+")");
 				}
 			}
 

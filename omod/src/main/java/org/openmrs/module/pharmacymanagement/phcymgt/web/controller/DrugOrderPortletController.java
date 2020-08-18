@@ -140,10 +140,10 @@ public class DrugOrderPortletController extends PortletController {
 			List<DrugOrder> ordList = new ArrayList<DrugOrder>();
 			for(DrugOrder o1 : drugOrders) {
 				if(o1.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
-					if (o1.getStartDate() != null && o.getStartDate() != null)
-						if (o1.getStartDate().equals(o.getStartDate())) {
+					if (o1.getDateActivated() != null && o.getDateActivated() != null)
+						if (o1.getDateActivated().equals(o.getDateActivated())) {
 							ordList.add(o1);
-							dat1 = o1.getStartDate();
+							dat1 = o1.getDateActivated();
 						}
 				}
 			}

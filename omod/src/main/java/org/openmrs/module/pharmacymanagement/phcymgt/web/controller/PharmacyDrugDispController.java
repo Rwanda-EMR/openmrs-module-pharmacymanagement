@@ -227,10 +227,10 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 								int solde = currStat - quantity;
 								if (solde >= 0) {
 									//auto expire the regimen to remove from the list which appears when dispensing what have been prescribed
-									//drugOrder.setAutoExpireDate(drugOrder.getStartDate());
+									//drugOrder.setAutoExpireDate(drugOrder.getDateActivated());
 									drugOrder.setDiscontinued(true);
 									//drugOrder.setDiscontinuedDate(atEndOfDay(new Date()));
-									drugOrder.setDiscontinuedDate(getNextDay(drugOrder.getStartDate()));
+									drugOrder.setDiscontinuedDate(getNextDay(drugOrder.getDateActivated()));
 
 
 									if (count == 1) {
