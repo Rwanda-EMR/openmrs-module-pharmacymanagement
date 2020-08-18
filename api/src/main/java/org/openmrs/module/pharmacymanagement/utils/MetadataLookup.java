@@ -333,7 +333,7 @@ public class MetadataLookup {
 	public static OrderType getOrderType(String lookup) {
 		OrderType ot = Context.getOrderService().getOrderTypeByUuid(lookup);
 		if (ot == null) {
-			for (OrderType orderType : Context.getOrderService().getAllOrderTypes()) {
+			for (OrderType orderType : Context.getOrderService().getOrderTypes(false)) {
 				if (orderType.getName().equalsIgnoreCase(lookup)) {
 					ot = orderType;
 				}
