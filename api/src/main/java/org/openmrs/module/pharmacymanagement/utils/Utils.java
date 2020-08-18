@@ -1,6 +1,5 @@
 package org.openmrs.module.pharmacymanagement.utils;
 
-import java.io.PrintStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,10 +11,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
@@ -26,20 +25,17 @@ import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
+import org.openmrs.Provider;
 import org.openmrs.User;
-import org.openmrs.api.AdministrationService;
-import org.openmrs.api.ConceptService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.AppointmentState;
 import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
-import org.openmrs.module.pharmacymanagement.CmdDrug;
 import org.openmrs.module.pharmacymanagement.ConsumableDispense;
 import org.openmrs.module.pharmacymanagement.DrugOrderPrescription;
 import org.openmrs.module.pharmacymanagement.DrugProduct;
 import org.openmrs.module.pharmacymanagement.DrugProductInventory;
-import org.openmrs.module.pharmacymanagement.Pharmacy;
 import org.openmrs.module.pharmacymanagement.PharmacyInventory;
 import org.openmrs.module.pharmacymanagement.ProductReturnStore;
 import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
@@ -98,14 +94,25 @@ public class Utils
 		return o;
 	}
 
-	public static Encounter createEncounter(Date encounterDate, User provider, Location location, Patient patient, EncounterType encounterType, List<Obs> obsList)
+	public  static Provider getProviderFromUser(User user){
+		Collection<Provider> providers = Context.getProviderService().getProvidersByPerson(user.getPerson());
+		Provider provider = null;
+		if(providers.size() > 0) {
+			provider = providers.iterator().next();
+		}else {
+			provider = Context.getProviderService().getUnknownProvider();
+		}
+		return provider;
+	}
+    
+	public static Encounter createEncounter(Date encounterDate, User user, Location location, Patient patient, EncounterType encounterType, List<Obs> obsList)
 	{
 		Encounter enc = new Encounter();
 		try
 		{
 			enc.setDateCreated(new Date());
 			enc.setEncounterDatetime(encounterDate);
-			enc.setProvider(provider.getPerson());
+			enc.setProvider(null, getProviderFromUser(user));
 			enc.setLocation(location);
 			enc.setPatient(patient);
 			enc.setEncounterType(encounterType);
