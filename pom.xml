@@ -12,22 +12,21 @@
 	<url>http://openmrs.org</url>
 
 	<scm>
-		<connection>scm:git:git@github.com:Rwanda-EMR/openmrs-module-pharmacymanagement.git</connection>
-		<developerConnection>scm:git:git@github.com:Rwanda-EMR/openmrs-module-pharmacymanagement.git</developerConnection>
-		<url>https://github.com/Rwanda-EMR/openmrs-module-pharmacymanagement/</url>
+		<developerConnection>scm:git:https://github.com/Rwanda-EMR/openmrs-module-pharmacymanagement</developerConnection>
+		<url>https://github.com/Rwanda-EMR/openmrs-module-pharmacymanagement</url>
 		<tag>HEAD</tag>
 	</scm>
 
 	<distributionManagement>
 		<repository>
-			<id>openmrs-repo-modules</id>
-			<name>OpenMRS Modules</name>
-			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/modules</url>
+			<id>openmrs-repo-modules-rwandaemr</id>
+			<name>rwandaemr-artifactory-primary-0-releases</name>
+			<url>https://rwandaemr.jfrog.io/artifactory/libs-release</url>
 		</repository>
 		<snapshotRepository>
-			<id>openmrs-repo-snapshots</id>
-			<name>OpenMRS Snapshots</name>
-			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/snapshots</url>
+			<id>openmrs-repo-modules-rwandaemr-snapshots</id>
+			<name>rwandaemr-artifactory-primary-0-snapshots</name>
+			<url>https://rwandaemr.jfrog.io/artifactory/libs-snapshot</url>
 		</snapshotRepository>
 	</distributionManagement>
 

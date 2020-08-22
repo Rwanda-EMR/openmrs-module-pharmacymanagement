@@ -1,32 +1,60 @@
-openmrs-module-basicmodule
-==========================
+# Pharmacy Management and Dispensing Module
 
-A demonstration module for new OpenMRS module developers
+### [Github Actions](https://github.com/features/actions)
 
-Description
------------
-This is a very basic module which can be used as a starting point in creating a new module.
+For the RwandaEMR project, we have begun to establish the use of Github Actions for CI automation.  
+Github Actions are configured on a per-repository basis, and contain those workflows that you wish to configure for 
+that repository.  The advantage of this platform for the RwandaEMR project is that anyone who has write-access to the 
+repository can create or edit a CI workflow.
 
-Building from Source
---------------------
-You will need to have Java 1.6+ and Maven 2.x+ installed.  Use the command 'mvn package' to 
-compile and package the module.  The .omod file will be in the omod/target folder.
+Anyone can also easily view all of the details of each workflow within the code project itself.  
+See the [workflows defined here](https://github.com/Rwanda-EMR/openmrs-module-pharmacymanagement/tree/master/.github/workflows) 
+for how this is configured for this project.
 
-Alternatively you can add the snippet provided in the [Creating Modules](https://wiki.openmrs.org/x/cAEr) page to your 
-omod/pom.xml and use the mvn command:
+## Standard Workflows
 
-    mvn package -P deploy-web -D deploy.path="../../openmrs-1.8.x/webapp/src/main/webapp"
+### verify-prs:
 
-It will allow you to deploy any changes to your web 
-resources such as jsp or js files without re-installing the module. The deploy path says 
-where OpenMRS is deployed.
+For every pull request that is issued against the configured branches (currently just master), 
+this job runs a “mvn verify”, which compiles, tests, and verifies that the there are no errors.
 
-Installation
-------------
-1. Build the module to produce the .omod file.
-2. Use the OpenMRS Administration > Manage Modules screen to upload and install the .omod file.
+### deploy-snapshots:
 
-If uploads are not allowed from the web (changable via a runtime property), you can drop the omod
-into the ~/.OpenMRS/modules folder.  (Where ~/.OpenMRS is assumed to be the Application 
-Data Directory that the running openmrs is currently using.)  After putting the file in there 
-simply restart OpenMRS/tomcat and the module will be loaded and started.
+For every commit pushed to the configured branches (currently master), this job runs a “mvn deploy”, which compiles, 
+executes tests, and verifies that this builds without errors, and if so, deploys to the OpenMRS Maven Snapshots repository 
+that is configured in the distributionManagement section of 
+the [pom.xml](https://github.com/Rwanda-EMR/openmrs-module-pharmacymanagement/blob/master/pom.xml)
+
+### perform-release:
+
+This job exists to perform a versioned, non-SNAPSHOT release.  
+This is not automatically executed,  but rather is initiated by an explicit, authenticated REST request.  
+This job runs the following maven goals:
+
+```mvn release:prepare```
+- Removes “-SNAPSHOT” from pom.xml files and commits
+- Tags this commit with the version number
+- Increments the version in the pom.xml to the next snapshot version, and commits this
+
+```mvn release:perform```
+- Checks out the tag with the version created in the release:prepare step
+- Builds the code artifacts
+- Deploys these to the OpenMRS Maven repository as configured in pom distributionManagement section
+
+```mvn deploy```
+- Builds the next snapshot version created at the end of release:prepare
+- Deploys this to the OpenMRS Maven snapshots repository that is configured in the pom
+
+To initiate the release workflow one would take the following steps:
+* [Create a personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) to authenticate into Github with minimal permissions (public_repo and write:repo_hook)
+* In a terminal, set the GITHUB_TOKEN environment variable to this token value:
+```export GITHUB_TOKEN=areallylongtokenthatisgeneratedingithub```
+* Issue a request to hit the deployment endpoint:
+```
+curl  -H "Authorization: token $GITHUB_TOKEN" \
+      -H "Accept: application/vnd.github.everest-preview+json"  \
+      -H "Content-Type: application/json" \
+      --request POST \
+      --data '{"event_type": "perform-release"}' \
+      https://api.github.com/repos/Rwanda-EMR/openmrs-module-pharmacymanagement/dispatches
+```
