@@ -8,7 +8,7 @@
 #      -H "Content-Type: application/json" \
 #      --request POST \
 #      --data '{ "event_type": "perform-release", "client_payload": { "ref": "master" } }' \
-#      https://api.github.com/repos/Rwanda-EMR/openmrs-distro-rwandaemr/dispatches
+#      https://api.github.com/repos/Rwanda-EMR/openmrs-module-pharmacymanagement/dispatches
 #
 # This will kick off this workflow, which will attempt to update the pom by removing SNAPSHOT, commit these changes,
 # build, test, and deploy this to the non-SNAPSHOT Maven repository, update the pom to next SNAPSHOT and commit.
