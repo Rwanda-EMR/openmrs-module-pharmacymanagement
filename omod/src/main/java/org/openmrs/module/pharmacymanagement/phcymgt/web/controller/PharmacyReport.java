@@ -94,7 +94,7 @@ public class PharmacyReport extends ParameterizableViewController {
 						ca.setDrugId(pi.getDrugproductId().getDrugId().getDrugId()
 								+ "");
 						ca.setConditUnitaire(pi.getDrugproductId().getDrugId()
-								.getUnits());
+								.getStrength());
 					}else {
 						ca.setDrugName(pi.getDrugproductId().getConceptId().getName().getName());
 						ca.setDrugId(pi.getDrugproductId().getConceptId().getConceptId()

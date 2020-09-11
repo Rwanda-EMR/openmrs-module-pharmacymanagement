@@ -688,7 +688,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 
 					drugReq.setDrugName(dp.getDrugId().getName());
 					drugReq.setDrugId(dp.getDrugId().getDrugId() + "");
-					drugReq.setConditUnitaire(dp.getDrugId().getUnits() + "");
+					drugReq.setConditUnitaire(dp.getDrugId().getStrength() + "");
 					if (dp.getExpiryDate() != null)
 						drugReq.setExpirationDate(dp.getExpiryDate());
 					//drugReq.setLocationId(cmddrug.getLocationId().getLocationId());

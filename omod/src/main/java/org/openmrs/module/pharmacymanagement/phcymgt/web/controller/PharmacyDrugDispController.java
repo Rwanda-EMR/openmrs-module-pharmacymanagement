@@ -180,7 +180,7 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 			if(request.getParameter("pharmacy") != null && !request.getParameter("pharmacy").equals(""))
 				pharmacyIdStr = request.getParameter("pharmacy");
 
-			encounter = Utils.createEncounter(encDate, user, dftLoc, patient,
+			encounter = Utils.createEncounter(encDate, dftLoc, patient,
 					encounterType, obsList);
 			if (fieldNames.size() != 0) {
 				for (String str : fieldNames) {
@@ -230,7 +230,7 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 									//drugOrder.setAutoExpireDate(drugOrder.getStartDate());
 									drugOrder.setDiscontinued(true);
 									//drugOrder.setDiscontinuedDate(atEndOfDay(new Date()));
-									drugOrder.setDiscontinuedDate(getNextDay(drugOrder.getStartDate()));
+									drugOrder.setDiscontinuedDate(getNextDay(drugOrder.getEffectiveStartDate()));
 
 
 									if (count == 1) {

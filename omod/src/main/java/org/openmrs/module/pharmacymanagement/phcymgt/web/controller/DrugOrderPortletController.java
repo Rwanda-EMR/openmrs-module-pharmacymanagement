@@ -3,7 +3,14 @@
  */
 package org.openmrs.module.pharmacymanagement.phcymgt.web.controller;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,6 +20,7 @@ import org.openmrs.Drug;
 import org.openmrs.DrugOrder;
 import org.openmrs.Location;
 import org.openmrs.Obs;
+import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.api.ConceptService;
@@ -22,10 +30,11 @@ import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.pharmacymanagement.DrugOrderPrescription;
 import org.openmrs.module.pharmacymanagement.DrugProduct;
-import org.openmrs.module.pharmacymanagement.DrugProductInventory;
 import org.openmrs.module.pharmacymanagement.PharmacyConstants;
 import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
 import org.openmrs.module.pharmacymanagement.utils.Utils;
+import org.openmrs.parameter.OrderSearchCriteria;
+import org.openmrs.parameter.OrderSearchCriteriaBuilder;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.controller.PortletController;
 
@@ -110,7 +119,7 @@ public class DrugOrderPortletController extends PortletController {
 		List<DrugOrder> drugOrders = new ArrayList<DrugOrder>();
 //		Collection<DrugProduct> dpList = dos.getAllProducts();
 		if (patient != null) {
-			drugOrders = orderService.getDrugOrdersByPatient(patient);
+			drugOrders = getDrugOrdersByPatient(patient);
 			model.put("patient", patient);
 		}
 		for(Drug drg : drugs) {
@@ -140,10 +149,10 @@ public class DrugOrderPortletController extends PortletController {
 			List<DrugOrder> ordList = new ArrayList<DrugOrder>();
 			for(DrugOrder o1 : drugOrders) {
 				if(o1.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
-					if (o1.getStartDate() != null && o.getStartDate() != null)
-						if (o1.getStartDate().equals(o.getStartDate())) {
+					if (o1.getEffectiveStartDate() != null && o.getEffectiveStartDate() != null)
+						if (o1.getEffectiveStartDate().equals(o.getEffectiveStartDate())) {
 							ordList.add(o1);
-							dat1 = o1.getStartDate();
+							dat1 = o1.getEffectiveStartDate();
 						}
 				}
 			}
@@ -198,6 +207,17 @@ public class DrugOrderPortletController extends PortletController {
 		model.put("insuranceNumber", insuranceNumber);
 		super.populateModel(request, model);
 
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<DrugOrder> getDrugOrdersByPatient(Patient patient){
+
+		OrderType drugOrderType = Context.getOrderService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID);
+
+		OrderSearchCriteria orderSearchCriteria = new OrderSearchCriteriaBuilder().setPatient(patient)
+				.setOrderTypes(Collections.singletonList(drugOrderType)).build();
+
+		return (List)Context.getOrderService().getOrders(orderSearchCriteria);
 	}
 
 }

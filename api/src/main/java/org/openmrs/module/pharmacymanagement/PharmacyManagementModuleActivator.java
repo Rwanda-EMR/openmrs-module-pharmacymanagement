@@ -15,7 +15,6 @@ package org.openmrs.module.pharmacymanagement;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.module.Activator;
 import org.openmrs.module.BaseModuleActivator;
 
 
