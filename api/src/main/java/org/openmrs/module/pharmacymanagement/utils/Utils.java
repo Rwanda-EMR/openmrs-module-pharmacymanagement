@@ -27,6 +27,7 @@ import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.Provider;
+import org.openmrs.api.OrderContext;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.AppointmentState;
@@ -126,10 +127,17 @@ public class Utils
 		return enc;
 	}
 
-	private static Provider getProvider() {
+	public static Provider getProvider() {
 		//Assuming that the logged in user is associated with a provider account.
 		Person person = Context.getAuthenticatedUser().getPerson();
 		return Context.getProviderService().getProvidersByPerson(person).iterator().next();
+	}
+	
+	public static OrderContext getOrderContext () {
+		OrderContext orderCtxt = new OrderContext();
+		final String expectedOrderNumber = "Testing";
+		orderCtxt.setAttribute(MoHTimestampOrderNumberGenerator.NEXT_ORDER_NUMBER, expectedOrderNumber);
+		return orderCtxt;
 	}
 	
 	public static int getGP(String id)

@@ -48,14 +48,14 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 			HttpServletResponse response) throws Exception {
 		String dispConf = Context.getAdministrationService().getGlobalProperty(
 				"pharmacymanagement.periodDispense");
-		SimpleDateFormat sdf;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 
-		if(Context.getLocale().toString().equals("en_US") || Context.getLocale().toString().equals("en")) {
-			sdf = new SimpleDateFormat("MM/dd/yyyy");
-		}
-		else {
-			sdf = new SimpleDateFormat("dd/MM/yyyy");
-		}
+		/*
+		 * if(Context.getLocale().toString().equals("en_US") ||
+		 * Context.getLocale().toString().equals("en")) { sdf = new
+		 * SimpleDateFormat("MM/dd/yyyy"); } else { sdf = new
+		 * SimpleDateFormat("dd/MM/yyyy"); }
+		 */
 		LocationService locationService = Context.getLocationService();
 		ConceptService conceptService = Context.getConceptService();
 		List<Drug> drugs = conceptService.getAllDrugs();

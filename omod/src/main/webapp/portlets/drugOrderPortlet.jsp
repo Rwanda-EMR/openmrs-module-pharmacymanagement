@@ -509,7 +509,7 @@
   <tr id="presc-drugs3"></tr>
   <tr id="presc-drugs4"></tr>
   <tr>
-    <td colspan="4" rowspan="3" valign="middle" style="background-color:#E5E5FF;"><p>Medical Doctor Names: ${model.provider.familyName} ${model.provider.firstName}</p>
+    <td colspan="4" rowspan="3" valign="middle" style="background-color:#E5E5FF;"><p>Medical Doctor Names: ${model.provider.person.names}</p>
       <p>Stamp, signature and date.</p>
       <p>&nbsp;</p></td>
     <td height="30%" colspan="2" align="center" style="background-color:#E5E5FF;"><strong>Total</strong></td>

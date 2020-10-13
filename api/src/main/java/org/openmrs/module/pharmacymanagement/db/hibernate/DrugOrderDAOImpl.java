@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -28,6 +30,9 @@ import org.openmrs.module.pharmacymanagement.db.DrugOrderDAO;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
 public class DrugOrderDAOImpl implements DrugOrderDAO {
+	
+	private Log log = LogFactory.getLog(this.getClass());
+	
 	private SessionFactory sessionFactory;
 
 	/**
@@ -46,8 +51,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	}
 
 	public void cancelProduct(DrugStore product) {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		session.delete(product);
 	}
 
@@ -74,22 +78,21 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 
 	@SuppressWarnings("unchecked")
 	public Collection<CmdDrug> getOrders() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		Collection<CmdDrug> orders = session.createCriteria(CmdDrug.class)
 				.list();
 		return orders;
 	}
 
 	public void updateStore(DrugProduct product) {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		session.update(product);
 	}
 
 	public void saveDrugProduct(DrugProduct drugProduct) {
 		if (drugProduct.getStoreQnty() >= 0) {
-			sessionFactory.getCurrentSession().saveOrUpdate(drugProduct);
+			log.error("======="+drugProduct.getExpiryDate()+"======"+drugProduct.getReqDate());
+			sessionFactory.getCurrentSession().save(drugProduct);
 		}
 	}
 
@@ -119,8 +122,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<DrugProduct> getAllProducts() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		Collection<DrugProduct> products = session.createCriteria(
 				DrugProduct.class).list();
 		return products;
@@ -197,8 +199,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<DrugProductInventory> getAllDrugProductInventory() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		List<DrugProductInventory> dpi = session.createCriteria(
 				DrugProductInventory.class).list();
 		return dpi;
@@ -330,8 +331,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Pharmacy> getAllPharmacies() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		Collection<Pharmacy> pharmacies = session
 				.createCriteria(Pharmacy.class).list();
 		return pharmacies;
@@ -366,8 +366,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<DrugDetails> getAllDrugDetails() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		Collection<DrugDetails> drugDetails = session.createCriteria(
 				DrugDetails.class).list();
 		return drugDetails;
@@ -389,8 +388,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<DrugOrderPrescription> getAllDrugOrderPrescription() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		Collection<DrugOrderPrescription> drugOrderPrescription = session
 				.createCriteria(DrugOrderPrescription.class).list();
 		return drugOrderPrescription;
@@ -1158,8 +1156,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConsumableDispense> getAllConsumableDipsense() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		List<ConsumableDispense> consumableDispenseList = session
 				.createCriteria(ConsumableDispense.class).list();
 		return consumableDispenseList;
