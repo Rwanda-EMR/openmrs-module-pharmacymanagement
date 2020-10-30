@@ -1208,7 +1208,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id) dpdpi group by dpdpi.lot_no,dpdpi.drug_id,dpdpi.concept_id");
 */
 		//After ordering
-		sb.append("select dpdpi.lot_no,sum(dpdpi.entree) as entree,sum(dpdpi.sortie) as sortie,(sum(dpdpi.entree)-sum(dpdpi.sortie)) as solde,dpdpi.expiry_date,dpdpi.drug_id,dpdpi.concept_id,cn.name,d.name from (select dp.drugproduct_id,dpi.entree,dpi.sortie,dp.lot_no,dp.expiry_date,dp.drug_id,dp.concept_id from pharmacymanagement_drug_product dp " +
+		sb.append("select dpdpi.lot_no,sum(dpdpi.entree) as entree,sum(dpdpi.sortie) as sortie,(sum(dpdpi.entree)-sum(dpdpi.sortie)) as solde,dpdpi.expiry_date,dpdpi.drug_id,dpdpi.concept_id,cn.name as cName,d.name from (select dp.drugproduct_id,dpi.entree,dpi.sortie,dp.lot_no,dp.expiry_date,dp.drug_id,dp.concept_id from pharmacymanagement_drug_product dp " +
 				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id  where dp.lot_no is not null and dp.expiry_date is not null) dpdpi " +
 				"left join concept_name cn on cn.concept_id=dpdpi.concept_id  and cn.locale='en' and concept_name_type='FULLY_SPECIFIED'" +
 				"left join drug d on d.drug_id=d.dpdpi.drug_id " +
