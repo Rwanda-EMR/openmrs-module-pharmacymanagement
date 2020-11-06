@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -205,6 +206,8 @@ public class DrugOrderPortletController extends PortletController {
 		model.put("days", possibleFrequency[2]);
 		model.put("insuranceType", insuranceType);
 		model.put("insuranceNumber", insuranceNumber);
+		model.put("drugDosingUnits", Context.getOrderService().getDrugDosingUnits().stream().distinct().collect(Collectors.toList()));
+		model.put("drugRoutes", Context.getOrderService().getDrugRoutes());
 		super.populateModel(request, model);
 
 	}

@@ -816,11 +816,13 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 
 		sb.append(" WHERE 1 = 1 ");
 
-		if (from != null && !from.equals(""))
-			sb.append(" AND dpi.inventory_date > '" + from + "' ");
-
-		if (to != null && !to.equals(""))
-			sb.append(" AND dpi.inventory_date < '" + to + "' ");
+		/*
+		 * if (from != null && !from.equals("")) sb.append(" AND dpi.inventory_date > '"
+		 * + from + "' ");
+		 * 
+		 * if (to != null && !to.equals("")) sb.append(" AND dpi.inventory_date < '" +
+		 * to + "' ");
+		 */
 
 		if (drugId != null && !drugId.equals(""))
 			sb.append(" AND dp.drug_id = '" + drugId + "' ");

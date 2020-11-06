@@ -385,6 +385,29 @@
 		<td id="soldeId"></td>
 	</tr>
 	<tr>
+					<td ><spring:message code="Dose" />*:</td>
+					<td>
+						<input type="text" name="drugDose" id="drugDose" size="10"/>
+						<select name="doseUnits" id="doseUnits">
+							<option value=""></option>
+							<c:forEach var="doseUnit" items="${model.drugDosingUnits}">
+								<option value="${doseUnit.conceptId}">${doseUnit.displayString}</option>
+							</c:forEach>
+						</select>
+					</td>
+	</tr>
+    <tr>
+					<td><spring:message code="Route"/>:</td>
+					<td>
+						<select name="route" id="route">
+							<option value=""></option>
+							<c:forEach var="route" items="${model.drugRoutes}">
+								<option value="${route.conceptId}">${route.displayString}</option>
+							</c:forEach>
+						</select>
+					</td>
+	</tr>
+	<tr>
 		<td><spring:message code="pharmacymanagement.frequency" /></td>
 		<td>
 			<select name="qtyTakenAtOnce" id="qtyTakenAtOnceId">
