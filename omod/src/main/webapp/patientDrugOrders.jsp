@@ -21,7 +21,7 @@
 				<tr>
 					<td width="30%">${num.count}. ${dld.drugOrder.drug.name}</td>
 					<td width="10%">${dld.drugOrder.orderer.person.familyName} ${dld.drugOrder.orderer.person.givenName}</td>
-					<td width="10%"><openmrs:formatDate date="${dld.drugOrder.startDate}" type="textbox" /></td>
+					<td width="10%"><openmrs:formatDate date="${dld.drugOrder.dateActivated}" type="textbox" /></td>
 
 					<td width="10%">
 						<input type="hidden" name="do_${num.count}" value="${dld.drugOrder.orderId}" />

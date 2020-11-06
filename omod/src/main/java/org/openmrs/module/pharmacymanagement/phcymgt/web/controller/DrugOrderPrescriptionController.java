@@ -155,7 +155,7 @@ public class DrugOrderPrescriptionController extends AbstractController {
 					log.error("Error parsing route to int");
 					e.printStackTrace();
 				}
-				drugOrder.setQuantityUnits(Context.getConceptService().getConcept(106913));
+				drugOrder.setQuantityUnits(Context.getConceptService().getConceptByName("Quantity Units Not applicable"));
 
 				Encounter enc=new Encounter();
 				enc.setEncounterType(Context.getEncounterService().getEncounterType("Drug Order Encounter"));

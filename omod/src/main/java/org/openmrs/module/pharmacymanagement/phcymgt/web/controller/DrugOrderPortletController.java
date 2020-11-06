@@ -215,8 +215,11 @@ public class DrugOrderPortletController extends PortletController {
 	@SuppressWarnings("unchecked")
 	public List<DrugOrder> getDrugOrdersByPatient(Patient patient){
 
-		OrderType drugOrderType = Context.getOrderService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID);
+		//OrderType drugOrderType = Context.getOrderService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID);
+		OrderService orderService = Context.getOrderService();
 
+		OrderType drugOrderType = orderService
+				.getOrderType(PharmacyConstants.DRUG_ORDER_TYPE);
 		OrderSearchCriteria orderSearchCriteria = new OrderSearchCriteriaBuilder().setPatient(patient)
 				.setOrderTypes(Collections.singletonList(drugOrderType)).build();
 
