@@ -60,8 +60,8 @@ public class StoreSearchForm extends ParameterizableViewController {
 						+ "";
 				name = dpi.getDrugproductId().getConceptId().getName()
 						.getName();
-				Object outStr1 = service.getSumEntreeSortieByFromToDrugLocation(null,new Date() + "", drugId, consumableId,locationStr )[1];
-				Object inStr1 = service.getSumEntreeSortieByFromToDrugLocation(null,new Date() + "", drugId, consumableId,locationStr )[0];
+				Object outStr1 = service.getSumEntreeSortieByFromToDrugLocation(null, null + "", drugId, consumableId,locationStr )[1];
+				Object inStr1 = service.getSumEntreeSortieByFromToDrugLocation(null, null + "", drugId, consumableId,locationStr )[0];
 
 				if (inStr1 != null)
 					in = Integer.valueOf(inStr1 + "");

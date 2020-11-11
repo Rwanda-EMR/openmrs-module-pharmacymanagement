@@ -41,6 +41,12 @@
 			<version>0.3-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
+	    <dependency>
+            <groupId>org.openmrs.module</groupId>
+            <artifactId>legacyui-omod</artifactId>
+            <version>${legacyuiVersion}</version>
+            <scope>provided</scope>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -103,6 +109,14 @@
 						</goals>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>8</source>
+					<target>8</target>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

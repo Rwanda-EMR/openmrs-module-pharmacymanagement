@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -28,6 +30,9 @@ import org.openmrs.module.pharmacymanagement.db.DrugOrderDAO;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
 public class DrugOrderDAOImpl implements DrugOrderDAO {
+	
+	private Log log = LogFactory.getLog(this.getClass());
+	
 	private SessionFactory sessionFactory;
 
 	/**
@@ -46,8 +51,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	}
 
 	public void cancelProduct(DrugStore product) {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		session.delete(product);
 	}
 
@@ -74,22 +78,21 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 
 	@SuppressWarnings("unchecked")
 	public Collection<CmdDrug> getOrders() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		Collection<CmdDrug> orders = session.createCriteria(CmdDrug.class)
 				.list();
 		return orders;
 	}
 
 	public void updateStore(DrugProduct product) {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		session.update(product);
 	}
 
 	public void saveDrugProduct(DrugProduct drugProduct) {
 		if (drugProduct.getStoreQnty() >= 0) {
-			sessionFactory.getCurrentSession().saveOrUpdate(drugProduct);
+			log.error("======="+drugProduct.getExpiryDate()+"======"+drugProduct.getReqDate());
+			sessionFactory.getCurrentSession().save(drugProduct);
 		}
 	}
 
@@ -119,8 +122,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<DrugProduct> getAllProducts() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		Collection<DrugProduct> products = session.createCriteria(
 				DrugProduct.class).list();
 		return products;
@@ -197,8 +199,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<DrugProductInventory> getAllDrugProductInventory() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		List<DrugProductInventory> dpi = session.createCriteria(
 				DrugProductInventory.class).list();
 		return dpi;
@@ -330,8 +331,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<Pharmacy> getAllPharmacies() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		Collection<Pharmacy> pharmacies = session
 				.createCriteria(Pharmacy.class).list();
 		return pharmacies;
@@ -366,8 +366,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<DrugDetails> getAllDrugDetails() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		Collection<DrugDetails> drugDetails = session.createCriteria(
 				DrugDetails.class).list();
 		return drugDetails;
@@ -389,8 +388,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<DrugOrderPrescription> getAllDrugOrderPrescription() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		Collection<DrugOrderPrescription> drugOrderPrescription = session
 				.createCriteria(DrugOrderPrescription.class).list();
 		return drugOrderPrescription;
@@ -818,11 +816,13 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 
 		sb.append(" WHERE 1 = 1 ");
 
-		if (from != null && !from.equals(""))
-			sb.append(" AND dpi.inventory_date > '" + from + "' ");
-
-		if (to != null && !to.equals(""))
-			sb.append(" AND dpi.inventory_date < '" + to + "' ");
+		/*
+		 * if (from != null && !from.equals("")) sb.append(" AND dpi.inventory_date > '"
+		 * + from + "' ");
+		 * 
+		 * if (to != null && !to.equals("")) sb.append(" AND dpi.inventory_date < '" +
+		 * to + "' ");
+		 */
 
 		if (drugId != null && !drugId.equals(""))
 			sb.append(" AND dp.drug_id = '" + drugId + "' ");
@@ -1158,8 +1158,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<ConsumableDispense> getAllConsumableDipsense() {
-		Session session = (Session) SessionFactoryUtils.getSession(
-				getSessionFactory(), true);
+		Session session = getSessionFactory().getCurrentSession();
 		List<ConsumableDispense> consumableDispenseList = session
 				.createCriteria(ConsumableDispense.class).list();
 		return consumableDispenseList;
@@ -1211,7 +1210,7 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id) dpdpi group by dpdpi.lot_no,dpdpi.drug_id,dpdpi.concept_id");
 */
 		//After ordering
-		sb.append("select dpdpi.lot_no,sum(dpdpi.entree) as entree,sum(dpdpi.sortie) as sortie,(sum(dpdpi.entree)-sum(dpdpi.sortie)) as solde,dpdpi.expiry_date,dpdpi.drug_id,dpdpi.concept_id,cn.name,d.name from (select dp.drugproduct_id,dpi.entree,dpi.sortie,dp.lot_no,dp.expiry_date,dp.drug_id,dp.concept_id from pharmacymanagement_drug_product dp " +
+		sb.append("select dpdpi.lot_no,sum(dpdpi.entree) as entree,sum(dpdpi.sortie) as sortie,(sum(dpdpi.entree)-sum(dpdpi.sortie)) as solde,dpdpi.expiry_date,dpdpi.drug_id,dpdpi.concept_id,cn.name as cName,d.name from (select dp.drugproduct_id,dpi.entree,dpi.sortie,dp.lot_no,dp.expiry_date,dp.drug_id,dp.concept_id from pharmacymanagement_drug_product dp " +
 				"inner join pharmacymanagement_drugproduct_inventory dpi on dp.drugproduct_id=dpi.drugproduct_id  where dp.lot_no is not null and dp.expiry_date is not null) dpdpi " +
 				"left join concept_name cn on cn.concept_id=dpdpi.concept_id  and cn.locale='en' and concept_name_type='FULLY_SPECIFIED'" +
 				"left join drug d on d.drug_id=d.dpdpi.drug_id " +

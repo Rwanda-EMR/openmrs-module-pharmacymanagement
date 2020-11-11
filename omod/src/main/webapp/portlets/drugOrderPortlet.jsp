@@ -293,7 +293,7 @@
 				</td>
 				<td><span id="name_${dro.orderId}">${not empty dro.drug ? dro.drug.name : dro.concept.name.name}</span></td>
 				<td><span id="dose_${dro.orderId}">${dro.dose}</span></td>
-				<td><span id="units_${dro.orderId}">${dro.units}</span></td>
+				<td><span id="units_${dro.orderId}">${dro.doseUnits}</span></td>
 				<td><span id="frequency_${dro.orderId}">${dro.frequency}</span></td>
 				<td><span id="quantity_${dro.orderId}">${dro.quantity}</span></td>
 				<td><span>
@@ -308,9 +308,9 @@
                 </c:if>
 
 				</span></td>
-				<td><span id="startDate_${dro.orderId}"><openmrs:formatDate date="${dro.startDate}" type="textbox" /></span></td>
-				<td><span id="discontinuedDate_${dro.orderId}"><openmrs:formatDate date="${dro.discontinuedDate}" type="textbox" /></span></td>
-				<td><span id="discontinuedReason_${dro.orderId}">${dro.discontinuedReason.name}</span></td>
+				<td><span id="startDate_${dro.orderId}"><openmrs:formatDate date="${dro.dateActivated}" type="textbox" /></span></td>
+				<td><span id="discontinuedDate_${dro.orderId}"><openmrs:formatDate date="${dro.dateStopped}" type="textbox" /></span></td>
+				<td><span id="discontinuedReason_${dro.orderId}">${dro.orderReason.name.name}</span></td>
 				<td><img id="edit_${dro.orderId}" class="edit" src="${pageContext.request.contextPath}/images/edit.gif" style="cursor: pointer" title="Edit" /></td>
 				<td><img id="stop_${dro.orderId}" class="stop" src="${pageContext.request.contextPath}/images/stop.gif" style="cursor: pointer;" title="Stop" /></td>
 				<td><img id="delete_${dro.orderId}" class="delete" src="${pageContext.request.contextPath}/images/delete.gif" style="cursor: pointer;" title="Delete" /></td>
@@ -383,6 +383,30 @@
 			</select>
 		</td>
 		<td id="soldeId"></td>
+		<td id="soldeId"</td>
+	</tr>
+	<tr>
+					<td ><spring:message code="Dose" />*:</td>
+					<td>
+						<input type="text" name="drugDose" id="drugDose" size="10"/>
+						<select name="doseUnits" id="doseUnits">
+							<option value=""></option>
+							<c:forEach var="doseUnit" items="${model.drugDosingUnits}">
+								<option value="${doseUnit.conceptId}">${doseUnit.displayString}</option>
+							</c:forEach>
+						</select>
+					</td>
+	</tr>
+    <tr>
+					<td><spring:message code="Route"/>:</td>
+					<td>
+						<select name="route" id="route">
+							<option value=""></option>
+							<c:forEach var="route" items="${model.drugRoutes}">
+								<option value="${route.conceptId}">${route.displayString}</option>
+							</c:forEach>
+						</select>
+					</td>
 	</tr>
 	<tr>
 		<td><spring:message code="pharmacymanagement.frequency" /></td>
@@ -509,7 +533,7 @@
   <tr id="presc-drugs3"></tr>
   <tr id="presc-drugs4"></tr>
   <tr>
-    <td colspan="4" rowspan="3" valign="middle" style="background-color:#E5E5FF;"><p>Medical Doctor Names: ${model.provider.familyName} ${model.provider.firstName}</p>
+    <td colspan="4" rowspan="3" valign="middle" style="background-color:#E5E5FF;"><p>Medical Doctor Names: ${model.provider.person.names}</p>
       <p>Stamp, signature and date.</p>
       <p>&nbsp;</p></td>
     <td height="30%" colspan="2" align="center" style="background-color:#E5E5FF;"><strong>Total</strong></td>

@@ -14,7 +14,7 @@
 
 	<!-- /Drug Store Management and Dispensing Module Properties -->
 
-	<require_version>1.2.0.3400</require_version>
+	<require_version>${openMRSVersion}</require_version>
 
 	<require_modules>
 		<require_module version="0.3-SNAPSHOT">org.openmrs.module.mohappointment</require_module>

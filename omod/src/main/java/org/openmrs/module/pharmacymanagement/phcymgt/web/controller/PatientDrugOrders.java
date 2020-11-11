@@ -1,6 +1,7 @@
 package org.openmrs.module.pharmacymanagement.phcymgt.web.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -15,12 +16,12 @@ import org.apache.commons.logging.LogFactory;
 import org.openmrs.Drug;
 import org.openmrs.DrugOrder;
 import org.openmrs.Location;
-import org.openmrs.Obs;
+import org.openmrs.OrderType;
 import org.openmrs.Patient;
 import org.openmrs.Person;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
-import org.openmrs.api.ObsService;
+import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.pharmacymanagement.DrugLotDate;
 import org.openmrs.module.pharmacymanagement.DrugProduct;
@@ -28,6 +29,8 @@ import org.openmrs.module.pharmacymanagement.Pharmacy;
 import org.openmrs.module.pharmacymanagement.PharmacyConstants;
 import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
 import org.openmrs.module.pharmacymanagement.utils.Utils;
+import org.openmrs.parameter.OrderSearchCriteria;
+import org.openmrs.parameter.OrderSearchCriteriaBuilder;
 import org.openmrs.util.OpenmrsConstants;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
@@ -81,14 +84,13 @@ public class PatientDrugOrders extends ParameterizableViewController {
 		if (patient != null && request.getParameter("pharmacyId") != null
 				&& !request.getParameter("pharmacyId").equals("")) {
 
-			drugOrders = Context.getOrderService().getDrugOrdersByPatient(
-					patient);
+			drugOrders = getDrugOrdersByPatient(patient);
 
 			pharmacy = service.getPharmacyById(Integer.valueOf(request
 					.getParameter("pharmacyId")));
 			List<Integer> drugIdList = new ArrayList<Integer>();
 			for (DrugOrder dor : drugOrders) {
-				if (dor.getDiscontinued() == false) {
+				if (dor.isActive()) {
 					drugOrderList.add(dor);
 				}
 			}
@@ -102,7 +104,7 @@ public class PatientDrugOrders extends ParameterizableViewController {
 			List<DrugOrder> drugOrders1 = new ArrayList<DrugOrder>();
 			for (DrugOrder drOr : drugOrderList) {
 			//	if (!drugIdss.contains(drOr.getDrug().getDrugId()) && drOr.getAutoExpireDate() == null) {
-				if ((!(drOr.getAutoExpireDate() != null || drOr.getDiscontinuedDate()!=null)) && drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
+				if ((!(drOr.getAutoExpireDate() != null || drOr.getEffectiveStopDate()!=null)) && drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
 
 					dld = new DrugLotDate();
 					drugOrders1.add(drOr);
@@ -145,7 +147,7 @@ public class PatientDrugOrders extends ParameterizableViewController {
 
 				if(drOr.getDrug()!=null && !availNotAvailOrderedDrug.containsKey(drOr.getDrug().getName().toString()) ) {
 					if (drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE)
-					availNotAvailOrderedDrug.put(drOr.getDrug().getName().toString(),"Not Available (OrderId: "+drOr.getOrderId()+", Date: "+drOr.getStartDate()+", Orderer: "+drOr.getOrderer().getNames()+")");
+					availNotAvailOrderedDrug.put(drOr.getDrug().getName().toString(),"Not Available (OrderId: "+drOr.getOrderId()+", Date: "+drOr.getEffectiveStartDate()+", Orderer: "+drOr.getOrderer().getName()+")");
 				}
 			}
 
@@ -215,5 +217,19 @@ public class PatientDrugOrders extends ParameterizableViewController {
 
 		mav.setViewName(getViewName());
 		return mav;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<DrugOrder> getDrugOrdersByPatient(Patient patient){
+
+		//OrderType drugOrderType = Context.getOrderService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID);
+		OrderService orderService = Context.getOrderService();
+
+		OrderType drugOrderType = orderService
+				.getOrderType(PharmacyConstants.DRUG_ORDER_TYPE);
+		OrderSearchCriteria orderSearchCriteria = new OrderSearchCriteriaBuilder().setPatient(patient)
+				.setOrderTypes(Collections.singletonList(drugOrderType)).build();
+
+		return (List)Context.getOrderService().getOrders(orderSearchCriteria);
 	}
 }

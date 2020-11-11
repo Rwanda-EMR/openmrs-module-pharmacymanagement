@@ -16,6 +16,7 @@ import org.openmrs.Encounter;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
+import org.openmrs.Order;
 import org.openmrs.Patient;
 import org.openmrs.PatientProgram;
 import org.openmrs.Person;
@@ -180,7 +181,7 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 			if(request.getParameter("pharmacy") != null && !request.getParameter("pharmacy").equals(""))
 				pharmacyIdStr = request.getParameter("pharmacy");
 
-			encounter = Utils.createEncounter(encDate, user, dftLoc, patient,
+			encounter = Utils.createEncounter(encDate, dftLoc, patient,
 					encounterType, obsList);
 			if (fieldNames.size() != 0) {
 				for (String str : fieldNames) {
@@ -203,7 +204,7 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 								int dpId = Integer.valueOf(request.getParameter(dpSuffix));
 								DrugProduct drugProduct = service.getDrugProductById(dpId);
 								
-								DrugOrder drugOrder = orderService.getOrder(Integer.valueOf(request.getParameter(dOSuffix)), DrugOrder.class);
+								DrugOrder drugOrder = (DrugOrder) orderService.getOrder(Integer.valueOf(request.getParameter(dOSuffix)));
 								Concept discontinueReason = conceptService.getConcept(1714);
 								
 								patient = patientService.getPatient(Integer
@@ -228,11 +229,7 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 								if (solde >= 0) {
 									//auto expire the regimen to remove from the list which appears when dispensing what have been prescribed
 									//drugOrder.setAutoExpireDate(drugOrder.getStartDate());
-									drugOrder.setDiscontinued(true);
-									//drugOrder.setDiscontinuedDate(atEndOfDay(new Date()));
-									drugOrder.setDiscontinuedDate(getNextDay(drugOrder.getStartDate()));
-
-
+									Order discontinuationOrder = drugOrder.cloneForDiscontinuing();
 									if (count == 1) {
 										encounterService
 												.saveEncounter(encounter);
@@ -240,7 +237,7 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 
 									dop.setEncounterId(encounter);
 //									try {
-										orderService.saveOrder(drugOrder);
+										orderService.saveOrder(discontinuationOrder, Utils.getOrderContext());
 										dop.setOrderId(drugOrder);
 										service.saveDrugOrderPrescription(dop);
 //									} catch (org.openmrs.api.APIException e) {

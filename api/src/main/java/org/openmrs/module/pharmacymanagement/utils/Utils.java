@@ -1,6 +1,5 @@
 package org.openmrs.module.pharmacymanagement.utils;
 
-import java.io.PrintStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,34 +11,32 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Drug;
 import org.openmrs.Encounter;
+import org.openmrs.EncounterRole;
 import org.openmrs.EncounterType;
 import org.openmrs.Location;
 import org.openmrs.Obs;
 import org.openmrs.Patient;
 import org.openmrs.Person;
-import org.openmrs.User;
-import org.openmrs.api.AdministrationService;
-import org.openmrs.api.ConceptService;
+import org.openmrs.Provider;
+import org.openmrs.api.OrderContext;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.AppointmentState;
 import org.openmrs.module.mohappointment.model.Services;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
-import org.openmrs.module.pharmacymanagement.CmdDrug;
 import org.openmrs.module.pharmacymanagement.ConsumableDispense;
 import org.openmrs.module.pharmacymanagement.DrugOrderPrescription;
 import org.openmrs.module.pharmacymanagement.DrugProduct;
 import org.openmrs.module.pharmacymanagement.DrugProductInventory;
-import org.openmrs.module.pharmacymanagement.Pharmacy;
 import org.openmrs.module.pharmacymanagement.PharmacyInventory;
 import org.openmrs.module.pharmacymanagement.ProductReturnStore;
 import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
@@ -98,14 +95,18 @@ public class Utils
 		return o;
 	}
 
-	public static Encounter createEncounter(Date encounterDate, User provider, Location location, Patient patient, EncounterType encounterType, List<Obs> obsList)
+	public static Encounter createEncounter(Date encounterDate, Location location, Patient patient, EncounterType encounterType, List<Obs> obsList)
 	{
 		Encounter enc = new Encounter();
 		try
 		{
 			enc.setDateCreated(new Date());
 			enc.setEncounterDatetime(encounterDate);
-			enc.setProvider(provider.getPerson());
+			
+			EncounterRole encounterRole = Context.getEncounterService()
+					.getEncounterRoleByUuid(EncounterRole.UNKNOWN_ENCOUNTER_ROLE_UUID);
+
+			enc.setProvider(encounterRole, getProvider());
 			enc.setLocation(location);
 			enc.setPatient(patient);
 			enc.setEncounterType(encounterType);
@@ -126,6 +127,19 @@ public class Utils
 		return enc;
 	}
 
+	public static Provider getProvider() {
+		//Assuming that the logged in user is associated with a provider account.
+		Person person = Context.getAuthenticatedUser().getPerson();
+		return Context.getProviderService().getProvidersByPerson(person).iterator().next();
+	}
+	
+	public static OrderContext getOrderContext () {
+		OrderContext orderCtxt = new OrderContext();
+		final String expectedOrderNumber = "Testing";
+		orderCtxt.setAttribute(MoHTimestampOrderNumberGenerator.NEXT_ORDER_NUMBER, expectedOrderNumber);
+		return orderCtxt;
+	}
+	
 	public static int getGP(String id)
 	{
 		return Integer.valueOf(Context.getAdministrationService()
