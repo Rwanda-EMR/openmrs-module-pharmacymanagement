@@ -13,12 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.openmrs.Drug;
-import org.openmrs.DrugOrder;
-import org.openmrs.Location;
-import org.openmrs.OrderType;
-import org.openmrs.Patient;
-import org.openmrs.Person;
+import org.openmrs.*;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.OrderService;
@@ -230,6 +225,13 @@ public class PatientDrugOrders extends ParameterizableViewController {
 		OrderSearchCriteria orderSearchCriteria = new OrderSearchCriteriaBuilder().setPatient(patient)
 				.setOrderTypes(Collections.singletonList(drugOrderType)).build();
 
-		return (List)Context.getOrderService().getOrders(orderSearchCriteria);
+		List<DrugOrder> allDrugOrder=new ArrayList<DrugOrder>();
+		for (Order dro:Context.getOrderService().getOrders(orderSearchCriteria)) {
+			if(dro instanceof DrugOrder && dro.getPreviousOrder()==null){
+				allDrugOrder.add((DrugOrder) dro);
+			}
+		}
+return allDrugOrder;
+		//return (List)Context.getOrderService().getOrders(orderSearchCriteria);
 	}
 }

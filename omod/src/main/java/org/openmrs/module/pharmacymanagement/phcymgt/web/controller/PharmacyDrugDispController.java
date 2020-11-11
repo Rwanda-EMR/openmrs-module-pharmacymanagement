@@ -212,8 +212,8 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 												.getParameter("patientId")));
 								dop = new DrugOrderPrescription();
 
-								int quantity = Integer.valueOf(request
-										.getParameter(drugSuffix));
+								int quantity = (Double.valueOf(request
+										.getParameter(drugSuffix))).intValue();
 
 								dop.setDate(encDate);
 								dop.setQuantity(quantity);
@@ -230,11 +230,14 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 									//auto expire the regimen to remove from the list which appears when dispensing what have been prescribed
 									//drugOrder.setAutoExpireDate(drugOrder.getStartDate());
 									Order discontinuationOrder = drugOrder.cloneForDiscontinuing();
+									discontinuationOrder.setOrderReason(discontinueReason);
+
 									if (count == 1) {
 										encounterService
 												.saveEncounter(encounter);
 									}
-
+									discontinuationOrder.setEncounter(encounter);
+									discontinuationOrder.setOrderer(Utils.getProvider());
 									dop.setEncounterId(encounter);
 //									try {
 										orderService.saveOrder(discontinuationOrder, Utils.getOrderContext());
@@ -243,7 +246,7 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 //									} catch (org.openmrs.api.APIException e) {
 //										mav.addObject("msg", "You cannot dispense before prescription");
 //									}				
-									
+
 									pi = new PharmacyInventory();
 									pi.setDate(encDate);
 									pi.setDrugproductId(drugProduct);

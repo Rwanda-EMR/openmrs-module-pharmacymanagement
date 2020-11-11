@@ -15,15 +15,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.openmrs.Concept;
-import org.openmrs.ConceptClass;
-import org.openmrs.Drug;
-import org.openmrs.DrugOrder;
-import org.openmrs.Location;
-import org.openmrs.Obs;
-import org.openmrs.OrderType;
-import org.openmrs.Patient;
-import org.openmrs.Person;
+import org.openmrs.*;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.ObsService;
@@ -116,6 +108,7 @@ public class DrugOrderPortletController extends PortletController {
 		String insuranceType = insuranceTypeObsList.size() == 0 ? null : insuranceTypeObsList.get(insuranceTypeObsList.size() -1).getValueCoded().getName().getName();
 		List<Obs> insuranceNumberObsList = obsService.getObservationsByPersonAndConcept(person, insuranceNumberConcept);
 		String insuranceNumber = insuranceNumberObsList.size() == 0 ? null : insuranceNumberObsList.get(insuranceNumberObsList.size() -1 ).getValueText();
+
 
 		List<DrugOrder> drugOrders = new ArrayList<DrugOrder>();
 //		Collection<DrugProduct> dpList = dos.getAllProducts();
@@ -215,7 +208,6 @@ public class DrugOrderPortletController extends PortletController {
 	@SuppressWarnings("unchecked")
 	public List<DrugOrder> getDrugOrdersByPatient(Patient patient){
 
-		//OrderType drugOrderType = Context.getOrderService().getOrderTypeByUuid(OrderType.DRUG_ORDER_TYPE_UUID);
 		OrderService orderService = Context.getOrderService();
 
 		OrderType drugOrderType = orderService
@@ -223,7 +215,14 @@ public class DrugOrderPortletController extends PortletController {
 		OrderSearchCriteria orderSearchCriteria = new OrderSearchCriteriaBuilder().setPatient(patient)
 				.setOrderTypes(Collections.singletonList(drugOrderType)).build();
 
-		return (List)Context.getOrderService().getOrders(orderSearchCriteria);
+		List<DrugOrder> drugOrdersWithNoPreviousOrder=new ArrayList<DrugOrder>();
+		for (Order ord:(List<Order>)Context.getOrderService().getOrders(orderSearchCriteria)) {
+			if (ord instanceof DrugOrder && ord.getPreviousOrder() == null){
+				drugOrdersWithNoPreviousOrder.add((DrugOrder)ord);
+			}
+		}
+		return drugOrdersWithNoPreviousOrder;
+
 	}
 
 }

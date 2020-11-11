@@ -293,7 +293,7 @@
 				</td>
 				<td><span id="name_${dro.orderId}">${not empty dro.drug ? dro.drug.name : dro.concept.name.name}</span></td>
 				<td><span id="dose_${dro.orderId}">${dro.dose}</span></td>
-				<td><span id="units_${dro.orderId}">${dro.doseUnits}</span></td>
+				<td><span id="units_${dro.orderId}">${dro.doseUnits.name.name}</span></td>
 				<td><span id="frequency_${dro.orderId}">${dro.frequency}</span></td>
 				<td><span id="quantity_${dro.orderId}">${dro.quantity}</span></td>
 				<td><span>
