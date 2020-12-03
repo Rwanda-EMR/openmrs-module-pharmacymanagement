@@ -29,7 +29,6 @@ $(document).ready( function() {
 				var lotNo = document.getElementById(dpLotNo).innerHTML;
 
                 //var lotNo = $('#'+dpLotNo).text();
-                alert("Date: "+expirationDate+"Lot:"+lotNo);
 
 				$("#qntreqid").attr("value", qntreq);
 				$("#lotid").attr("value", lotNo.trim());

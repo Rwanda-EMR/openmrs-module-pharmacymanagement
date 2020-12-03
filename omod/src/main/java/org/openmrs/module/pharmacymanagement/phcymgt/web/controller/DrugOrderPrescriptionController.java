@@ -45,7 +45,20 @@ public class DrugOrderPrescriptionController extends AbstractController {
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();
-		OrderFrequency of= Context.getOrderService().getOrderFrequencyByConcept(Context.getConceptService().getConceptByName("Frequency Not applicable"));
+
+		int frequency=Integer.parseInt(request.getParameter("timesPerDay"));
+		String frequencyConceptName="";
+		String[] frequenciesGP=Context.getAdministrationService().getGlobalProperty("pharmacymanagement.pharmacyFrequencies").split(",");
+
+		for (String frequencieGP:frequenciesGP){
+			if(Integer.parseInt(frequencieGP.split(":")[0])==frequency){
+				frequencyConceptName=frequencieGP.split(":")[1];
+				break;
+			}
+		}
+		OrderFrequency of= Context.getOrderService().getOrderFrequencyByConcept(Context.getConceptService().getConceptByName(frequencyConceptName));
+
+		//OrderFrequency of= Context.getOrderService().getOrderFrequencyByConcept(Context.getConceptService().getConceptByName("Frequency Not applicable"));
 
 				//getOrderFrequencies(request.getParameter("frequency"), Context.getLocale(), false, false).get(0);
 
@@ -124,6 +137,7 @@ public class DrugOrderPrescriptionController extends AbstractController {
 				drugOrder.setConcept(drug.getConcept());
 				drugOrder.setOrderType(orderType);
 				drugOrder.setInstructions(request.getParameter("instructions"));
+				//drugOrder.setInstructions(request.getParameter("frequency"));
 				drugOrder.setDateCreated(new Date());
 				drugOrder.setPatient(patient);
 				drugOrder.setDrug(drug);
@@ -131,7 +145,8 @@ public class DrugOrderPrescriptionController extends AbstractController {
  
 				double dose = 0;
 				try {
-					dose = Double.parseDouble(request.getParameter("drugDose"));
+					//dose = Double.parseDouble(request.getParameter("drugDose"));
+					dose = Double.parseDouble(request.getParameter("qtyTakenAtOnce"));
 					drugOrder.setDose(dose);
 				} catch (Exception e) {
 					log.error("Error parsing dose value to double");
@@ -140,8 +155,9 @@ public class DrugOrderPrescriptionController extends AbstractController {
 				
 				int doseUnits = 0;
 				try {
-					doseUnits = Integer.parseInt(request.getParameter("doseUnits"));					
-					drugOrder.setDoseUnits(Context.getConceptService().getConcept(doseUnits));
+					//doseUnits = Integer.parseInt(request.getParameter("doseUnits"));
+					//drugOrder.setDoseUnits(Context.getConceptService().getConcept(doseUnits));
+					drugOrder.setDoseUnits(Context.getConceptService().getConceptByName("Dosing Unspecified"));
 				} catch (Exception e) {
 					log.error("Error parsing dose units to int");
 					e.printStackTrace();
@@ -167,8 +183,8 @@ public class DrugOrderPrescriptionController extends AbstractController {
 				//drugOrder.setEncounter(Context.getEncounterService().getEncounter(1427160));
 				//drugOrder.setDosingType(DosingInstructions.class);
 				drugOrder.setCareSetting(Context.getOrderService().getCareSetting(2));
-				/*drugOrder.setDuration(5);
-				drugOrder.setDurationUnits();*/
+				drugOrder.setDuration(Integer.parseInt(request.getParameter("days")));
+				drugOrder.setDurationUnits(Context.getConceptService().getConceptByName("DAYS"));
 				//drugOrder.setNumRefills(20);
 
 				drugOrder.setOrderer(Utils.getProvider());
@@ -190,7 +206,6 @@ public class DrugOrderPrescriptionController extends AbstractController {
 						e.printStackTrace();
 					}
 					drugOrder.setDateActivated(startDate);
-
 					orderService.saveOrder(drugOrder, Utils.getOrderContext());
 
 

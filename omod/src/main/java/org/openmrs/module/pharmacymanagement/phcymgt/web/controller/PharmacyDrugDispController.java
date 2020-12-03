@@ -229,7 +229,8 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 								if (solde >= 0) {
 									//auto expire the regimen to remove from the list which appears when dispensing what have been prescribed
 									//drugOrder.setAutoExpireDate(drugOrder.getStartDate());
-									Order discontinuationOrder = drugOrder.cloneForDiscontinuing();
+
+									DrugOrder discontinuationOrder = drugOrder.cloneForDiscontinuing();
 									discontinuationOrder.setOrderReason(discontinueReason);
 
 									if (count == 1) {
@@ -238,6 +239,7 @@ public class PharmacyDrugDispController extends ParameterizableViewController {
 									}
 									discontinuationOrder.setEncounter(encounter);
 									discontinuationOrder.setOrderer(Utils.getProvider());
+									discontinuationOrder.setDispenseAsWritten(true);
 									dop.setEncounterId(encounter);
 //									try {
 										orderService.saveOrder(discontinuationOrder, Utils.getOrderContext());

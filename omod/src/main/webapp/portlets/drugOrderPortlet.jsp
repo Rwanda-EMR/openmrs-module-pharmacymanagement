@@ -270,6 +270,7 @@
 			<th><spring:message code="pharmacymanagement.dose" /></th>
 			<th><spring:message code="pharmacymanagement.units" /></th>
 			<th><spring:message code="pharmacymanagement.frequency" /></th>
+			<th>Duration</th>
 			<th><spring:message code="pharmacymanagement.quantity" /></th>
 			<th><spring:message code="pharmacymanagement.dispensedquantity" /></th>
 			<th><spring:message code="pharmacymanagement.startDate" /></th>
@@ -295,6 +296,7 @@
 				<td><span id="dose_${dro.orderId}">${dro.dose}</span></td>
 				<td><span id="units_${dro.orderId}">${dro.doseUnits.name.name}</span></td>
 				<td><span id="frequency_${dro.orderId}">${dro.frequency}</span></td>
+				<td><span id="duration_${dro.orderId}">${dro.duration} ${dro.durationUnits.name.name}</span></td>
 				<td><span id="quantity_${dro.orderId}">${dro.quantity}</span></td>
 				<td><span>
 
@@ -309,7 +311,7 @@
 
 				</span></td>
 				<td><span id="startDate_${dro.orderId}"><openmrs:formatDate date="${dro.dateActivated}" type="textbox" /></span></td>
-				<td><span id="discontinuedDate_${dro.orderId}"><openmrs:formatDate date="${dro.dateStopped}" type="textbox" /></span></td>
+				<td><span id="discontinuedDate_${dro.orderId}"><openmrs:formatDate date="${dro.autoExpireDate}" type="textbox" /></span></td>
 				<td><span id="discontinuedReason_${dro.orderId}">${dro.orderReason.name.name}</span></td>
 				<td><img id="edit_${dro.orderId}" class="edit" src="${pageContext.request.contextPath}/images/edit.gif" style="cursor: pointer" title="Edit" /></td>
 				<td><img id="stop_${dro.orderId}" class="stop" src="${pageContext.request.contextPath}/images/stop.gif" style="cursor: pointer;" title="Stop" /></td>
@@ -385,7 +387,7 @@
 		<td id="soldeId"></td>
 		<td id="soldeId"</td>
 	</tr>
-	<tr>
+	<%-- <tr>
 					<td ><spring:message code="Dose" />*:</td>
 					<td>
 						<input type="text" name="drugDose" id="drugDose" size="10"/>
@@ -396,7 +398,7 @@
 							</c:forEach>
 						</select>
 					</td>
-	</tr>
+	</tr> --%>
     <tr>
 					<td><spring:message code="Route"/>:</td>
 					<td>
@@ -413,7 +415,7 @@
 		<td>
 			<select name="qtyTakenAtOnce" id="qtyTakenAtOnceId">
 				<option value="">---</option>
-				<c:forEach var="i" begin="1" end="4">
+				<c:forEach var="i" begin="1" end="10">
 				  <option value="${i}"><c:out value="${i}"/></option>
 				</c:forEach>
 			</select> X
@@ -448,7 +450,7 @@
 	
 	<tr>
 		<td valign="top"><spring:message code="pharmacymanagement.instructions" /></td>
-		<td><textarea name="instructions" cols="50" rows="4"
+		<td><textarea name="instructions" cols="50" rows="2"
 			id="dinstructions"></textarea></td>
 	</tr>
 
