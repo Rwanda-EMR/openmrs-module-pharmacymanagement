@@ -10,7 +10,9 @@
 			<th width="10%">Orderer</th>
 			<th width="10%">Start date</th>
 			<th width="10%"><spring:message code="pharmacymanagement.qntyReq" /></th>
+			<th width="5%">Dose</th>
 			<th width="10%">Frequency</th>
+			<th width="10%">Duration</th>
 			<th width="30%">Lot No / Solde (Expiration Date)</th>
 		</tr>
 	</thead>
@@ -27,7 +29,10 @@
 						<input type="hidden" name="do_${num.count}" value="${dld.drugOrder.orderId}" />
 						<input type="text" name="drug_${num.count}_${dld.drugOrder.drug.drugId}" value="${dld.drugOrder.quantity}" size="5" />
 					</td>
+					<td width="10%"><input type="text" value="${dld.drugOrder.dose}" size="6" /></td>
 					<td width="10%"><input type="text" value="${dld.drugOrder.frequency}" size="6" /></td>
+					<td width="10%">${dld.drugOrder.duration} ${dld.drugOrder.durationUnits.name.name} </td>
+
 					<td width="30%">
 						<select name="dp_${num.count}" id="dpId_${num.count}" class="dpClass">							
 							<option value=""><center>---</center></option>
@@ -38,24 +43,24 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="6"><hr /></td>
+					<td colspan="8"><hr /></td>
 				</tr>
 			</c:forEach>
 		</c:if>
 
 		<c:if test="${empty availNotAvailOrderedDrug}">
         		<tr>
-        			<td colspan='6' width='100%'><input type="hidden" name="hideBtn" /><p style="font-family: 'Comic sans serif'; color: red;"><spring:message code="pharmacymanagement.noRegimenOrderedMsg" /></p></td>
+        			<td colspan='8' width='100%'><input type="hidden" name="hideBtn" /><p style="font-family: 'Comic sans serif'; color: red;"><spring:message code="pharmacymanagement.noRegimenOrderedMsg" /></p></td>
         		</tr>
         </c:if>
 
 		<c:if test="${!empty availNotAvailOrderedDrug}">
         		<tr>
-        			<td colspan='6' width='100%'><input type="hidden" name="hideBtn" /><p style="font-family: 'Comic sans serif'; color: red;"><spring:message code="pharmacymanagement.drugOrderedMsg" /></p></td>
+        			<td colspan='8' width='100%'><input type="hidden" name="hideBtn" /><p style="font-family: 'Comic sans serif'; color: red;"><spring:message code="pharmacymanagement.drugOrderedMsg" /></p></td>
         		</tr>
 
         		<tr>
-                        			<td colspan='6' width='100%'><p style="font-family: 'Comic sans serif';">
+                        			<td colspan='8' width='100%'><p style="font-family: 'Comic sans serif';">
                         			<c:forEach var="type" items="${availNotAvailOrderedDrug}">
 
                         			        <c:choose>

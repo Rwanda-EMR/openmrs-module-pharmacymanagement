@@ -97,7 +97,7 @@
 				            callback: 'required',
 				            msg: 'The Month is required.'
 				        }
-				    });						
+				    });
 	});
 	
 	</script>
@@ -147,9 +147,9 @@
 <div id="productCategory">
 
 <ul>
-	<li><a href="#fragment-1"><span><spring:message
+	<li><a href="#fragment-1" tabindex="0"><span><spring:message
 		code="Drug Products" /></span></a></li>
-	<li><a href="#fragment-2"><span><spring:message
+	<li><a href="#fragment-2" tabindex="-1"><span><spring:message
 		code="Consumable Products" /></span></a></li>
 </ul>
 

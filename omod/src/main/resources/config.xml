@@ -149,6 +149,12 @@
 		<defaultValue>3</defaultValue>
 		<description>Consumable coded concept id</description>
 	</globalProperty>
+	<globalProperty>
+		<property>@MODULE_ID@.pharmacyFrequencies</property>
+		<defaultValue>1:ONE PER DAY,2:TWO PER DAY,3:THREE PER DAY,4:FOUR PER DAY,5:FIVE PER DAY,6:SIX PER DAY</defaultValue>
+		<description>concept name of frequencies mapped by number:name and comma</description>
+	</globalProperty>
+
 
 	<!-- Internationalization -->
 	<!-- All message codes should start with @MODULE_ID@.* -->

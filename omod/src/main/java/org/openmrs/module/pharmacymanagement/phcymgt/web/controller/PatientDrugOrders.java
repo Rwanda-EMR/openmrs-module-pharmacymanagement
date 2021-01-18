@@ -99,7 +99,8 @@ public class PatientDrugOrders extends ParameterizableViewController {
 			List<DrugOrder> drugOrders1 = new ArrayList<DrugOrder>();
 			for (DrugOrder drOr : drugOrderList) {
 			//	if (!drugIdss.contains(drOr.getDrug().getDrugId()) && drOr.getAutoExpireDate() == null) {
-				if ((!(drOr.getAutoExpireDate() != null || drOr.getEffectiveStopDate()!=null)) && drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
+				//if ((!(drOr.getAutoExpireDate() != null || drOr.getEffectiveStopDate()!=null)) && drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
+				if (drOr.getDispenseAsWritten()==false && drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
 
 					dld = new DrugLotDate();
 					drugOrders1.add(drOr);
