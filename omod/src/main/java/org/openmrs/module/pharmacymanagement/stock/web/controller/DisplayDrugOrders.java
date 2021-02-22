@@ -117,7 +117,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 
 			if (request.getParameter("noLotStock") != null
 					&& !request.getParameter("noLotStock").equals(""))
-				noLot = request.getParameter("noLotStock");
+				noLot = request.getParameter("noLotStock").trim();
 
 			String strDate = null;
 			String dateStr = null;
@@ -179,6 +179,20 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 							.getLocationId().toString(), dateStr, noLot, null);
 				}
 			}
+			String checkDrugId=null, checkConceptId=null;
+
+			if(dp.getDrugId()==null){
+				checkDrugId="";
+			}else {
+				checkDrugId=dp.getDrugId().getDrugId()+"";
+			}
+			if(dp.getConceptId()==null){
+				checkConceptId="";
+			}else {
+				checkConceptId=dp.getConceptId().getConceptId()+"";
+			}
+
+			if(service.checkIfOneDrugOrConsummableUseOneLotNo(checkDrugId,checkConceptId,noLot)) {
 
 			if (qntAcc <= dp.getQntyReq()) {
 				if (request.getParameter("invDate") != null
@@ -333,6 +347,12 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 						.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
 								"The Given Quantity has to be less or equal to the number requested");
 			}
+		}else {
+			httpSession.removeAttribute(WebConstants.OPENMRS_ERROR_ATTR);
+			httpSession
+					.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+							"The Lot Number: "+noLot+" is used by other Drug or Consummable product");
+		}
 
 		}
 

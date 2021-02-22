@@ -326,17 +326,27 @@ public class PharmacyRequestAdjustForm
         }
 
 
-
-
         for (DrugProduct drugproduct : dpSet) {
-            drugMap.put(drugproduct.getLotNo(), drugproduct);
+            for (DrugProduct pdp:serviceDrug.getPharmacyDrugProducts()) {
+                //System.out.println("lot No PH: "+pdp.getLotNo()+"lot No Pr: "+drugproduct.getLotNo());
+                if (drugproduct.getLotNo()!=null && pdp.getLotNo()!=null && drugproduct.getLotNo().equals(pdp.getLotNo())){
+                    drugMap.put(drugproduct.getLotNo(), drugproduct);
+                    break;
+                }
+            }
 
         }
 
 
 
         for (DrugProduct drugproduct : consumableSet) {
-            consumableMap.put(drugproduct.getConceptId().getConceptId(), drugproduct);
+            for (DrugProduct pdp:serviceDrug.getPharmacyConsummableProducts()) {
+                //System.out.println("lot No PH: "+pdp.getLotNo()+"lot No Pr: "+drugproduct.getLotNo());
+                if (drugproduct.getLotNo()!=null && pdp.getLotNo()!=null && drugproduct.getLotNo().equals(pdp.getLotNo())){
+                    consumableMap.put(drugproduct.getConceptId().getConceptId(), drugproduct);
+                    break;
+                }
+            }
         }
 
 
