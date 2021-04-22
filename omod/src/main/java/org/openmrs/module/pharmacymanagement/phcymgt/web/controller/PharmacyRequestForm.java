@@ -268,31 +268,22 @@ public class PharmacyRequestForm
         else {
             int currSolde = 0;
             currConsumableSolde = 0;
+
+            List<Integer> drugProductsWithSolde=serviceDrug.getDrugsCurrSolde();
+            List<Integer> ConsummableProductsWithSolde=serviceDrug.getConsummablesCurrSolde();
+
+
             for (DrugProduct dp : dps) {
-                if ((dp.getDrugId() != null) &&
-                        (dp.getCmddrugId().getLocationId() != null)) {
-                    currSolde = serviceDrug.getCurrSolde(dp.getDrugId()
-                                    .getDrugId()+"",
-                            null, dftLoc.getLocationId()+"",
-                            dp.getExpiryDate()+"", dp.getLotNo(), null);
-
-
-
-                    if (currSolde > 0) {
+                for (Integer drugProId:drugProductsWithSolde) {
+                    if (drugProId==dp.getDrugproductId()){
                         dpSet.add(dp);
+                        break;
                     }
                 }
-
-                if ((dp.getConceptId() != null) &&
-                        (dp.getCmddrugId().getLocationId() != null))
-                {
-                    currConsumableSolde = serviceDrug.getCurrSolde(null, dp.getConceptId().getConceptId()+"", dftLoc.getLocationId()+"", null, null, null);
-
-
-
-
-                    if (currConsumableSolde > 0) {
+                for (Integer consProId:ConsummableProductsWithSolde) {
+                    if (consProId==dp.getDrugproductId()){
                         consumableSet.add(dp);
+                        break;
                     }
                 }
             }
@@ -310,10 +301,6 @@ public class PharmacyRequestForm
                 }
             }
         }
-
-
-
-
         for (DrugProduct drugproduct : dpSet) {
             drugMap.put(drugproduct.getDrugId().getDrugId(), drugproduct);
         }
