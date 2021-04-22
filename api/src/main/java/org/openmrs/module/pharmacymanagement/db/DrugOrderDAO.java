@@ -145,7 +145,10 @@ public interface DrugOrderDAO {
 	 * @return
 	 */
 	public List<DrugProductInventory> getAllDrugProductInventory();
-		
+	
+	public List<Integer> getDrugsCurrSolde();
+
+	public List<Integer> getConsummablesCurrSolde();
 	/**
 	 * gets current solde
 	 * 
