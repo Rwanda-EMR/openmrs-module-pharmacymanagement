@@ -154,7 +154,10 @@ public interface DrugOrderDAO {
 	 * @return <code>Integer</code>
 	 */
 	public Integer getCurrSolde(String drugId, String conceptId, String locationId, String expiryDate, String lotNo, String cmddrug);
-	
+
+	public List<Integer> getDrugsCurrSolde();
+
+	public List<Integer> getConsummablesCurrSolde();
 	/**
 	 * get inventory
 	 * 

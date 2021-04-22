@@ -261,6 +261,45 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		return solde;
 	}
 
+	@Override
+	public List<Integer> getDrugsCurrSolde() {
+		List<Integer> productIds = new ArrayList<Integer>();
+		String queryStr = "select grouped.drugproduct_id from " +
+				"(select * from " +
+				"(SELECT dpi.drugproduct_id,dp.drug_id,dpi.solde,dp.lot_no FROM pharmacymanagement_drugproduct_inventory dpi " +
+				"INNER JOIN pharmacymanagement_drug_product dp ON dpi.drugproduct_id = dp.drugproduct_id " +
+				"WHERE 1 = 1 " +
+				"ORDER BY dpi.inventory_id DESC) ordered " +
+				"where ordered.drug_id is not null " +
+				"group by ordered.drug_id,ordered.lot_no) grouped " +
+				"where grouped.solde > 0";
+		Session session = sessionFactory.getCurrentSession();
+		List<Integer> record = session.createSQLQuery(queryStr).list();
+		for (Integer obj : record) {
+			productIds.add(obj);
+		}
+		return productIds;
+	}
+	@Override
+	public List<Integer> getConsummablesCurrSolde() {
+		List<Integer> productIds = new ArrayList<Integer>();
+		String queryStr = "select grouped.drugproduct_id from " +
+				"(select * from " +
+				"(SELECT dpi.drugproduct_id,dp.concept_id,dpi.solde,dp.lot_no FROM pharmacymanagement_drugproduct_inventory dpi " +
+				"INNER JOIN pharmacymanagement_drug_product dp ON dpi.drugproduct_id = dp.drugproduct_id " +
+				"WHERE 1 = 1 " +
+				"ORDER BY dpi.inventory_id DESC) ordered " +
+				"where ordered.concept_id is not null " +
+				"group by ordered.concept_id,ordered.lot_no) grouped " +
+				"where grouped.solde > 0";
+		Session session = sessionFactory.getCurrentSession();
+		List<Integer> record = session.createSQLQuery(queryStr).list();
+		for (Integer obj : record) {
+			productIds.add(obj);
+		}
+		return productIds;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<DrugProductInventory> getDrugInventoryByDrugId(

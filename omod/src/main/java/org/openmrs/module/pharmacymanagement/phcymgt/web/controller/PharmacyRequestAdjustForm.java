@@ -39,7 +39,7 @@ public class PharmacyRequestAdjustForm
         DrugProduct currDP = null;
         Drug drug = null;
 
-
+        //long startTime = System.currentTimeMillis();
 
         DrugOrderService serviceDrug = (DrugOrderService)Context.getService(DrugOrderService.class);
         LocationService locationService = Context.getLocationService();
@@ -52,7 +52,7 @@ public class PharmacyRequestAdjustForm
        // Map<Integer, DrugProduct> drugMap = new HashMap();
         Map<String, DrugProduct> drugMap = new HashMap();
 
-        Map<Integer, DrugProduct> consumableMap = new HashMap();
+        Map<String, DrugProduct> consumableMap = new HashMap();
 
         Collection<DrugProduct> dpList = serviceDrug.getAllProducts();
         Collection<DrugProduct> dpList1 = new ArrayList();
@@ -105,6 +105,9 @@ public class PharmacyRequestAdjustForm
             fieldNames.add(keyString); }
         Date date;
         int currConsumableSolde;
+
+        //long startTime = System.currentTimeMillis();
+
         if ((request.getParameter("on") != null) &&
                 (request.getParameter("on").equals("true")))
         {
@@ -282,34 +285,25 @@ public class PharmacyRequestAdjustForm
         else {
             int currSolde = 0;
             currConsumableSolde = 0;
+            List<Integer> drugProductsWithSolde=serviceDrug.getDrugsCurrSolde();
+            List<Integer> ConsummableProductsWithSolde=serviceDrug.getConsummablesCurrSolde();
+
+
             for (DrugProduct dp : dps) {
-                if ((dp.getDrugId() != null) &&
-                        (dp.getCmddrugId().getLocationId() != null)) {
-                    currSolde = serviceDrug.getCurrSolde(dp.getDrugId()
-                                    .getDrugId()+"",
-                            null, dftLoc.getLocationId()+"",
-                            dp.getExpiryDate()+"", dp.getLotNo(), null);
-
-
-
-                    if (currSolde > 0) {
+                     for (Integer drugProId:drugProductsWithSolde) {
+                    if (drugProId==dp.getDrugproductId()){
                         dpSet.add(dp);
+                        break;
                     }
                 }
-
-                if ((dp.getConceptId() != null) &&
-                        (dp.getCmddrugId().getLocationId() != null))
-                {
-                    currConsumableSolde = serviceDrug.getCurrSolde(null, dp.getConceptId().getConceptId()+"", dftLoc.getLocationId()+"", null, null, null);
-
-
-
-
-                    if (currConsumableSolde > 0) {
+                for (Integer consProId:ConsummableProductsWithSolde) {
+                    if (consProId==dp.getDrugproductId()){
                         consumableSet.add(dp);
+                        break;
                     }
                 }
             }
+
 
             for (DrugProduct dp : dps1) {
                 if ((dp.getDrugId() != null) && (serviceDrug.getReturnStockByDP(dp).size() > 0) &&
@@ -325,33 +319,20 @@ public class PharmacyRequestAdjustForm
             }
         }
 
-
-        for (DrugProduct drugproduct : dpSet) {
             for (DrugProduct pdp:serviceDrug.getPharmacyDrugProducts()) {
-                //System.out.println("lot No PH: "+pdp.getLotNo()+"lot No Pr: "+drugproduct.getLotNo());
-                if (drugproduct.getLotNo()!=null && pdp.getLotNo()!=null && drugproduct.getLotNo().equals(pdp.getLotNo())){
-                    drugMap.put(drugproduct.getLotNo(), drugproduct);
-                    break;
+                if (pdp.getLotNo()!=null){
+                    drugMap.put(pdp.getLotNo(), pdp);
                 }
             }
 
-        }
 
 
-
-        for (DrugProduct drugproduct : consumableSet) {
             for (DrugProduct pdp:serviceDrug.getPharmacyConsummableProducts()) {
-                //System.out.println("lot No PH: "+pdp.getLotNo()+"lot No Pr: "+drugproduct.getLotNo());
-                if (drugproduct.getLotNo()!=null && pdp.getLotNo()!=null && drugproduct.getLotNo().equals(pdp.getLotNo())){
-                    consumableMap.put(drugproduct.getConceptId().getConceptId(), drugproduct);
-                    break;
+                if (pdp.getLotNo()!=null){
+                    consumableMap.put(pdp.getLotNo(), pdp);
                 }
             }
-        }
-
-
-
-        Collection<DrugProduct> sortedDrug = Utils.sortDrugProducts(drugMap.values());
+       Collection<DrugProduct> sortedDrug = Utils.sortDrugProducts(drugMap.values());
         Object sortedConsumable = Utils.sortDrugProducts(consumableMap.values());
 
         mav.addObject("pharmacyList", pharmacyList);
