@@ -134,6 +134,15 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 	public List<DrugProductInventory> getAllDrugProductInventory() {
 		return drugOrderDAO.getAllDrugProductInventory();
 	}
+	
+	@Override
+	public List<Integer> getDrugsCurrSolde() {
+		return drugOrderDAO.getDrugsCurrSolde();
+	}
+	@Override
+	public List<Integer> getConsummablesCurrSolde() {
+		return drugOrderDAO.getConsummablesCurrSolde();
+	}
 
 	@Override
 	public Integer getCurrSolde(String drugId, String conceptId, String locationId, String expiryDate, String lotNo, String cmddrug) {
