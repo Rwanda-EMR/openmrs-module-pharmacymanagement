@@ -74,6 +74,10 @@ public interface DrugOrderService {
 	public DrugProductInventory getDrugProductInventoryById(int var1);
 
 	public List<DrugProductInventory> getAllDrugProductInventory();
+	
+	public List<Integer> getDrugsCurrSolde();
+
+	public List<Integer> getConsummablesCurrSolde();
 
 	public Integer getCurrSolde(String var1, String var2, String var3, String var4, String var5, String var6);
 
