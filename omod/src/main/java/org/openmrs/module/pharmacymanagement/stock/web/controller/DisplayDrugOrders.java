@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.hibernate.HibernateException;
 import org.openmrs.ConceptAnswer;
 import org.openmrs.Drug;
 import org.openmrs.Location;
@@ -34,7 +33,6 @@ import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
 import org.openmrs.module.pharmacymanagement.utils.Utils;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.WebConstants;
-import org.springframework.orm.hibernate3.HibernateSystemException;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
@@ -309,12 +307,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 
 						dpi.setDrugproductId(dp);
 						dpi.setSolde(total);
-						try{
-							service.saveDrugProduct(dp);
-						} catch (HibernateSystemException hbrn) {
-							//mav.addObject("msg", "No consumable in the system");
-							throw new HibernateSystemException(new HibernateException(hbrn));
-						}
+						service.saveDrugProduct(dp);
 						if (!(dp.getTransferType() != null && dp.getTransferType().equals("adjustment"))) {
 							service.saveInventory(dpi);
 						}

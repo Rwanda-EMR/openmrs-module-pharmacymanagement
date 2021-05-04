@@ -26,7 +26,6 @@ import org.openmrs.module.pharmacymanagement.PharmacyConstants;
 import org.openmrs.module.pharmacymanagement.PharmacyInventory;
 import org.openmrs.module.pharmacymanagement.db.DrugOrderDAO;
 import org.springframework.orm.hibernate3.SessionFactoryUtils;
-import org.springframework.transaction.annotation.Transactional;
 
 public class DrugOrderDAOImpl implements DrugOrderDAO {
 	private SessionFactory sessionFactory;
@@ -88,7 +87,6 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		session.update(product);
 	}
 
-	@Transactional
 	public void saveDrugProduct(DrugProduct drugProduct) {
 		if (drugProduct.getStoreQnty() >= 0) {
 			sessionFactory.getCurrentSession().saveOrUpdate(drugProduct);
