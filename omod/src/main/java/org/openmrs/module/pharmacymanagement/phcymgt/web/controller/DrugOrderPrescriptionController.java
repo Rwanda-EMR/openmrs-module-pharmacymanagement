@@ -52,20 +52,7 @@ public class DrugOrderPrescriptionController extends AbstractController {
 			HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();
 
-		int frequency=0;
-		if (request.getParameter("timesPerDay")!=null && !request.getParameter("timesPerDay").equals(""))
-		frequency=Integer.parseInt(request.getParameter("timesPerDay"));
-		String frequencyConceptName="";
-		String[] frequenciesGP=Context.getAdministrationService().getGlobalProperty("pharmacymanagement.pharmacyFrequencies").split(",");
-
-		for (String frequencieGP:frequenciesGP){
-			if(Integer.parseInt(frequencieGP.split(":")[0])==frequency){
-				frequencyConceptName=frequencieGP.split(":")[1];
-				break;
-			}
-		}
-		OrderFrequency of= Context.getOrderService().getOrderFrequencyByConcept(Context.getConceptService().getConceptByName(frequencyConceptName));
-		double dose = 0;
+     	double dose = 0;
 
 
 		String patientId = request.getParameter("patientId");
@@ -126,7 +113,7 @@ public class DrugOrderPrescriptionController extends AbstractController {
 					List<PrescriptionRequest> ppl2 = Arrays.asList(mapper.readValue(json, PrescriptionRequest[].class));
 
 					for (PrescriptionRequest prescriptionRequest : ppl2) {
-						handleCreate(request, patientId, mav, patient, orderService, httpSession, of, sdf, qtyStr, conceptService, dose, enc, prescriptionRequest);
+						handleCreate(request, patientId, mav, patient, orderService, httpSession, sdf, qtyStr, conceptService, dose, enc, prescriptionRequest);
 					}
 
 				} catch (IOException e) {
@@ -177,7 +164,7 @@ public class DrugOrderPrescriptionController extends AbstractController {
 						&& !request.getParameter("dose").equals(""))
 					drugOrder.setDose(dose);
 
-				drugOrder.setFrequency(of);
+				//drugOrder.setFrequency(of);
 				drugOrder.setDoseUnits(Context.getConceptService().getConceptByName("Dosing Unspecified"));
 
 				if (request.getParameter("quantity") != null
@@ -301,9 +288,26 @@ public class DrugOrderPrescriptionController extends AbstractController {
 	}
 	
 	protected ModelAndView handleCreate(HttpServletRequest request, String patientId, ModelAndView mav, Patient patient, 
-			OrderService orderService, HttpSession httpSession, OrderFrequency of, SimpleDateFormat sdf, String qtyStr, 
+			OrderService orderService, HttpSession httpSession, SimpleDateFormat sdf, String qtyStr, 
 			ConceptService conceptService, double dose, Encounter enc, PrescriptionRequest prescriptionRequest) throws Exception {
 		if(request.getParameter("selecteDrugs") != null && request.getParameter("selecteDrugs").length() > 0) {
+			
+			int frequency=0;
+			if (prescriptionRequest.getTimesPerDayField()!=null && !prescriptionRequest.getTimesPerDayField().equals("")) {
+				String timesPerDayField = prescriptionRequest.getTimesPerDayField();
+				frequency=Integer.parseInt(timesPerDayField.substring(0, timesPerDayField.indexOf("/")));
+			}
+			String frequencyConceptName="";
+			String[] frequenciesGP=Context.getAdministrationService().getGlobalProperty("pharmacymanagement.pharmacyFrequencies").split(",");
+
+			for (String frequencieGP:frequenciesGP){
+				if(Integer.parseInt(frequencieGP.split(":")[0])==frequency){
+					frequencyConceptName=frequencieGP.split(":")[1];
+					break;
+				}
+			}
+			OrderFrequency of= Context.getOrderService().getOrderFrequencyByConcept(Context.getConceptService().getConceptByName(frequencyConceptName));
+		
 
 			/** Creating an Pharmacy appointment if not exists (KAMONYO) */
 

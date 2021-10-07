@@ -411,7 +411,7 @@
     <tr>
 					<td><spring:message code="Route"/>:</td>
 					<td>
-						<select name="route" id="route">
+						<select name="droute" id="droute">
 							<option value=""></option>
 							<c:forEach var="route" items="${model.drugRoutes}">
 								<option value="${route.conceptId}">${route.displayString}</option>
@@ -600,6 +600,7 @@ jQuery(".add-row").click(function(){
 	
     var dname = jQuery("#dname").find(":selected").text();
     var droute = jQuery("#droute").find(":selected").text();
+    if(droute){}else{alert("Please, select a drug route"); return;}
     var frequencyId = jQuery("#frequencyId").val();
     var dquantity = jQuery("#dquantity").val();
     var dstartDate = jQuery("#dstartDate").val();
