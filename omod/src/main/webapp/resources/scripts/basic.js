@@ -38,7 +38,7 @@ jQuery(function (jQuery) {
 	
 	jQuery('#create').click(function(e) {
 		jQuery('#edit-dialog-content').dialog();
-		jQuery('.ui-dialog').css({'width':'700px', 'height':'280px'});
+		jQuery('.ui-dialog').css({'width':'1260px', 'height':'280px', 'left':'10px'});
 		return false;
 	});
 	
