@@ -358,7 +358,7 @@ public class DrugOrderPrescriptionController extends AbstractController {
 
 			try {
 				//dose = Double.parseDouble(request.getParameter("drugDose"));
-				dose = Double.parseDouble(prescriptionRequest.getDquantityField());
+				dose = Double.parseDouble(prescriptionRequest.getQtyTakenAtOnceField());
 				drugOrder.setDose(dose);
 			} catch (Exception e) {
 				log.error("Error parsing dose value to double");
