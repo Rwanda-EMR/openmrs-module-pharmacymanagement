@@ -347,10 +347,12 @@
 <form id="drugOrderForm" method="post" action="module/pharmacymanagement/dopc.form">
 <input type="hidden" name="orderId" id="editing" />
 <input type="hidden" name="editcreate" id="editingcreating" />
+<input type="hidden" name="selecteDrugs" id="selecteDrugs" />
 
 <!-- Just created these two parameters in order to get them as they are in the Controller (KAMONYO)-->
 <input type="hidden" name="appointmentId" value="${model.appointmentId}" />
 <input type="hidden" name="patientId" value="${model.patientId}" />
+
 <!-- End of this -->
 
 <table class="floatLeft">
@@ -601,6 +603,7 @@ jQuery(".add-row").click(function(){
     const newDrug = {qtyTakenAtOnceField:qtyTakenAtOnce, timesPerDayField:timesPerDay, daysField:days, dnameField:dname, routeField:droute, frequencyIdField:frequencyId, dquantityField:dquantity, dstartDateField:dstartDate, dinstructionsField:dinstructions};
     tableData.push(newDrug);
     jQuery("#drugOrderForm").trigger("reset");
+    jQuery("#selecteDrugs").attr("value", JSON.stringify(tableData));
 });
 
 //create table and assign data
