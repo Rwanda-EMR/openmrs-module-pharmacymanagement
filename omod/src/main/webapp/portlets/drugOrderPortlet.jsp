@@ -77,6 +77,8 @@
 
 		jQuery('.edit').click( function() {
 			jQuery('.toBRepl').hide();
+			jQuery('.add-row').hide();
+			jQuery('#added-drugs-table').hide();
 			var drugsOption = '<option value="">-- Drugs --</option>';			
 			for(var i = 0; i < drugsName.length; i++) {
 				drugsOption += '<option value="'+drugsId[i]+'">'+drugsName[i]+'</option>';
@@ -129,6 +131,8 @@
 		});
 
 		jQuery('#create').click(function() {
+			jQuery('.add-row').show();
+			jQuery('#added-drugs-table').show();
 			jQuery("#editingcreating").attr("value", "create");
 			var item = '';
 			jQuery('#dname').change(function() {
