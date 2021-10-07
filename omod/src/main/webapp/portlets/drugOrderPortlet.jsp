@@ -9,6 +9,9 @@
 <openmrs:htmlInclude file="/moduleResources/pharmacymanagement/style/basic.css" />
 <openmrs:htmlInclude file="/moduleResources/pharmacymanagement/scripts/jquery.PrintArea.js" />
 
+<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/style/tabulator.min.css" />
+<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/scripts/tabulator.min.js" />
+
 <script type="text/javascript">
 
 	// drugs options
