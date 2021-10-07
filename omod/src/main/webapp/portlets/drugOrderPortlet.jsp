@@ -350,7 +350,7 @@
 <input type="hidden" name="patientId" value="${model.patientId}" />
 <!-- End of this -->
 
-<table>
+<table class="floatLeft">
 <!-- 
 	<tr class="toBRepl">		
 		<td>Drug Family</td>
