@@ -344,7 +344,7 @@
 </div>
 
 <div id="edit-dialog-content">
-<form method="post" action="module/pharmacymanagement/dopc.form">
+<form id="drugOrderForm" method="post" action="module/pharmacymanagement/dopc.form">
 <input type="hidden" name="orderId" id="editing" />
 <input type="hidden" name="editcreate" id="editingcreating" />
 
@@ -459,9 +459,10 @@
 
 	<tr>
 		<td><input type="submit" value="Submit" class="send" /></td>
+		<td><input type="button" class="add-row" value="Add Drug"></td>
 	</tr>
 </table>
-
+<div id="added-drugs-table"></div>
 </form>
 </div>
 
@@ -578,3 +579,55 @@
 <input type="submit" value="Delete" />
 </form>
 </div>
+
+<script>
+//define array of table data
+var tableData = [];
+
+jQuery(".add-row").click(function(){
+	var qtyTakenAtOnce = jQuery('#qtyTakenAtOnceId').find(":selected").text();
+	var timesPerDay = jQuery('#timesPerDayId').find(":selected").text();
+	var days = jQuery('#daysId').find(":selected").text();
+	var quantity = qtyTakenAtOnce * timesPerDay * days;
+	
+	var fid = qtyTakenAtOnce + 'X' + timesPerDay + 'X' + days;
+	
+    var dname = jQuery("#dname").find(":selected").text();
+    var droute = jQuery("#droute").find(":selected").text();
+    var frequencyId = jQuery("#frequencyId").val();
+    var dquantity = jQuery("#dquantity").val();
+    var dstartDate = jQuery("#dstartDate").val();
+    var dinstructions = jQuery("#dinstructions").val();
+    const newDrug = {qtyTakenAtOnceField:qtyTakenAtOnce, timesPerDayField:timesPerDay, daysField:days, dnameField:dname, routeField:droute, frequencyIdField:frequencyId, dquantityField:dquantity, dstartDateField:dstartDate, dinstructionsField:dinstructions};
+    tableData.push(newDrug);
+    jQuery("#drugOrderForm").trigger("reset");
+});
+
+//create table and assign data
+var table = new Tabulator("#added-drugs-table", {
+    reactiveData:true, //enable reactive data
+    data:tableData, //assign data array
+    layout:"fitDataFill",
+    layoutColumnsOnNewData:true,
+    columns:[
+        {title:"Drug Name", field:"dnameField"},
+        {title:"Route", field:"routeField"},
+        {title:"Frequency", field:"frequencyIdField"},
+        {title:"Quantity", field:"dquantityField"},
+        {title:"Start Date", field:"dstartDateField"},
+        {title:"Instrunctions", field:"dinstructionsField"},
+        {formatter:"buttonCross", align:"center", title:"del", headerSort:false, cellClick:function(e, cell){
+        	debugger;
+            var drugToDelete={ dname:cell.getRow().getData().dnameField
+                  };
+            var filtered=tableData.filter(function(x){
+              debugger;
+              return x.dnameField!=drugToDelete.dname;
+            });
+            tableData=filtered;
+            cell.getRow().delete();
+        	}
+        }
+  ]
+});
+</script>
