@@ -12,6 +12,8 @@
  *
  */
  
+ .floatLeft {float: left; }
+ 
 #stop-modal-content {display: none;}
 #rpt-dialog-content {display: none;}
 #edit-dialog-content {display: none;}

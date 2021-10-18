@@ -1,9 +1,12 @@
 package org.openmrs.module.pharmacymanagement.phcymgt.web.controller;
 
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,16 +31,18 @@ import org.openmrs.module.mohappointment.model.Appointment;
 import org.openmrs.module.mohappointment.model.AppointmentState;
 import org.openmrs.module.mohappointment.utils.AppointmentUtil;
 import org.openmrs.module.pharmacymanagement.PharmacyConstants;
+import org.openmrs.module.pharmacymanagement.PrescriptionRequest;
 import org.openmrs.module.pharmacymanagement.utils.GlobalPropertiesMgt;
 import org.openmrs.module.pharmacymanagement.utils.Utils;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.WebConstants;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.view.RedirectView;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class DrugOrderPrescriptionController extends AbstractController {
 	protected final Log log = LogFactory.getLog(getClass());
@@ -47,19 +52,6 @@ public class DrugOrderPrescriptionController extends AbstractController {
 			HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();
 
-		int frequency=0;
-		if (request.getParameter("timesPerDay")!=null && !request.getParameter("timesPerDay").equals(""))
-		frequency=Integer.parseInt(request.getParameter("timesPerDay"));
-		String frequencyConceptName="";
-		String[] frequenciesGP=Context.getAdministrationService().getGlobalProperty("pharmacymanagement.pharmacyFrequencies").split(",");
-
-		for (String frequencieGP:frequenciesGP){
-			if(Integer.parseInt(frequencieGP.split(":")[0])==frequency){
-				frequencyConceptName=frequencieGP.split(":")[1];
-				break;
-			}
-		}
-		OrderFrequency of= Context.getOrderService().getOrderFrequencyByConcept(Context.getConceptService().getConceptByName(frequencyConceptName));
 		double dose = 0;
 
 
@@ -74,15 +66,15 @@ public class DrugOrderPrescriptionController extends AbstractController {
 
 		//OrderFrequency of= Context.getOrderService().getOrderFrequencyByConcept(Context.getConceptService().getConceptByName("Frequency Not applicable"));
 
-				//getOrderFrequencies(request.getParameter("frequency"), Context.getLocale(), false, false).get(0);
+		//getOrderFrequencies(request.getParameter("frequency"), Context.getLocale(), false, false).get(0);
 
 		HttpSession httpSession = request.getSession();
 		String qtyStr = null;
-		
+
 		/** This is created here, so that it can't be declared anywhere else... (KAMONYO) */
 		Integer appointmentId = null;
 		/** ... */
-		
+
 
 
 		SimpleDateFormat sdf;
@@ -113,128 +105,20 @@ public class DrugOrderPrescriptionController extends AbstractController {
 				&& patient != null) {
 			if (request.getParameter("editcreate").equals("create")) {
 
-				/** Creating an Pharmacy appointment if not exists (KAMONYO) */
+				ObjectMapper mapper = new ObjectMapper();
+				String json = request.getParameter("selecteDrugs");
 
-//				if (request.getParameter("appointmentId") != null
-//						&& !request.getParameter("appointmentId").equals("")) {
-//					appointmentId = Integer.parseInt(request
-//							.getParameter("appointmentId"));
-//
-//					/**
-//					 * Setting Appointment as Attended here and
-//					 * creating a pharmacy waiting one:
-//					 */
-//					createPharmacyAppointment(appointmentId, request, patient,
-//							null);
-//				}
-				/** ... END of Appointment ... */
-				
-				Utils.createWaitingPharmacyAppointment(patient, null);
-
-				DrugOrder drugOrder = new DrugOrder();
-				Drug drug = conceptService.getDrug(Integer.valueOf(request
-						.getParameter("drugs")));
-				String startDateStr = ServletRequestUtils.getStringParameter(
-						request, "startdate", null);
-
-				OrderType orderType = orderService
-						.getOrderType(PharmacyConstants.DRUG_ORDER_TYPE);
-				if (request.getParameter("quantity") != null
-						&& !request.getParameter("quantity").equals("")) {
-					qtyStr = request.getParameter("quantity");
-					drugOrder.setQuantity(Double.valueOf(qtyStr));
-				}
-
-				drugOrder.setCreator(Context.getAuthenticatedUser());
-				drugOrder.setConcept(drug.getConcept());
-				drugOrder.setOrderType(orderType);
-				drugOrder.setInstructions(request.getParameter("instructions"));
-				//drugOrder.setInstructions(request.getParameter("frequency"));
-				drugOrder.setDateCreated(new Date());
-				drugOrder.setPatient(patient);
-				drugOrder.setDrug(drug);
-				//drugOrder.setDiscontinued(false);
- 
 				try {
-					//dose = Double.parseDouble(request.getParameter("drugDose"));
-					dose = Double.parseDouble(request.getParameter("qtyTakenAtOnce"));
-					drugOrder.setDose(dose);
-				} catch (Exception e) {
-					log.error("Error parsing dose value to double");
-					e.printStackTrace();
-				}
-				
-				int doseUnits = 0;
-				try {
-					//doseUnits = Integer.parseInt(request.getParameter("doseUnits"));
-					//drugOrder.setDoseUnits(Context.getConceptService().getConcept(doseUnits));
-					drugOrder.setDoseUnits(Context.getConceptService().getConceptByName("Dosing Unspecified"));
-				} catch (Exception e) {
-					log.error("Error parsing dose units to int");
-					e.printStackTrace();
-				}
-				
-				int route = 0;
-				try {
-					route = Integer.parseInt(request.getParameter("route"));					
-					drugOrder.setRoute(Context.getConceptService().getConcept(route));
-				} catch (Exception e) {
-					log.error("Error parsing route to int");
-					e.printStackTrace();
-				}
-				drugOrder.setQuantityUnits(Context.getConceptService().getConceptByName("Quantity Units Not applicable"));
+					// Convert JSON array to List of objects
+					List<PrescriptionRequest> ppl2 = Arrays.asList(mapper.readValue(json, PrescriptionRequest[].class));
 
-
-				Context.getEncounterService().saveEncounter(enc);
-
-				drugOrder.setEncounter(enc);
-				//drugOrder.setEncounter(Context.getEncounterService().getEncounter(1427160));
-				//drugOrder.setDosingType(DosingInstructions.class);
-				drugOrder.setCareSetting(Context.getOrderService().getCareSetting(2));
-				drugOrder.setDuration(Integer.parseInt(request.getParameter("days")));
-				drugOrder.setDurationUnits(Context.getConceptService().getConceptByName("DAYS"));
-				//drugOrder.setNumRefills(20);
-
-				drugOrder.setOrderer(Utils.getProvider());
-
-				if (request.getParameter("dose") != null
-						&& !request.getParameter("dose").equals(""))
-					drugOrder.setDose(Double.valueOf(request
-							.getParameter("dose")));
-				drugOrder.setFrequency(of);
-				//drugOrder.setDoseUnits(Context.getConceptService().getConceptByName(request.getParameter("units")));
-				if (request.getParameter("quantity") != null
-						&& !request.getParameter("quantity").equals(""))
-					drugOrder.setQuantity(Double.valueOf(request.getParameter("quantity")));
-				if (!startDateStr.equals("") && startDateStr != null) {
-					Date startDate = null;
-					try {
-						startDate = sdf.parse(startDateStr);
-					} catch (ParseException e) {
-						e.printStackTrace();
+					for (PrescriptionRequest prescriptionRequest : ppl2) {
+						handleOrderCreation(request, patientId, mav, patient, orderService, httpSession, sdf, qtyStr, conceptService, dose, enc, prescriptionRequest);
 					}
-					drugOrder.setDateActivated(startDate);
-					orderService.saveOrder(drugOrder, Utils.getOrderContext());
 
-
-
-					/*
-					 * To be uncommented whenever the commented lines are
-					 * validated
-					 * 
-					 * Concept c = conceptService.getConcept(6189); Concept
-					 * obsValue = conceptService.getConcept(6191); Obs o =
-					 * Utils.createObservation(startDate, dftLoc, patient, c,
-					 * obsValue, 4); os.saveObs(o, null);
-					 */
-
-					mav.addObject("msg",
-							"An order has been created successfully!");
-				} else {
-					httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
-							"You need to enter the start date!");
+				} catch (IOException e) {
+					e.printStackTrace();
 				}
-
 			}
 
 		}
@@ -244,102 +128,21 @@ public class DrugOrderPrescriptionController extends AbstractController {
 				&& !request.getParameter("editcreate").equals("")
 				&& patient != null) {
 			if (request.getParameter("editcreate").equals("edit")) {
-				DrugOrder drugOrder = cloneAndVoidPrevious((DrugOrder)orderService.getOrder(Integer.valueOf(request.getParameter("orderId"))),"Edit");
-
-						//(DrugOrder) orderService.getOrder(Integer.valueOf(request.getParameter("orderId")));
-				// Order order = orderService.getOrder(Integer.valueOf(request
-				// .getParameter("orderId")));
-
-				Drug drug = conceptService.getDrug(Integer.valueOf(request
-						.getParameter("drugs")));
-
-				// editing the date from the form to get this format dd/MM/yyyy
-				if (request.getParameter("startdate") != null
-						&& !request.getParameter("startdate").equals("")) {
-					String strDate1 = request.getParameter("startdate");
-
-					Date startDate = null;
-					try {
-						startDate = sdf.parse(strDate1);
-					} catch (ParseException e) {
-						e.printStackTrace();
-					}
-					drugOrder.setDateActivated(startDate);
-				}
-				if (request.getParameter("quantity") != null
-						&& !request.getParameter("quantity").equals("")) {
-					qtyStr = request.getParameter("quantity");
-					drugOrder.setQuantity(Double.valueOf(qtyStr));
-					drugOrder.setQuantityUnits(Context.getConceptService().getConceptByName("Quantity Units Not applicable"));
-
-				}
-
-				drugOrder.setConcept(drug.getConcept());
-				drugOrder.setInstructions(request.getParameter("instructions"));
-				drugOrder.setDateCreated(new Date());
-				drugOrder.setPatient(patient);
-				drugOrder.setDrug(drug);
-				drugOrder.setDuration(Integer.parseInt(request.getParameter("days")));
-				drugOrder.setDurationUnits(Context.getConceptService().getConceptByName("DAYS"));
-				if (request.getParameter("dose") != null
-						&& !request.getParameter("dose").equals(""))
-					drugOrder.setDose(dose);
-
-				drugOrder.setFrequency(of);
-				//drugOrder.setDoseUnits(Context.getConceptService().getConceptByName(request.getParameter("units")));
-				drugOrder.setDoseUnits(Context.getConceptService().getConceptByName("Dosing Unspecified"));
-
-				if (request.getParameter("quantity") != null
-						&& !request.getParameter("quantity").equals(""))
-					drugOrder.setQuantity(Double.valueOf(request.getParameter("quantity")));
-				Context.getEncounterService().saveEncounter(enc);
-				drugOrder.setEncounter(enc);
-				drugOrder.setOrderer(Utils.getProvider());
-				orderService.saveOrder(drugOrder, Utils.getOrderContext());
-				mav.addObject("msg", "An order has been updated successfully!");
+				handleOrderEdit(orderService, conceptService, sdf, qtyStr, patient, dose, enc, mav, request);
 			}
 		}
 
 		if (request.getParameter("delete") != null
 				&& !request.getParameter("delete").equals("")
 				&& patient != null) {
-			Order order = orderService.getOrder(Integer.valueOf(request
-					.getParameter("orderToDel")));
-			order.setVoided(true);
-			order.setVoidedBy(Context.getAuthenticatedUser());
-			order.setVoidReason(request.getParameter("deleteReason"));
-			orderService.voidOrder(order,request.getParameter("deleteReason"));
-			Encounter encounter=order.getEncounter();
-			encounter.setVoided(true);
-			encounter.setVoidedBy(Context.getAuthenticatedUser());
-			encounter.setVoidReason(request.getParameter("deleteReason"));
-			Context.getEncounterService().saveEncounter(encounter);
-			//orderService.saveOrder(order, Utils.getOrderContext());
-			mav.addObject("msg", "An order has been deleted successfully!");
-
+			handleOrderDelete(orderService, request, mav);
 		}
 
 		// Stopping an order
 		if (request.getParameter("stopping") != null
 				&& !request.getParameter("stopping").equals("")) {
 			if (request.getParameter("stopping").equals("stop")) {
-				Order order = orderService.getOrder(Integer.valueOf(request
-						.getParameter("orderId")));
-				Concept concept = conceptService.getConcept(Integer
-						.valueOf(request.getParameter("reasons")));
-				Date date = null;
-				try {
-					date = sdf.parse(request.getParameter("stopDate"));
-				} catch (ParseException e) {
-					e.printStackTrace();
-				}
-
-				Order discontinuationOrder = order.cloneForDiscontinuing();
-				discontinuationOrder.setOrderReason(concept);
-				discontinuationOrder.setOrderer(order.getOrderer());
-				discontinuationOrder.setEncounter(order.getEncounter());
-				orderService.saveOrder(discontinuationOrder, Utils.getOrderContext());
-				mav.addObject("msg", "An order has been stopped successfully!");
+				handleOrderStop(orderService, conceptService, sdf, request, mav);
 			}
 		}
 
@@ -360,7 +163,7 @@ public class DrugOrderPrescriptionController extends AbstractController {
 	 */
 	private void createPharmacyAppointment(Integer appointmentId,
 			HttpServletRequest request, Patient patient, Encounter encounter)
-			throws NumberFormatException, ParseException {
+					throws NumberFormatException, ParseException {
 
 		if (appointmentId != null) {
 
@@ -370,7 +173,7 @@ public class DrugOrderPrescriptionController extends AbstractController {
 			Utils.setConsultationAppointmentAsAttended(appointment);
 
 			// Create Pharmacy waiting appointment here:
-//			Utils.createWaitingPharmacyAppointment(patient, encounter);
+			//			Utils.createWaitingPharmacyAppointment(patient, encounter);
 		}
 
 		for (Appointment appointment : AppointmentUtil
@@ -407,5 +210,253 @@ public class DrugOrderPrescriptionController extends AbstractController {
 		newOrder.setPreviousOrder(null);
 		Context.getOrderService().voidOrder(orderToVoid, reason);
 		return newOrder;
+	}
+
+	protected OrderFrequency getFrequencyForOrderEdit(HttpServletRequest request) {
+		int frequency=0;
+		if (request.getParameter("timesPerDay")!=null && !request.getParameter("timesPerDay").equals(""))
+			frequency=Integer.parseInt(request.getParameter("timesPerDay"));
+		String frequencyConceptName="";
+		String[] frequenciesGP=Context.getAdministrationService().getGlobalProperty("pharmacymanagement.pharmacyFrequencies").split(",");
+
+		for (String frequencieGP:frequenciesGP){
+			if(Integer.parseInt(frequencieGP.split(":")[0])==frequency){
+				frequencyConceptName=frequencieGP.split(":")[1];
+				break;
+			}
+		}
+		OrderFrequency of= Context.getOrderService().getOrderFrequencyByConcept(Context.getConceptService().getConceptByName(frequencyConceptName));
+		return of;
+	}
+
+	protected OrderFrequency getFrequencyForOrderCreation(PrescriptionRequest prescriptionRequest) {
+		int frequency=0;
+		if (prescriptionRequest.getTimesPerDayField()!=null && !prescriptionRequest.getTimesPerDayField().equals("")) {
+			String timesPerDayField = prescriptionRequest.getTimesPerDayField();
+			frequency=Integer.parseInt(timesPerDayField.substring(0, timesPerDayField.indexOf("/")));
+		}
+		String frequencyConceptName="";
+		String[] frequenciesGP=Context.getAdministrationService().getGlobalProperty("pharmacymanagement.pharmacyFrequencies").split(",");
+
+		for (String frequencieGP:frequenciesGP){
+			if(Integer.parseInt(frequencieGP.split(":")[0])==frequency){
+				frequencyConceptName=frequencieGP.split(":")[1];
+				break;
+			}
+		}
+		OrderFrequency of= Context.getOrderService().getOrderFrequencyByConcept(Context.getConceptService().getConceptByName(frequencyConceptName));
+		return of;
+	}
+	
+	protected void handleOrderStop(OrderService orderService, ConceptService conceptService, SimpleDateFormat sdf, HttpServletRequest request, ModelAndView mav) {
+		Order order = orderService.getOrder(Integer.valueOf(request
+				.getParameter("orderId")));
+		Concept concept = conceptService.getConcept(Integer
+				.valueOf(request.getParameter("reasons")));
+		Date date = null;
+		try {
+			date = sdf.parse(request.getParameter("stopDate"));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		Order discontinuationOrder = order.cloneForDiscontinuing();
+		discontinuationOrder.setOrderReason(concept);
+		discontinuationOrder.setOrderer(order.getOrderer());
+		discontinuationOrder.setEncounter(order.getEncounter());
+		orderService.saveOrder(discontinuationOrder, Utils.getOrderContext());
+		mav.addObject("msg", "An order has been stopped successfully!");
+	}
+	protected void handleOrderDelete(OrderService orderService, HttpServletRequest request, ModelAndView mav) {
+		Order order = orderService.getOrder(Integer.valueOf(request
+				.getParameter("orderToDel")));
+		order.setVoided(true);
+		order.setVoidedBy(Context.getAuthenticatedUser());
+		order.setVoidReason(request.getParameter("deleteReason"));
+		orderService.voidOrder(order,request.getParameter("deleteReason"));
+		Encounter encounter=order.getEncounter();
+		encounter.setVoided(true);
+		encounter.setVoidedBy(Context.getAuthenticatedUser());
+		encounter.setVoidReason(request.getParameter("deleteReason"));
+		Context.getEncounterService().saveEncounter(encounter);
+		//orderService.saveOrder(order, Utils.getOrderContext());
+		mav.addObject("msg", "An order has been deleted successfully!");
+	}
+
+	protected void handleOrderEdit(OrderService orderService, ConceptService conceptService, SimpleDateFormat sdf, String qtyStr, Patient patient, double dose, Encounter enc, ModelAndView mav, HttpServletRequest request) {
+		DrugOrder drugOrder = cloneAndVoidPrevious((DrugOrder)orderService.getOrder(Integer.valueOf(request.getParameter("orderId"))),"Edit");
+		Drug drug = conceptService.getDrug(Integer.valueOf(request
+				.getParameter("drugs")));
+
+		// editing the date from the form to get this format dd/MM/yyyy
+		if (request.getParameter("startdate") != null
+				&& !request.getParameter("startdate").equals("")) {
+			String strDate1 = request.getParameter("startdate");
+
+			Date startDate = null;
+			try {
+				startDate = sdf.parse(strDate1);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			drugOrder.setDateActivated(startDate);
+		}
+		if (request.getParameter("quantity") != null
+				&& !request.getParameter("quantity").equals("")) {
+			qtyStr = request.getParameter("quantity");
+			drugOrder.setQuantity(Double.valueOf(qtyStr));
+			drugOrder.setQuantityUnits(Context.getConceptService().getConceptByName("Quantity Units Not applicable"));
+
+		}
+
+		drugOrder.setConcept(drug.getConcept());
+		drugOrder.setInstructions(request.getParameter("instructions"));
+		drugOrder.setDateCreated(new Date());
+		drugOrder.setPatient(patient);
+		drugOrder.setDrug(drug);
+		drugOrder.setDuration(Integer.parseInt(request.getParameter("days")));
+		drugOrder.setDurationUnits(Context.getConceptService().getConceptByName("DAYS"));
+		if (request.getParameter("dose") != null
+				&& !request.getParameter("dose").equals(""))
+			drugOrder.setDose(dose);
+
+		drugOrder.setFrequency(getFrequencyForOrderEdit(request));
+		drugOrder.setDoseUnits(Context.getConceptService().getConceptByName("Dosing Unspecified"));
+
+		if (request.getParameter("quantity") != null
+				&& !request.getParameter("quantity").equals(""))
+			drugOrder.setQuantity(Double.valueOf(request.getParameter("quantity")));
+		Context.getEncounterService().saveEncounter(enc);
+		drugOrder.setEncounter(enc);
+		drugOrder.setOrderer(Utils.getProvider());
+		orderService.saveOrder(drugOrder, Utils.getOrderContext());
+		mav.addObject("msg", "An order has been updated successfully!");
+	}
+	
+	protected void handleOrderCreation(HttpServletRequest request, String patientId, ModelAndView mav, Patient patient, 
+			OrderService orderService, HttpSession httpSession, SimpleDateFormat sdf, String qtyStr, 
+			ConceptService conceptService, double dose, Encounter enc, PrescriptionRequest prescriptionRequest) throws Exception {
+		if(request.getParameter("selecteDrugs") != null && request.getParameter("selecteDrugs").length() > 0) {
+
+			/** Creating an Pharmacy appointment if not exists (KAMONYO) */
+
+			//		if (request.getParameter("appointmentId") != null
+			//				&& !request.getParameter("appointmentId").equals("")) {
+			//			appointmentId = Integer.parseInt(request
+			//					.getParameter("appointmentId"));
+			//
+			//			/**
+			//			 * Setting Appointment as Attended here and
+			//			 * creating a pharmacy waiting one:
+			//			 */
+			//			createPharmacyAppointment(appointmentId, request, patient,
+			//					null);
+			//		}
+			/** ... END of Appointment ... */
+
+			Utils.createWaitingPharmacyAppointment(patient, null);
+
+			DrugOrder drugOrder = new DrugOrder();
+			/*
+			 * Drug drug = conceptService.getDrug(Integer.valueOf(request
+			 * .getParameter("drugs")));
+			 */
+			Drug drug = conceptService.getDrug(prescriptionRequest.getDnameField());
+			/*
+			 * String startDateStr = ServletRequestUtils.getStringParameter( request,
+			 * "startdate", null);
+			 */
+			String startDateStr = prescriptionRequest.getDstartDateField();
+			OrderType orderType = orderService
+					.getOrderType(PharmacyConstants.DRUG_ORDER_TYPE);
+			if (prescriptionRequest.getDquantityField() != null
+					&& !prescriptionRequest.getDquantityField().equals("")) {
+				qtyStr = prescriptionRequest.getDquantityField();
+				drugOrder.setQuantity(Double.valueOf(qtyStr));
+			}
+
+			drugOrder.setCreator(Context.getAuthenticatedUser());
+			drugOrder.setConcept(drug.getConcept());
+			drugOrder.setOrderType(orderType);
+			drugOrder.setInstructions(prescriptionRequest.getDinstructionsField());
+			//drugOrder.setInstructions(request.getParameter("frequency"));
+			drugOrder.setDateCreated(new Date());
+			drugOrder.setPatient(patient);
+			drugOrder.setDrug(drug);
+			//drugOrder.setDiscontinued(false);
+
+			try {
+				//dose = Double.parseDouble(request.getParameter("drugDose"));
+				dose = Double.parseDouble(prescriptionRequest.getQtyTakenAtOnceField());
+				drugOrder.setDose(dose);
+			} catch (Exception e) {
+				log.error("Error parsing dose value to double");
+				e.printStackTrace();
+			}
+
+			int doseUnits = 0;
+			try {
+				//doseUnits = Integer.parseInt(request.getParameter("doseUnits"));
+				//drugOrder.setDoseUnits(Context.getConceptService().getConcept(doseUnits));
+				drugOrder.setDoseUnits(Context.getConceptService().getConceptByName("Dosing Unspecified"));
+			} catch (Exception e) {
+				log.error("Error parsing dose units to int");
+				e.printStackTrace();
+			}
+			try {				
+				drugOrder.setRoute(Context.getConceptService().getConcept(prescriptionRequest.getRouteField()));
+			} catch (Exception e) {
+				log.error("Error parsing route to int");
+				e.printStackTrace();
+			}
+			drugOrder.setQuantityUnits(Context.getConceptService().getConceptByName("Quantity Units Not applicable"));
+
+
+			Context.getEncounterService().saveEncounter(enc);
+
+			drugOrder.setEncounter(enc);
+			drugOrder.setCareSetting(Context.getOrderService().getCareSetting(2));
+			drugOrder.setDuration(Integer.parseInt(prescriptionRequest.getDaysField().substring(0, prescriptionRequest.getDaysField().indexOf(" ")).trim()));
+			drugOrder.setDurationUnits(Context.getConceptService().getConceptByName("DAYS"));
+
+			drugOrder.setOrderer(Utils.getProvider());
+
+			if (prescriptionRequest.getQtyTakenAtOnceField() != null
+					&& !prescriptionRequest.getQtyTakenAtOnceField().equals(""))
+				drugOrder.setDose(Double.valueOf(prescriptionRequest.getQtyTakenAtOnceField()));
+			drugOrder.setFrequency(getFrequencyForOrderCreation(prescriptionRequest));
+
+			if (prescriptionRequest.getDquantityField() != null
+					&& !prescriptionRequest.getDquantityField().equals(""))
+				drugOrder.setQuantity(Double.valueOf(prescriptionRequest.getDquantityField()));
+			if (!startDateStr.equals("") && startDateStr != null) {
+				Date startDate = null;
+				try {
+					startDate = sdf.parse(startDateStr);
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				drugOrder.setDateActivated(startDate);
+				orderService.saveOrder(drugOrder, Utils.getOrderContext());
+
+
+
+				/*
+				 * To be uncommented whenever the commented lines are
+				 * validated
+				 * 
+				 * Concept c = conceptService.getConcept(6189); Concept
+				 * obsValue = conceptService.getConcept(6191); Obs o =
+				 * Utils.createObservation(startDate, dftLoc, patient, c,
+				 * obsValue, 4); os.saveObs(o, null);
+				 */
+
+				mav.addObject("msg",
+						"An order has been created successfully!");
+			} else {
+				httpSession.setAttribute(WebConstants.OPENMRS_ERROR_ATTR,
+						"You need to enter the start date!");
+			}
+		}
 	}
 }

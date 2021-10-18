@@ -9,6 +9,9 @@
 <openmrs:htmlInclude file="/moduleResources/pharmacymanagement/style/basic.css" />
 <openmrs:htmlInclude file="/moduleResources/pharmacymanagement/scripts/jquery.PrintArea.js" />
 
+<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/style/tabulator.min.css" />
+<openmrs:htmlInclude file="/moduleResources/pharmacymanagement/scripts/tabulator.min.js" />
+
 <script type="text/javascript">
 
 	// drugs options
@@ -74,6 +77,8 @@
 
 		jQuery('.edit').click( function() {
 			jQuery('.toBRepl').hide();
+			jQuery('.add-row').hide();
+			jQuery('#added-drugs-table').hide();
 			var drugsOption = '<option value="">-- Drugs --</option>';			
 			for(var i = 0; i < drugsName.length; i++) {
 				drugsOption += '<option value="'+drugsId[i]+'">'+drugsName[i]+'</option>';
@@ -126,6 +131,8 @@
 		});
 
 		jQuery('#create').click(function() {
+			jQuery('.add-row').show();
+			jQuery('#added-drugs-table').show();
 			jQuery("#editingcreating").attr("value", "create");
 			var item = '';
 			jQuery('#dname').change(function() {
@@ -341,16 +348,18 @@
 </div>
 
 <div id="edit-dialog-content">
-<form method="post" action="module/pharmacymanagement/dopc.form">
+<form id="drugOrderForm" method="post" action="module/pharmacymanagement/dopc.form">
 <input type="hidden" name="orderId" id="editing" />
 <input type="hidden" name="editcreate" id="editingcreating" />
+<input type="hidden" name="selecteDrugs" id="selecteDrugs" />
 
 <!-- Just created these two parameters in order to get them as they are in the Controller (KAMONYO)-->
 <input type="hidden" name="appointmentId" value="${model.appointmentId}" />
 <input type="hidden" name="patientId" value="${model.patientId}" />
+
 <!-- End of this -->
 
-<table>
+<table class="floatLeft">
 <!-- 
 	<tr class="toBRepl">		
 		<td>Drug Family</td>
@@ -402,7 +411,7 @@
     <tr>
 					<td><spring:message code="Route"/>:</td>
 					<td>
-						<select name="route" id="route">
+						<select name="droute" id="droute">
 							<option value=""></option>
 							<c:forEach var="route" items="${model.drugRoutes}">
 								<option value="${route.conceptId}">${route.displayString}</option>
@@ -456,9 +465,10 @@
 
 	<tr>
 		<td><input type="submit" value="Submit" class="send" /></td>
+		<td><input type="button" class="add-row" value="Add Drug"></td>
 	</tr>
 </table>
-
+<div id="added-drugs-table"></div>
 </form>
 </div>
 
@@ -575,3 +585,57 @@
 <input type="submit" value="Delete" />
 </form>
 </div>
+
+<script>
+//define array of table data
+var tableData = [];
+
+jQuery(".add-row").click(function(){
+	var qtyTakenAtOnce = jQuery('#qtyTakenAtOnceId').find(":selected").text();
+	var timesPerDay = jQuery('#timesPerDayId').find(":selected").text();
+	var days = jQuery('#daysId').find(":selected").text();
+	var quantity = qtyTakenAtOnce * timesPerDay * days;
+	
+	var fid = qtyTakenAtOnce + 'X' + timesPerDay + 'X' + days;
+	
+    var dname = jQuery("#dname").find(":selected").text();
+    var droute = jQuery("#droute").find(":selected").text();
+    if(droute){}else{alert("Please, select a drug route"); return;}
+    var frequencyId = jQuery("#frequencyId").val();
+    var dquantity = jQuery("#dquantity").val();
+    var dstartDate = jQuery("#dstartDate").val();
+    var dinstructions = jQuery("#dinstructions").val();
+    const newDrug = {qtyTakenAtOnceField:qtyTakenAtOnce, timesPerDayField:timesPerDay, daysField:days, dnameField:dname, routeField:droute, frequencyIdField:frequencyId, dquantityField:dquantity, dstartDateField:dstartDate, dinstructionsField:dinstructions};
+    tableData.push(newDrug);
+    jQuery("#drugOrderForm").trigger("reset");
+    jQuery("#selecteDrugs").attr("value", JSON.stringify(tableData));
+});
+
+//create table and assign data
+var table = new Tabulator("#added-drugs-table", {
+    reactiveData:true, //enable reactive data
+    data:tableData, //assign data array
+    layout:"fitDataFill",
+    layoutColumnsOnNewData:true,
+    columns:[
+        {title:"Drug Name", field:"dnameField"},
+        {title:"Route", field:"routeField"},
+        {title:"Frequency", field:"frequencyIdField"},
+        {title:"Quantity", field:"dquantityField"},
+        {title:"Start Date", field:"dstartDateField"},
+        {title:"Instrunctions", field:"dinstructionsField"},
+        {formatter:"buttonCross", align:"center", title:"del", headerSort:false, cellClick:function(e, cell){
+        	debugger;
+            var drugToDelete={ dname:cell.getRow().getData().dnameField
+                  };
+            var filtered=tableData.filter(function(x){
+              debugger;
+              return x.dnameField!=drugToDelete.dname;
+            });
+            tableData=filtered;
+            cell.getRow().delete();
+        	}
+        }
+  ]
+});
+</script>

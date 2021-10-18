@@ -12,17 +12,79 @@
 <script	type="text/javascript">
 	var $p = jQuery.noConflict();
 	$p(document).ready( function() {
+		  var idIndex = 0;
+		  $p('#add').on('click',function() {
+				var dateFieldValue = $p('#dateFieldId').val();
+				if(dateFieldValue){}else{alert('Please, select a date value first');return;};
+				var serviceFieldValue = $p('#serviceId').val();
+				if(serviceFieldValue){}else{alert('Please, select a service first');return;};
+				var patientFieldValue = $p('#patientId_id').val();
+				if(patientFieldValue){}else{alert('Please, select a patient first');return;};
+			     idIndex++;
+			     var templateClone = $p("#emptyRow").clone();
+			      templateClone.attr("id", "emptyRow"+idIndex);
+			      templateClone.attr("hidden", false);
+			      templateClone.addClass("clonedRow");
+			      
+			      templateClone.find('td:nth-child(1)').children().first().val(dateFieldValue).change();
+			      templateClone.find('td:nth-child(1)').children().first().attr("name", "date"+idIndex);
+			      templateClone.find('td:nth-child(2)').children().first().val(serviceFieldValue).change();
+			      templateClone.find('td:nth-child(2)').children().first().attr("name", "service"+idIndex);
+			      
+					var concOption = '<option value="">-- Consumable --</option>';
+					$p.getJSON('json.htm?serviceId=' + serviceFieldValue, function(data) {
+						for(var i in data) {
+							concOption += '<option value="'+data[i].id+'">'+data[i].name+'(Solde:'+data[i].solde+'/LotNo:'+data[i].lotno+'/Exp:'+data[i].expiry+')</option>';
+						}
+						templateClone.find('td:nth-child(3)').children().first().html(concOption);
+					    templateClone.find('td:nth-child(3)').children().first().attr("name", "consumable"+idIndex);
+					});
+					
+				 templateClone.find('td:nth-child(4)').children().first().attr("name", "qnty"+idIndex);	
+				    
+					var patientTextFieldValue = $p('#patientId_id_selection').val();
+					$p('tr').each(function() {
+					       if($p(this).is('[class*="clonedRow"]')){
+					    	   var patientTd = $p(this).find('td:nth-child(5)');
+					    	   patientTd.children().first().val(patientTextFieldValue);
+					       }
+					});
+			      
+			      templateClone.appendTo("#dynamic_field tbody");
+			  });
 		
 		$p('#example').dataTable();
+		
+		$p('#dateFieldId').change(function() {
+			var dateFieldValue = $p('#dateFieldId').val();
+			$p('tr').each(function() {
+		       if($p(this).hasClass('clonedRow')){
+		    	   var dateTd = $p(this).find('td:first');
+		    	   dateTd.children().first().val(dateFieldValue);
+		       }
+			});
+		});
 
 		$p('#serviceId').change(function() {
 			var concOption = '<option value="">-- Consumable --</option>';
-			var serviceId = $p('#serviceId').val();
-			$p.getJSON('json.htm?serviceId=' + serviceId, function(data) {
+			var serviceFieldValue = $p('#serviceId').val();
+			$p.getJSON('json.htm?serviceId=' + serviceFieldValue, function(data) {
 				for(var i in data) {
 					concOption += '<option value="'+data[i].id+'">'+data[i].name+'(Solde:'+data[i].solde+'/LotNo:'+data[i].lotno+'/Exp:'+data[i].expiry+')</option>';
 				}
-				$p('#dpId').html(concOption);				
+				$p('#dpId').html(concOption);
+				$p('tr').each(function() {
+				       if($p(this).is('[class*="clonedRow"]')){
+				    	   $p(this).find('td:nth-child(3)').children().first().html(concOption);		
+				       }
+				});
+			});
+			
+			$p('tr').each(function() {
+			       if($p(this).is('[class*="clonedRow"]')){
+			    	   var serviceTd = $p(this).find('td:nth-child(2)');
+			    	   serviceTd.children().first().val(serviceFieldValue).change();
+			       }
 			});
 		});
 		/**
@@ -63,7 +125,7 @@
 	<div class="box">
 		<form method="post" action="consumabledispensation.htm" >
 			<div  id="consDispForm">
-			<table width="98%" class="return">
+			<table id="dynamic_field" width="98%" class="return">
 				<thead>
 					<tr>
 						<th><spring:message code="Date"/></th>
@@ -71,12 +133,13 @@
 						<th><spring:message code="Consommable" /></th>
 						<th><spring:message code="Quantity"/></th>
 						<th><spring:message code="Patient"/></th>
+						<th><spring:message code="Delete"/></th>
 					</tr>
 				</thead>
 				<tbody>
 						<tr>
 							<td>
-								<input type="text" name="date" value="<openmrs:formatDate date="${cd.date}" type="textbox" />" onfocus="showCalendar(this)" size="10" style="min-width: 100px; max-width: 100px; width : 100px;" />
+								<input type="text" name="date" id="dateFieldId" value="<openmrs:formatDate date="${cd.date}" type="textbox" />" onfocus="showCalendar(this)" size="10" style="min-width: 100px; max-width: 100px; width : 100px;" />
 								<input type="hidden" name="cdId" value="${cd.consumabledispenseId}" />
 							</td>
 							<td>
@@ -98,14 +161,43 @@
 								</select>
 							</td>
 							<td><input type="text" name="qnty" size="5" value="${cd.qnty > 0 ? cd.qnty : ''}" /></td>							
-							<td>
-								<openmrs:fieldGen type="org.openmrs.Patient" formFieldName="patientId" val="${cd.patientId}" />
+							<td id = "patientFieldId">
+								<openmrs:fieldGen type="org.openmrs.Patient" formFieldName="patientId" val="${cd.patientId}" parameters="onChange=updateClones()" />
 							</td>
+							<td></td>
+						</tr>
+					    <tr id = "emptyRow" hidden="hidden">
+							<td>
+								<input type="text" name="date" value="<openmrs:formatDate date="${cd.date}" type="textbox" />" onfocus="showCalendar(this)" size="10" style="min-width: 100px; max-width: 100px; width : 100px;" />
+							</td>
+							<td>
+								<select name="service">
+									<option value="">-- Service --</option>
+									<c:forEach var="pharmacy" items="${pharmacies}">
+										<option value="${pharmacy.pharmacyId}" ${pharmacy.pharmacyId eq cd.service.conceptId ? 'selected="selected"' : '' }>${pharmacy.name}</option>
+									</c:forEach>
+								</select>
+							</td>
+							<td style="min-width: 300px; max-width: 300px; width : 300px;">
+								<select style="min-width: 300px; max-width: 300px; width : 300px;" name="consumable">
+									<option value="">-- consumable --</option>
+<!--
+									<c:forEach var="cons" items="${map}">
+										<option value="${cons.value.drugproductId}">${cons.value.conceptId.name.name}(${cons.value.lotNo})</option>
+									</c:forEach>
+-->
+								</select>
+							</td>
+							<td><input type="text" name="qnty" size="5" value="${cd.qnty > 0 ? cd.qnty : ''}" /></td>							
+							<td>
+								<input type="text">
+							</td>
+							<td></td>
 						</tr>
 				</tbody>
 			</table>
 			</div>
-		<input type="submit" value="Save" />
+			<button type="button" name="add" id="add" class="btn btn-success">Add More</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Save" />
 		</form>
 		
 	</div>

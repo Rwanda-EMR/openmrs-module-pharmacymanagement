@@ -3,6 +3,7 @@
  */
 package org.openmrs.module.pharmacymanagement.phcymgt.web.controller;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -156,11 +157,92 @@ public class ConsumableDispensationController extends
 				mav.addObject("msg", "Saved");
 			}
 		}
+		try {
+			for (int i = 0; i < 100; i++) {
+				if(request.getParameter("date"+i) != null && !request.getParameter("date"+i).equals("")) {
+					handleCloneRows(request, sdf, cd, dp, dos, solde, currSolde, currConsSolde, cs, provider, ps, pinv, piList, mav, i);
+				}else {
+					break;
+				}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
 
 		mav.addObject("map", map);
 		mav.addObject("consumableList", consumableList);
 		mav.addObject("pharmacies", pharmacies);
 		mav.setViewName(getViewName());
 		return mav;
+	}
+	
+	protected void handleCloneRows(HttpServletRequest request, SimpleDateFormat sdf, ConsumableDispense cd, 
+			DrugProduct dp, DrugOrderService dos, int solde, int currSolde, int currConsSolde, ConceptService cs,
+			User provider, PatientService ps, PharmacyInventory pinv, Collection<PharmacyInventory> piList, ModelAndView mav, int i) throws ParseException {
+		if (request.getParameter("date") != null
+				&& !request.getParameter("date").equals("")
+				&& request.getParameter("consumable"+i) != null
+				&& !request.getParameter("consumable"+i).equals("")
+				&& request.getParameter("qnty"+i) != null
+				&& !request.getParameter("qnty"+i).equals("")
+				&& request.getParameter("service") != null
+				&& !request.getParameter("service").equals("")
+				&& request.getParameter("patientId") != null
+				&& !request.getParameter("patientId").equals("")) {
+			String[] dateArr = request.getParameter("date").split("/");
+
+			String dateStr;
+			if(Context.getLocale().toString().equals("en_US") || Context.getLocale().toString().equals("en")) {
+				dateStr = dateArr[2] + "-" + dateArr[0] + "-" + dateArr[1];
+			}
+			else {
+				dateStr = dateArr[2] + "-" + dateArr[1] + "-" + dateArr[0];
+			}
+			Date date = sdf.parse(dateStr);
+
+
+			cd.setDate(date);
+			cd.setQnty(Integer.valueOf(request.getParameter("qnty"+i)));
+			System.out.println("DrugProduct Id: " + request.getParameter("consumable"+i));
+			dp = dos.getDrugProductById(Integer.valueOf(request
+					.getParameter("consumable"+i)));
+			cd.setDrugproductId(dp);
+			System.out.println("concept id: " + dp.getConceptId().getConceptId());
+			System.out.println("order Id: " + dp.getCmddrugId().getCmddrugId());
+//			if (isEdit) {
+			currConsSolde = dos.getCurrSoldeDisp(null, dp.getConceptId()
+						.getConceptId()
+						+ "", dp.getCmddrugId().getPharmacy().getPharmacyId()
+						+ "", dp.getExpiryDate()+"", dp.getLotNo()+"", null);
+			solde = currConsSolde
+						- Integer.valueOf(request.getParameter("qnty"+i));
+//			}
+
+			Concept service = cs.getConcept(Integer.valueOf(request
+					.getParameter("service")));
+			cd.setService(service);
+			provider = Context.getAuthenticatedUser();
+			cd.setProvider(provider);
+			Patient patient = ps.getPatient(Integer.valueOf(request
+					.getParameter("patientId")));
+			cd.setPatientId(patient);
+
+
+			if (solde >= 0) {
+				dos.saveOrUpdateConsumableDispense(cd);
+	//			if (isEdit) {
+					pinv.setDate(date);
+					pinv.setDrugproductId(dp);
+					pinv.setCpId(cd);
+					pinv.setEntree(0);
+					pinv.setSortie(Integer.valueOf(request.getParameter("qnty"+i)));
+
+					pinv.setSolde(solde);
+					dos.savePharmacyInventory(pinv);
+					piList = dos.getAllPharmacyInventory();
+	//			}
+				mav.addObject("msg", "Saved");
+			}
+		}
 	}
 }
