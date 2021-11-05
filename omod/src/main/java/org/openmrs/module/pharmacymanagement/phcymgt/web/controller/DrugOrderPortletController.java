@@ -3,6 +3,8 @@
  */
 package org.openmrs.module.pharmacymanagement.phcymgt.web.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.velocity.util.ArrayListWrapper;
 import org.openmrs.*;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
@@ -188,6 +191,63 @@ public class DrugOrderPortletController extends PortletController {
 		model.put("dispensedQuantity", orderIdAndDisQuantity);
 
 		model.put("drugs", drugs);
+
+	/*	List<Person> people=new ArrayList<Person>();
+		people.add(patient);
+		List<Encounter> encounters=new ArrayList<Encounter>();
+
+		for (String encounterTypeName: Context.getAdministrationService().getGlobalProperty("pharmacymanagement.nextHIVVisitDateNeededDuringDrudOrder").split(",") ) {
+			encounters.add(Context.get)
+		}
+
+
+		List<Concept> concepts=new ArrayList<Concept>();
+		concepts.add(Context.getConceptService().getConceptByUuid("3ce94df0-26fe-102b-80cb-0017a47871b2"));
+
+		Context.getObsService().getObservations(people,encounters,concepts,null,null,null,null,null,null,null,null,true);
+*/
+		List<Obs> retunVisitDateobservations=Context.getObsService().getObservationsByPersonAndConcept(patient,Context.getConceptService().getConceptByUuid("3ce94df0-26fe-102b-80cb-0017a47871b2"));
+
+		Date retunVisitDate=null;
+		Obs retunVisitDateObs=null;
+		for (Obs obs:retunVisitDateobservations) {
+			retunVisitDate=	obs.getValueDate();
+				if(obs.getEncounter().getEncounterType().getName().equals(Context.getAdministrationService().getGlobalProperty("pharmacymanagement.nextHIVVisitDateNeededDuringDrudOrder")) && obs.getValueDate().after(retunVisitDate)){
+					retunVisitDate=	obs.getValueDate();
+					retunVisitDateObs=obs;
+				}
+		}
+
+		long todayInMs = new Date().getTime();
+		long nextVisitDateInMs = 0;
+		long timeDiff = 0;
+
+		if (retunVisitDate!=null){
+			nextVisitDateInMs=retunVisitDate.getTime();
+			if(nextVisitDateInMs > todayInMs) {
+				timeDiff = nextVisitDateInMs - todayInMs;
+			}
+		}
+		int daysDiff = (int) (timeDiff / (1000 * 60 * 60* 24));
+		/*SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+		try {
+			retunVisitDate=sdf.parse(retunVisitDate.toString());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}*/
+
+
+		model.put("returnVisitDate", retunVisitDate);
+		model.put("returnVisitDateInDays", daysDiff);
+
+		if (retunVisitDateObs!=null)
+			model.put("retunVisitDateObs", retunVisitDateObs);
+
+		System.out.println("Dateeeeeeeeeeeeeeeeeee: "+retunVisitDate);
+		System.out.println("Dayyyyyyyyyyyyyyyyyyyy: "+daysDiff);
+
+
 
 		/** Commented by KAMONYO because he used it above...(LINE: 70) */
 		//		model.put("patientId", patient.getPatientId());

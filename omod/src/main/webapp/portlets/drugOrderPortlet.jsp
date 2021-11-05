@@ -383,6 +383,11 @@
 		</td>
 	</tr>
 	 -->
+	 <tr><td colspan="4">
+	<%-- <c:if test="${model.retunVisitDate}"> --%>
+         <b>Next visit Date(HIV VISIT)</b>: <font color="blue"> <b>${model.returnVisitDateInDays}</b></font> days remaining from today
+    <%-- </c:if> --%>
+	 </tr>
 	<tr>
 		<td><spring:message code="Drug Details" /></td>
 		<td>
