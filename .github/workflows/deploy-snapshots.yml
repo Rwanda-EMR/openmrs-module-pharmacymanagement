@@ -36,5 +36,5 @@ jobs:
     - name: Maven Deploy
       run: mvn -B deploy --file pom.xml
       env:
-        BINTRAY_USERNAME: rwandaemr@gmail.com
-        BINTRAY_PASSWORD: ${{ secrets.RWANDA_EMR_BINTRAY_PASSWORD }}
+        BINTRAY_USERNAME: ${{ secrets.MAVEN_REPOSITORY_USERNAME }}
+        BINTRAY_PASSWORD: ${{ secrets.MAVEN_REPOSITORY_PASSWORD }}

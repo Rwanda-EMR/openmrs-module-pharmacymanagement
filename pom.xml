@@ -21,12 +21,12 @@
 		<repository>
 			<id>openmrs-repo-modules-rwandaemr</id>
 			<name>rwandaemr-artifactory-primary-0-releases</name>
-			<url>https://rwandaemr.jfrog.io/artifactory/libs-release</url>
+			<url>https://openmrs.jfrog.io/artifactory/modules-pih/</url>
 		</repository>
 		<snapshotRepository>
 			<id>openmrs-repo-modules-rwandaemr-snapshots</id>
 			<name>rwandaemr-artifactory-primary-0-snapshots</name>
-			<url>https://rwandaemr.jfrog.io/artifactory/libs-snapshot</url>
+			<url>https://openmrs.jfrog.io/artifactory/modules-pih-snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 
@@ -85,7 +85,7 @@
 		<repository>
 			<id>openmrs-repo</id>
 			<name>OpenMRS Nexus Repository</name>
-			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
+			<url>https://openmrs.jfrog.io/artifactory/public</url>
 		</repository>
 	</repositories>
 
@@ -93,7 +93,7 @@
 		<pluginRepository>
 			<id>openmrs-repo</id>
 			<name>OpenMRS Nexus Repository</name>
-			<url>http://mavenrepo.openmrs.org/nexus/content/repositories/public</url>
+			<url>https://openmrs.jfrog.io/artifactory/public</url>
 			<snapshots>
 				<enabled>false</enabled>
 			</snapshots>
