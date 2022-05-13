@@ -34,7 +34,7 @@ jobs:
 
       # Execute the Maven deploy command to compile, package, test, verify, and publish to SNAPSHOT repository
     - name: Maven Deploy
-      run: mvn -B deploy --file pom.xml
+      run: mvn -B deploy -U --file pom.xml
       env:
         BINTRAY_USERNAME: ${{ secrets.MAVEN_REPOSITORY_USERNAME }}
         BINTRAY_PASSWORD: ${{ secrets.MAVEN_REPOSITORY_PASSWORD }}
