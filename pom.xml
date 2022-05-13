@@ -59,6 +59,7 @@
 		<mohappointmentVersion>0.2</mohappointmentVersion>
 		<mohorderentrybridgeVersion>1.0.1</mohorderentrybridgeVersion>
 		<legacyuiVersion>1.6.0</legacyuiVersion>
+		<mohbillingVersion>2.0.1-SNAPSHOT</mohbillingVersion>
 	</properties>
 
 	<build>

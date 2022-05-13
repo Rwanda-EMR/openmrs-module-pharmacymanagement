@@ -45,7 +45,7 @@
 		<dependency>
 			<groupId>org.openmrs.module</groupId>
 			<artifactId>mohbilling-api</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
+			<version>${mohbillingVersion}</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
