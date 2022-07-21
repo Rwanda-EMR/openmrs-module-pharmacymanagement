@@ -12,12 +12,15 @@ import org.openmrs.api.context.Context;
 import org.openmrs.module.pharmacymanagement.CmdDrug;
 import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
 import org.openmrs.util.OpenmrsConstants;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
 public class CmdSearch extends ParameterizableViewController {	
 
 	@Override
+	@RequestMapping(value = "module/pharmacymanagement/cmdsearch.form", method = RequestMethod.POST)
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		ModelAndView mav = new ModelAndView();

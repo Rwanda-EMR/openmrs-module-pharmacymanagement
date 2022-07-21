@@ -136,6 +136,23 @@
 		<many-to-one name="phInventory" class="org.openmrs.module.pharmacymanagement.PharmacyInventory" column="ph_inventory" not-null="false" cascade="all" unique="true" />
 		<many-to-one name="originPharmacy" class="org.openmrs.module.pharmacymanagement.Pharmacy" column="origin_pharmacy" not-null="false" cascade="all" />
 	</class>
+
+	<class name="org.openmrs.module.pharmacymanagement.ConsumableOrder" table="pharmacymanagement_consumable_order">
+		<id name="consumableOrderId" column="consumableOrderId">
+			<generator class="native" />
+		</id>
+		<property name="date" column="date" type="date" />
+		<property name="qnty" column="qnty" />
+		<property name="isDispensed" column="isDispensed" />
+		<property name="dispensedDate" column="dispensedDate" type="date" />
+
+		<many-to-one name="consumable" class="org.openmrs.Concept" column="consumable" />
+		<many-to-one name="provider" class="org.openmrs.User" column="provider" />
+		<many-to-one name="patientId" class="org.openmrs.Patient" column="patientId" />
+		<many-to-one name="dispensedBy" class="org.openmrs.User" column="dispensedBy" />
+<!--		<many-to-one name="consumabledispenseId" class="org.openmrs.module.pharmacymanagement.ConsumableDispense" column="consumabledispense_id"/>-->
+		<property name="consumabledispenseId" column="consumabledispenseId" />
+	</class>
 	
 	
 </hibernate-mapping>

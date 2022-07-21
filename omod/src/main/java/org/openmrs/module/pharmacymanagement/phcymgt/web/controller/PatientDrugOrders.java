@@ -89,7 +89,6 @@ public class PatientDrugOrders extends ParameterizableViewController {
 					drugOrderList.add(dor);
 				}
 			}
-
 			Set<DrugProduct> lotNos = new HashSet<DrugProduct>();
 			int solde = 0;
 			Map<String, String> availNotAvailOrderedDrug = new HashMap<String, String>();
@@ -228,7 +227,7 @@ public class PatientDrugOrders extends ParameterizableViewController {
 
 		List<DrugOrder> allDrugOrder=new ArrayList<DrugOrder>();
 		for (Order dro:Context.getOrderService().getOrders(orderSearchCriteria)) {
-			if(dro instanceof DrugOrder && dro.getPreviousOrder()==null){
+			if(dro instanceof DrugOrder && dro.getPreviousOrder()==null && dro.isActive()==true){
 				allDrugOrder.add((DrugOrder) dro);
 			}
 		}

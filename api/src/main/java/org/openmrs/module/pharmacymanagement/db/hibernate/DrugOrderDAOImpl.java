@@ -1,9 +1,6 @@
 package org.openmrs.module.pharmacymanagement.db.hibernate;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -15,19 +12,8 @@ import org.hibernate.criterion.Restrictions;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.User;
-import org.openmrs.module.pharmacymanagement.ProductReturnStore;
-import org.openmrs.module.pharmacymanagement.CmdDrug;
-import org.openmrs.module.pharmacymanagement.ConsumableDispense;
-import org.openmrs.module.pharmacymanagement.DrugDetails;
-import org.openmrs.module.pharmacymanagement.DrugOrderPrescription;
-import org.openmrs.module.pharmacymanagement.DrugProduct;
-import org.openmrs.module.pharmacymanagement.DrugProductInventory;
-import org.openmrs.module.pharmacymanagement.DrugStore;
-import org.openmrs.module.pharmacymanagement.Pharmacy;
-import org.openmrs.module.pharmacymanagement.PharmacyConstants;
-import org.openmrs.module.pharmacymanagement.PharmacyInventory;
+import org.openmrs.module.pharmacymanagement.*;
 import org.openmrs.module.pharmacymanagement.db.DrugOrderDAO;
-import org.springframework.orm.hibernate3.SessionFactoryUtils;
 
 public class DrugOrderDAOImpl implements DrugOrderDAO {
 	
@@ -280,6 +266,46 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		}
 		return productIds;
 	}
+
+	@Override
+	public Map<Integer,Integer> getCurrSoldeOfDrugProducts(List<DrugProduct> drugProducts) {
+		Map<Integer,Integer> pdWithSolde = new HashMap<Integer, Integer>();
+
+		StringBuffer drugProductsIds=new StringBuffer();
+		int i=0;
+		if(drugProducts.size()>0){
+			for (DrugProduct dp:drugProducts) {
+				if (i==0){
+					drugProductsIds.append(dp.getDrugproductId());
+					i++;
+				}else {
+					drugProductsIds.append(","+dp.getDrugproductId());
+				}
+			}
+		}
+
+		String queryStr = "WITH quantities as (SELECT drug_product.drugproduct_id, pharmacy_inventory.solde, RANK() OVER (PARTITION BY drug_product.drug_id, lot_no order by pharmacyinventory_id DESC) ranking from  pharmacymanagement_drug_product drug_product LEFT JOIN pharmacymanagement_pharmacy_inventory  pharmacy_inventory  on pharmacy_inventory.drugproduct_id=drug_product.drugproduct_id where pharmacy_inventory.solde > 0 and lot_no is not null AND drug_product.drugproduct_id in  ("+drugProductsIds+") )SELECT concat(drugproduct_id,',',solde) from quantities where ranking=1";
+
+
+
+
+		/*String queryStr = "select concat(grouped.drugproduct_id,',',grouped.solde) from " +
+				"(select * from " +
+				"(SELECT dpi.drugproduct_id,dp.drug_id,dpi.solde,dp.lot_no FROM pharmacymanagement_drugproduct_inventory dpi " +
+				"INNER JOIN pharmacymanagement_drug_product dp ON dpi.drugproduct_id in ("+drugProductsIds+") " +
+				"WHERE 1 = 1 " +
+				"ORDER BY dpi.inventory_id DESC) ordered " +
+				"where ordered.drug_id is not null " +
+				"group by ordered.drug_id,ordered.lot_no) grouped " +
+				"where grouped.solde > 0";*/
+		Session session = sessionFactory.getCurrentSession();
+		List<String> records = session.createSQLQuery(queryStr).list();
+		for (String record : records) {
+			String[] dpAndSold=record.split(",");
+			pdWithSolde.put(Integer.parseInt(dpAndSold[0]),Integer.parseInt(dpAndSold[1]));
+		}
+		return pdWithSolde;
+	}
 	@Override
 	public List<Integer> getConsummablesCurrSolde() {
 		List<Integer> productIds = new ArrayList<Integer>();
@@ -529,6 +555,14 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 	public Collection<PharmacyInventory> getAllPharmacyInventory() {
 		return getSessionFactory().getCurrentSession().createCriteria(
 				PharmacyInventory.class).list();
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Collection<PharmacyInventory> getAllPharmacyInventoryWithSolde() {
+		return getSessionFactory().getCurrentSession().createCriteria(
+				PharmacyInventory.class).add(Restrictions.gt("solde",0))
+				.list();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -1336,6 +1370,33 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 				.addEntity("dp", DrugProduct.class).list();
 
 		return dpList;
+	}
+
+	@Override
+	public void saveOrUpdateConsumableOrder(ConsumableOrder conso) {
+		sessionFactory.getCurrentSession().saveOrUpdate(conso);
+	}
+
+	@Override
+	public List<ConsumableOrder> getConsumableOrderByDate(String date,Patient patient) {
+
+		StringBuffer sb = new StringBuffer();
+
+		sb.append("SELECT * FROM pharmacymanagement_consumable_order where date='"+date+"' and patientId="+patient.getPatientId());
+
+		Session session = sessionFactory.getCurrentSession();
+
+		List<ConsumableOrder> consumableOrders = session.createSQLQuery(sb.toString())
+				.addEntity("dp", ConsumableOrder.class).list();
+
+		return consumableOrders;
+
+/*
+		Criteria criteria = sessionFactory.getCurrentSession().createCriteria(
+				ConsumableOrder.class);
+		criteria.add(Restrictions.eq("date", date));
+		//criteria.add(Restrictions.eq("patientId", patient));
+		return criteria.list();*/
 	}
 
 }

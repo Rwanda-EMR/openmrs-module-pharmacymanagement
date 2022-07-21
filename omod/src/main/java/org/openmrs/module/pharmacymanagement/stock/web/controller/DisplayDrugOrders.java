@@ -33,6 +33,8 @@ import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
 import org.openmrs.module.pharmacymanagement.utils.Utils;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.WebConstants;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.ParameterizableViewController;
 
@@ -44,6 +46,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 
 	@SuppressWarnings("deprecation")
 	@Override
+	@RequestMapping(value = "module/pharmacymanagement/order.list", method = RequestMethod.POST)
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		String dispConf = Context.getAdministrationService().getGlobalProperty(
@@ -755,9 +758,7 @@ public class DisplayDrugOrders extends ParameterizableViewController {
 			}
 		}
 		String locale = Context.getLocale().toString();
-		System.out.println("yesyesyesyesyesyesyesyesyesyes!!!!!!!!!!!!!!!!!!!!!!!!!!!"+locale);
-
-        mav.addObject("locale",locale);
+		mav.addObject("locale",locale);
 		mav.addObject("drugMap", drugMap);
 		mav.addObject("consommationMap", consommationMap);
 		mav.setViewName(getViewName());

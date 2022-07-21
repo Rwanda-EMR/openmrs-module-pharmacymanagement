@@ -254,4 +254,29 @@
 			ALTER TABLE pharmacymanagement_cmd_drug ADD CONSTRAINT fk_creator_dp FOREIGN KEY (creator) REFERENCES users(user_id);
 		</sql>
 	</diff>
+	<diff>
+		<version>1.6.8</version>
+		<author>Rwanda-Emr</author>
+		<date>May 12th 2022</date>
+		<description>Add table called pharmacymanagement_</description>
+		<sql>
+			CREATE TABLE pharmacymanagement_consumable_order (
+			consumableOrderId INT NOT NULL AUTO_INCREMENT,
+			date DATE NULL,
+			qnty INT NULL,
+			consumable INT NULL,
+			provider INT NULL,
+			patientId INT NULL,
+			isDispensed TINYINT(1) NULL,
+			dispensedBy INT NULL,
+			dispensedDate DATETIME NULL,
+			consumabledispenseId INT NULL,
+			PRIMARY KEY (consumableOrderId),
+			CONSTRAINT conso_cons FOREIGN KEY (consumable)  REFERENCES concept (concept_id),
+			CONSTRAINT conso_pr FOREIGN KEY (provider)  REFERENCES users (user_id),
+			CONSTRAINT conso_pt FOREIGN KEY (patientId) REFERENCES patient (patient_id),
+			CONSTRAINT conso_disb FOREIGN KEY (dispensedBy)  REFERENCES users (user_id)
+			)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+		</sql>
+	</diff>
 </sqldiff>

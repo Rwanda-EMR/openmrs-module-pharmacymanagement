@@ -120,7 +120,26 @@
 
 <div id="middle">
 	<%@ include file="template/dispensingLocalHeader.jsp"%>
-	
+
+	<b class="boxHeader">Patient</b>
+	<div class="box">
+    		<form method="post" action="consumabledispensation.htm" >
+    			<div  id="patientForm">
+    			Service:
+    			<select name="dispservice">
+                    <option value="">-- Service --</option>
+                    <c:forEach var="pharmacy" items="${pharmacies}">
+                        <option value="${pharmacy.pharmacyId}" ${pharmacy.pharmacyId eq cd.service.conceptId ? 'selected="selected"' : '' }>${pharmacy.name}</option>
+                    </c:forEach>
+                </select>
+    			Date: <input type="text" name="orderdate" id="dateFieldId" value="<openmrs:formatDate date="${cd.date}" type="textbox" />" onfocus="showCalendar(this)" size="10" style="min-width: 100px; max-width: 100px; width : 100px;" />
+    			Patient: <openmrs:fieldGen type="org.openmrs.Patient" formFieldName="orderspatientId"  val="${cd.patientId}"/>
+    			<input type="submit" name="findorders" value="Find Orders" />
+                		</form>
+    			</div>
+    </div>
+
+
 	<b class="boxHeader">Bon de Sortie</b>
 	<div class="box">
 		<form method="post" action="consumabledispensation.htm" >
@@ -128,15 +147,15 @@
 			<table id="dynamic_field" width="98%" class="return">
 				<thead>
 					<tr>
-						<th><spring:message code="Date"/></th>
-						<th><spring:message code="Service"/></th>	
+						<!-- <th><spring:message code="Date"/></th>
+						<th><spring:message code="Service"/></th> -->
 						<th><spring:message code="Consommable" /></th>
 						<th><spring:message code="Quantity"/></th>
-						<th><spring:message code="Patient"/></th>
-						<th><spring:message code="Delete"/></th>
+						<!-- <th><spring:message code="Patient"/></th>
+						<th><spring:message code="Delete"/></th> -->
 					</tr>
 				</thead>
-				<tbody>
+<!--				<tbody>
 						<tr>
 							<td>
 								<input type="text" name="date" id="dateFieldId" value="<openmrs:formatDate date="${cd.date}" type="textbox" />" onfocus="showCalendar(this)" size="10" style="min-width: 100px; max-width: 100px; width : 100px;" />
@@ -153,16 +172,16 @@
 							<td style="min-width: 300px; max-width: 300px; width : 300px;">
 								<select style="min-width: 300px; max-width: 300px; width : 300px;" name="consumable" id="dpId">
 									<option value="">-- consumable --</option>
-<!--
+
 									<c:forEach var="cons" items="${map}">
 										<option value="${cons.value.drugproductId}">${cons.value.conceptId.name.name}(${cons.value.lotNo})</option>
 									</c:forEach>
--->
+
 								</select>
 							</td>
 							<td><input type="text" name="qnty" size="5" value="${cd.qnty > 0 ? cd.qnty : ''}" /></td>							
 							<td id = "patientFieldId">
-								<openmrs:fieldGen type="org.openmrs.Patient" formFieldName="patientId" val="${cd.patientId}" parameters="onChange=updateClones()" />
+
 							</td>
 							<td></td>
 						</tr>
@@ -178,26 +197,36 @@
 									</c:forEach>
 								</select>
 							</td>
-							<td style="min-width: 300px; max-width: 300px; width : 300px;">
-								<select style="min-width: 300px; max-width: 300px; width : 300px;" name="consumable">
-									<option value="">-- consumable --</option>
-<!--
-									<c:forEach var="cons" items="${map}">
-										<option value="${cons.value.drugproductId}">${cons.value.conceptId.name.name}(${cons.value.lotNo})</option>
-									</c:forEach>
--->
-								</select>
-							</td>
-							<td><input type="text" name="qnty" size="5" value="${cd.qnty > 0 ? cd.qnty : ''}" /></td>							
+							<td><input type="text" name="qnty" size="5" value="${cd.qnty > 0 ? cd.qnty : ''}" /></td>
 							<td>
 								<input type="text">
 							</td>
 							<td></td>
 						</tr>
 				</tbody>
+-->
+<tbody>
+<c:forEach var="cons" items="${map}">
+<tr>
+						<td style="width : 60%;">
+						<input type="hidden" name="consumable" size="5" value="${cons.value.drugproductId}" />
+						<input type="hidden" name="orderdate" size="5" value="${orderdate}" />
+						<input type="hidden" name="dispservice" size="5" value="${dispservice}" />
+						<input type="hidden" name="orderspatientId" size="5" value="${orderspatientId}" />
+                           ${cons.value.conceptId.name.name}(${cons.value.lotNo})
+                        </td>
+						<td><input type="text" name="qnty" size="5" value="${consDispQnties.get(cons.value.drugproductId)}" /></td>
+</tr>
+	</c:forEach>
+
+</tbody>
+
+
+
+
 			</table>
 			</div>
-			<button type="button" name="add" id="add" class="btn btn-success">Add More</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="submit" value="Save" />
+			<!-- <button type="button" name="add" id="add" class="btn btn-success">Add More</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; --> <input type="submit" name="saveorder" value="Save" />
 		</form>
 		
 	</div>

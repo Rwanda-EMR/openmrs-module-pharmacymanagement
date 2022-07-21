@@ -19,6 +19,7 @@
 	<require_modules>
 		<require_module version="0.3-SNAPSHOT">org.openmrs.module.mohappointment</require_module>
 		<require_module version="2.0.0-SNAPSHOT">org.openmrs.module.mohbilling</require_module>
+		<require_module>org.openmrs.module.htmlformentry</require_module>
 	</require_modules>
 
 

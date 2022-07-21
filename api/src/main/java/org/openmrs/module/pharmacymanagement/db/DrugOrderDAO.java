@@ -3,20 +3,12 @@ package org.openmrs.module.pharmacymanagement.db;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.User;
-import org.openmrs.module.pharmacymanagement.ProductReturnStore;
-import org.openmrs.module.pharmacymanagement.CmdDrug;
-import org.openmrs.module.pharmacymanagement.ConsumableDispense;
-import org.openmrs.module.pharmacymanagement.DrugDetails;
-import org.openmrs.module.pharmacymanagement.DrugOrderPrescription;
-import org.openmrs.module.pharmacymanagement.DrugProduct;
-import org.openmrs.module.pharmacymanagement.DrugProductInventory;
-import org.openmrs.module.pharmacymanagement.DrugStore;
-import org.openmrs.module.pharmacymanagement.Pharmacy;
-import org.openmrs.module.pharmacymanagement.PharmacyInventory;
+import org.openmrs.module.pharmacymanagement.*;
 
 /**
  *
@@ -297,7 +289,9 @@ public interface DrugOrderDAO {
 	 * 
 	 * @return a collection of PharmacyInventory
 	 */
-	public Collection<PharmacyInventory> getAllPharmacyInventory(); 
+	public Collection<PharmacyInventory> getAllPharmacyInventory();
+
+	public Collection<PharmacyInventory> getAllPharmacyInventoryWithSolde();
 	
 	/**
 	 * returns Collection<<code>PharmacyInventory</code>> by <code>Date</code> and <code>Location</code>
@@ -472,5 +466,9 @@ public interface DrugOrderDAO {
 	public Boolean checkIfOneDrugOrConsummableUseOneLotNo(String drugId,String conceptId,String lotNo);
 	public Collection<DrugProduct> getPharmacyDrugProducts();
 	public Collection<DrugProduct> getPharmacyConsummableProducts();
+
+	public void saveOrUpdateConsumableOrder(ConsumableOrder conso);
+	public List<ConsumableOrder> getConsumableOrderByDate(String date,Patient patient);
+	public Map<Integer, Integer> getCurrSoldeOfDrugProducts(List<DrugProduct> drugProducts);
 
 }

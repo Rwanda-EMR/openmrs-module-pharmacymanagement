@@ -6,20 +6,12 @@ package org.openmrs.module.pharmacymanagement.impl;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.User;
-import org.openmrs.module.pharmacymanagement.ProductReturnStore;
-import org.openmrs.module.pharmacymanagement.CmdDrug;
-import org.openmrs.module.pharmacymanagement.ConsumableDispense;
-import org.openmrs.module.pharmacymanagement.DrugDetails;
-import org.openmrs.module.pharmacymanagement.DrugOrderPrescription;
-import org.openmrs.module.pharmacymanagement.DrugProduct;
-import org.openmrs.module.pharmacymanagement.DrugProductInventory;
-import org.openmrs.module.pharmacymanagement.DrugStore;
-import org.openmrs.module.pharmacymanagement.Pharmacy;
-import org.openmrs.module.pharmacymanagement.PharmacyInventory;
+import org.openmrs.module.pharmacymanagement.*;
 import org.openmrs.module.pharmacymanagement.db.DrugOrderDAO;
 import org.openmrs.module.pharmacymanagement.service.DrugOrderService;
 
@@ -143,6 +135,12 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 	public List<Integer> getDrugsCurrSolde() {
 		return drugOrderDAO.getDrugsCurrSolde();
 	}
+
+	@Override
+	public Map<Integer, Integer> getCurrSoldeOfDrugProducts(List<DrugProduct> drugProducts) {
+		return drugOrderDAO.getCurrSoldeOfDrugProducts(drugProducts);
+	}
+
 	public List<Integer> getConsummablesCurrSolde() {
 		return drugOrderDAO.getConsummablesCurrSolde();
 	}
@@ -237,7 +235,9 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 	public Collection<PharmacyInventory> getAllPharmacyInventory() {
 		return drugOrderDAO.getAllPharmacyInventory();
 	}
-
+	public Collection<PharmacyInventory> getAllPharmacyInventoryWithSolde() {
+		return drugOrderDAO.getAllPharmacyInventoryWithSolde();
+	}
 	@Override
 	public Collection<DrugProduct> getARVReportByFromTo(String from, String to, String locationId) {
 		return drugOrderDAO.getARVReportByFromTo(from, to, locationId);
@@ -388,5 +388,15 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 	@Override
 	public Collection<DrugProduct> getPharmacyConsummableProducts() {
 		return drugOrderDAO.getPharmacyConsummableProducts();
+	}
+
+	@Override
+	public void saveOrUpdateConsumableOrder(ConsumableOrder conso) {
+			drugOrderDAO.saveOrUpdateConsumableOrder(conso);
+	}
+
+	@Override
+	public List<ConsumableOrder> getConsumableOrderByDate(String date, Patient patient) {
+		return drugOrderDAO.getConsumableOrderByDate(date,patient);
 	}
 }

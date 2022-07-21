@@ -55,11 +55,12 @@
 	</dependencyManagement>
 
 	<properties>
-		<openMRSVersion>2.3.1</openMRSVersion>
+		<openMRSVersion>2.5.4</openMRSVersion>
 		<mohappointmentVersion>0.2</mohappointmentVersion>
 		<mohorderentrybridgeVersion>1.0.1</mohorderentrybridgeVersion>
 		<legacyuiVersion>1.6.0</legacyuiVersion>
 		<mohbillingVersion>2.0.1-SNAPSHOT</mohbillingVersion>
+		<htmlformentryVersion>4.4.0</htmlformentryVersion>
 	</properties>
 
 	<build>

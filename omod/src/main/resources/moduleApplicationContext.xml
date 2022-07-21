@@ -95,103 +95,129 @@
 
 	<!-- Controllers -->
 	<bean id="cmdSearch" class="@MODULE_PACKAGE@.stock.web.controller.CmdSearch">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/findDrugCmd" />
 	</bean>
 	
 	<bean id="aRVMonthlyReport" class="@MODULE_PACKAGE@.stock.web.controller.ARVMonthlyReport">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/report" />
 	</bean>
 	
 	<bean id="displayDrugOrders" class="@MODULE_PACKAGE@.stock.web.controller.DisplayDrugOrders">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/orderDisplay" />
 	</bean>	
 	
 	<bean id="stockDeSecurite" class="@MODULE_PACKAGE@.stock.web.controller.StockDeSecurite">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/stockSecurite" />
 	</bean>
 	
 	<bean id="pharmacyRequestForm" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyRequestForm">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/pharmacyRequestForm" />
 	</bean>
 	<bean id="pharmacyRequestAdjustForm" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyRequestAdjustForm">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/pharmacyRequestAdjustForm" />
 	</bean>
 	<bean id="pharmacyItemsForm" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyItemsForm">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/pharmacyItemsForm" />
 	</bean>
 	
 	<bean id="findPharmacyRequestForm" class="@MODULE_PACKAGE@.phcymgt.web.controller.FindPharmacyRequestForm">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/findPharmacyRequestForm" />
 	</bean>
 	
 	<bean id="pharmacyDrugInventory" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyDrugInventory">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/pharmacyDrugInventory" />
 	</bean>
 	
 	<bean id="pharmacyProducts" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyProducts">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/pharmacyProducts" />
 	</bean>
 	
 	<bean id="pharmacyReport" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyReport">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/pharmacyReport" />
 	</bean>
 	
 	<bean id="pharmacyViewController" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyViewController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/pharmacyView" />
 	</bean>
 	
 	<bean id="pharmacyFormController" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyFormController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/pharmacyForm" />
 	</bean>
 	<bean id="drugOrderView" class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugOrderView">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/drugOrderList" />
 	</bean>
 	
 	<bean id="drugDetailView" class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugDetailView">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/drugDetailView" />
 	</bean>
 	
 	<bean id="drugDetailForm" class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugDetailForm">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/drugDetailForm" />
 	</bean>
 	
 	<bean id="drugStoreAlert" class="@MODULE_PACKAGE@.stock.web.controller.DrugStoreAlert">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/drugStoreAlert" />
 	</bean>
 	
 	<bean id="drugStoreMgt" class="@MODULE_PACKAGE@.stock.web.controller.DrugStoreMgt">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/menu" />
 	</bean>
 	
 	<bean id="pharmacyDrugDispController" class="@MODULE_PACKAGE@.phcymgt.web.controller.PharmacyDrugDispController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/pharmacyDrugDisp" />
 	</bean>
 	
 	<bean id="patientDrugOrders" class="@MODULE_PACKAGE@.phcymgt.web.controller.PatientDrugOrders">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/patientDrugOrders" />
 	</bean>
 	
 	<bean id="printReturnStock" class="@MODULE_PACKAGE@.stock.web.controller.PrintReturnStock">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/printReturnStock" />
 	</bean>
 	
 	<bean id="storeReturnForm" class="@MODULE_PACKAGE@.stock.web.controller.StoreReturnForm">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/storeReturnForm" />
 	</bean>
 	
 	<bean id="consumableDispensationController" class="@MODULE_PACKAGE@.phcymgt.web.controller.ConsumableDispensationController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/consumableDispensation" />
 	</bean>
 	
 	<bean id="cmdProductUpdate" class="@MODULE_PACKAGE@.stock.web.controller.CmdProductUpdate">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/cmdProductUpdate" />
 	</bean>
 	
 	<bean id="storeSearchForm" class="@MODULE_PACKAGE@.stock.web.controller.StoreSearchForm">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName" value="module/@MODULE_ID@/storeSearch" />
 	</bean>
 	
 	<bean id="lotNumbersController" class="@MODULE_PACKAGE@.stock.web.controller.LotNumbersController">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>lot.htm</value>
 		</property>		
@@ -201,6 +227,7 @@
 	</bean>
 	
 	<bean id="jSonHandler" class="@MODULE_PACKAGE@.stock.web.controller.JSonHandler" >
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>module/@MODULE_ID@/storeReturnForm</value>
 		</property>
@@ -210,6 +237,7 @@
 	</bean>
 	
 	<bean id="drugOrderSoldeHandler" class="@MODULE_PACKAGE@.phcymgt.web.controller.DrugOrderSoldeHandler" >
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>drugSolde.htm</value>
 		</property>		
@@ -219,6 +247,7 @@
 	</bean>
 		
 	<bean id="conceptDrugHandler" class="@MODULE_PACKAGE@.phcymgt.web.controller.ConceptDrugHandler">
+		<property name="supportedMethods" value="GET,POST,PUT,DELETE" />
 		<property name="viewName">
 			<value>json.htm</value>
 		</property>

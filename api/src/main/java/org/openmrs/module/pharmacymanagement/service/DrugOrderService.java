@@ -22,19 +22,12 @@ package org.openmrs.module.pharmacymanagement.service;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.User;
-import org.openmrs.module.pharmacymanagement.CmdDrug;
-import org.openmrs.module.pharmacymanagement.ConsumableDispense;
-import org.openmrs.module.pharmacymanagement.DrugDetails;
-import org.openmrs.module.pharmacymanagement.DrugOrderPrescription;
-import org.openmrs.module.pharmacymanagement.DrugProduct;
-import org.openmrs.module.pharmacymanagement.DrugProductInventory;
-import org.openmrs.module.pharmacymanagement.DrugStore;
-import org.openmrs.module.pharmacymanagement.Pharmacy;
-import org.openmrs.module.pharmacymanagement.PharmacyInventory;
-import org.openmrs.module.pharmacymanagement.ProductReturnStore;
+import org.openmrs.module.pharmacymanagement.*;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
@@ -78,7 +71,7 @@ public interface DrugOrderService {
 	public Integer getCurrSolde(String var1, String var2, String var3, String var4, String var5, String var6);
 
 	public List<Integer> getDrugsCurrSolde();
-
+	public Map<Integer,Integer> getCurrSoldeOfDrugProducts(List<DrugProduct> drugProducts);
 	public List<Integer> getConsummablesCurrSolde();
 
 	public Collection<DrugProductInventory> getDrugInventoryByDrugId(String var1, String var2, String var3, String var4);
@@ -118,6 +111,8 @@ public interface DrugOrderService {
 	public void savePharmacyInventory(PharmacyInventory var1);
 
 	public Collection<PharmacyInventory> getAllPharmacyInventory();
+
+	public Collection<PharmacyInventory> getAllPharmacyInventoryWithSolde();
 
 	public Collection<PharmacyInventory> getPharmacyInventoryByFromToLocation(String var1, String var2, String var3);
 
@@ -169,5 +164,8 @@ public interface DrugOrderService {
 	public Boolean checkIfOneDrugOrConsummableUseOneLotNo(String drugId,String conceptId,String lotNo);
 	public Collection<DrugProduct> getPharmacyDrugProducts();
 	public Collection<DrugProduct> getPharmacyConsummableProducts();
+	public void saveOrUpdateConsumableOrder(ConsumableOrder conso);
+
+	public List<ConsumableOrder> getConsumableOrderByDate(String date,Patient patient);
 
 }
