@@ -527,34 +527,6 @@ public class Utils
 		return prodIdentification;
 	}
 
-	public static Set<DrugProduct> getLotsExpDp(String conceptId, String drugId, String locationId, String pharmacyId)
-	{
-		DrugOrderService service = (DrugOrderService)Context.getService(DrugOrderService.class);
-		Set<DrugProduct> dpSet = new java.util.HashSet();
-
-		if (pharmacyId != null) {
-			Collection<PharmacyInventory> piList = service
-					.getAllPharmacyInventory();
-			for (PharmacyInventory pi : piList) {
-				if ((pi.getDrugproductId().getCmddrugId() != null) &&
-						(pi.getDrugproductId().getCmddrugId().getPharmacy().getPharmacyId() == Integer.valueOf(pharmacyId).intValue())) {
-					if ((drugId != null) && (pi.getDrugproductId().getDrugId() != null))
-					{
-						if (pi.getDrugproductId().getDrugId().getDrugId().toString().equals(drugId)) {
-							dpSet.add(pi.getDrugproductId());
-						}
-					} else if ((conceptId != null) &&
-							(conceptId.equals(pi.getDrugproductId().getConceptId().getConceptId()))) {
-						dpSet.add(pi.getDrugproductId());
-					}
-				}
-			}
-		}
-
-
-		return dpSet;
-	}
-
 	public static String DispensingConfig(int goBackXMonth, String to)
 			throws ParseException
 	{

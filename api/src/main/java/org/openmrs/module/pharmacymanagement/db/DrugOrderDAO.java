@@ -4,7 +4,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.openmrs.Drug;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.User;
@@ -73,6 +75,13 @@ public interface DrugOrderDAO {
 	 * @param_ProductId
 	 */
 	public void cancelProduct(DrugStore drugStore);
+
+	/**
+	 * @param pharmacy the pharmacy associated with the DrugProducts
+	 * @param drug the Drug associated with the DrugProducts
+	 * @return the Set of DrugProducts at the given Pharmacy for the given Drug
+	 */
+	Set<DrugProduct> getDrugProducts(Pharmacy pharmacy, Drug drug);
 	
 	/**
 	 * find drug by passing the Command Drug Id as parameter

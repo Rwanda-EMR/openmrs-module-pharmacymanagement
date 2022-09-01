@@ -8,7 +8,9 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
+import org.openmrs.Drug;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.User;
@@ -84,6 +86,21 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 
 	public void saveCmdDrug(CmdDrug cmdDrug) {
 		sessionFactory.getCurrentSession().saveOrUpdate(cmdDrug);
+	}
+
+	@Override
+	public Set<DrugProduct> getDrugProducts(Pharmacy pharmacy, Drug drug) {
+		Criteria c = getSessionFactory().getCurrentSession().createCriteria(PharmacyInventory.class);
+		c.createAlias("drugproductId", "drugProduct");
+		if (pharmacy != null) {
+			c.createAlias("drugProduct.cmddrugId", "cmdDrug");
+			c.add(Restrictions.eq("cmdDrug.pharmacy", pharmacy));
+		}
+		if (drug != null) {
+			c.add(Restrictions.eq("drugProduct.drugId", drug));
+		}
+		c.setProjection(Projections.property("drugproductId"));
+		return new HashSet<DrugProduct>(c.list());
 	}
 
 	@SuppressWarnings("unchecked")

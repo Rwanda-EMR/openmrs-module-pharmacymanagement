@@ -7,7 +7,9 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
+import org.openmrs.Drug;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.User;
@@ -81,9 +83,13 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 	}
 
 	@Override
+	public Set<DrugProduct> getDrugProducts(Pharmacy pharmacy, Drug drug) {
+		return drugOrderDAO.getDrugProducts(pharmacy, drug);
+	}
+
+	@Override
 	public Collection<DrugProduct> getDrugProductByCmdDrugId(CmdDrug cmddrug) {
 		return drugOrderDAO.getDrugProductByCmdDrugId(cmddrug);
-		
 	}
 
 	@Override
