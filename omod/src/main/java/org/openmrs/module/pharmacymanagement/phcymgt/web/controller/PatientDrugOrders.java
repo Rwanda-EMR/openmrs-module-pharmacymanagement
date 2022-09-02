@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.*;
@@ -36,7 +37,9 @@ public class PatientDrugOrders extends ParameterizableViewController {
 
 	protected ModelAndView handleRequestInternal(HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		
+
+		StopWatch sw = new StopWatch();
+		sw.start();
 		ModelAndView mav = new ModelAndView();
 
 		Drug drug = null;
@@ -96,7 +99,12 @@ public class PatientDrugOrders extends ParameterizableViewController {
 
 			List<Integer> drugIdss = new ArrayList<Integer>();
 			List<DrugOrder> drugOrders1 = new ArrayList<DrugOrder>();
+
+			int numLotsChecked = 0;
+			long timeCheckingLots = 0;
+
 			for (DrugOrder drOr : drugOrderList) {
+
 			//	if (!drugIdss.contains(drOr.getDrug().getDrugId()) && drOr.getAutoExpireDate() == null) {
 				//if ((!(drOr.getAutoExpireDate() != null || drOr.getEffectiveStopDate()!=null)) && drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
 				if (drOr.getDispenseAsWritten()==false && drOr.getOrderType().getOrderTypeId()==PharmacyConstants.DRUG_ORDER_TYPE) {
@@ -108,8 +116,7 @@ public class PatientDrugOrders extends ParameterizableViewController {
 					drug = conceptService.getDrug(drOr.getDrug().getDrugId());
 					dld.setDrug(drug);
 					Map<String, String> dpMap = new HashMap<String, String>();
-					lotNos = Utils.getLotsExpDp(null, drOr.getDrug().getDrugId()+"", null, pharmacy.getPharmacyId()+"");
-					
+					lotNos = service.getDrugProducts(pharmacy, drOr.getDrug());
 					/**
 					 * TO DO
 					 * change this list of lotNos by the testLots in the Utils class
@@ -119,13 +126,20 @@ public class PatientDrugOrders extends ParameterizableViewController {
 				
 					if (lotNos.size() > 0) {
 						for (DrugProduct drugproduct : lotNos) {
-							if (drug != null)
-								solde = service.getCurrSoldeDisp(drug
-										.getDrugId()
-										+ "", null, pharmacy.getPharmacyId()
-										+ "", drugproduct.getExpiryDate() + "", drugproduct
-										.getLotNo(), null);
-							
+							if (drug != null) {
+								numLotsChecked++;
+								long startTime = System.currentTimeMillis();
+								solde = service.getCurrSoldeDisp(
+										drug.getDrugId() + "",
+										null,
+										pharmacy.getPharmacyId() + "",
+										(drugproduct.getExpiryDate() == null ? "" : drugproduct.getExpiryDate() + ""),
+										drugproduct.getLotNo(),
+										null
+								);
+								long endTime = System.currentTimeMillis();
+								timeCheckingLots += (endTime-startTime);
+							}
 							if(solde != 0) {
 								dpMap.put(drugproduct.getLotNo() + " / " + solde + " (" + drugproduct.getExpiryDate() + ") ", drugproduct.getDrugproductId() + "");								
 								dld.setDpMap(dpMap);
@@ -145,6 +159,9 @@ public class PatientDrugOrders extends ParameterizableViewController {
 					availNotAvailOrderedDrug.put(drOr.getDrug().getName().toString(),"Not Available (OrderId: "+drOr.getOrderId()+", Date: "+drOr.getEffectiveStartDate()+", Orderer: "+drOr.getOrderer().getName()+")");
 				}
 			}
+
+			log.debug("number of lots checked: " + numLotsChecked);
+			log.debug("time spent checking lot numbers: " + (int)(timeCheckingLots/1000) + " seconds");
 
 			mav.addObject("patient", patient);
 			mav.addObject("availNotAvailOrderedDrug", availNotAvailOrderedDrug);
@@ -209,6 +226,9 @@ public class PatientDrugOrders extends ParameterizableViewController {
 			}
 			mav.addObject("date", date);
 		}
+
+		sw.stop();
+		log.debug("patient drug orders loaded in: " + sw);
 
 		mav.setViewName(getViewName());
 		return mav;

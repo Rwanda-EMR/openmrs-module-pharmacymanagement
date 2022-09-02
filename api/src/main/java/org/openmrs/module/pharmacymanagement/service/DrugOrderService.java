@@ -24,11 +24,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import org.openmrs.Drug;
 import org.openmrs.Location;
 import org.openmrs.Patient;
 import org.openmrs.User;
 import org.openmrs.module.pharmacymanagement.*;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Set;
 
 @Transactional
 public interface DrugOrderService {
@@ -49,6 +52,13 @@ public interface DrugOrderService {
 	public void updateStore(DrugProduct var1);
 
 	public void cancelProduct(DrugStore var1);
+
+	/**
+	 * @param pharmacy the pharmacy associated with the DrugProducts
+	 * @param drug the Drug associated with the DrugProducts
+	 * @return the Set of DrugProducts at the given Pharmacy for the given Drug
+	 */
+	Set<DrugProduct> getDrugProducts(Pharmacy pharmacy, Drug drug);
 
 	public Collection<DrugProduct> getDrugProductByCmdDrugId(CmdDrug var1);
 
