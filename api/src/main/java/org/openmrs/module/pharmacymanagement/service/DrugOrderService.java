@@ -168,4 +168,6 @@ public interface DrugOrderService {
 
 	public List<ConsumableOrder> getConsumableOrderByDate(String date,Patient patient);
 
+	public ConsumableOrder getConsumableOrderId(int consumableOrderId);
+
 }

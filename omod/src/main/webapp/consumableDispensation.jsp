@@ -210,6 +210,7 @@
 <tr>
 						<td style="width : 60%;">
 						<input type="hidden" name="consumable" size="5" value="${cons.value.drugproductId}" />
+						<input type="hidden" name="consumableorderId" size="5" value="${cons.key}" />
 						<input type="hidden" name="orderdate" size="5" value="${orderdate}" />
 						<input type="hidden" name="dispservice" size="5" value="${dispservice}" />
 						<input type="hidden" name="orderspatientId" size="5" value="${orderspatientId}" />

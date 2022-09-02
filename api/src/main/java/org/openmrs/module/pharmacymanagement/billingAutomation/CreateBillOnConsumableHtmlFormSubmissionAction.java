@@ -91,6 +91,7 @@ if(currentInsuranceId.size()>=1)
                     System.out.println("FSP Foundddddddddd: "+fsp.getName()+ "With Qnty: "+o.getValueNumeric());
                     System.out.println("FacilityServicePrice Found: " + fsp.getName());
                     BillableService bs = Context.getService(BillingService.class).getBillableServiceByConcept(fsp,ip.getInsurance());
+                    if (bs!=null) {
                     totalMaximaTopay=totalMaximaTopay.add(bs.getMaximaToPay().multiply(new BigDecimal(o.getValueNumeric())));
                     System.out.println("BillableService maxima_to_pay: " + bs.getMaximaToPay());
                     psb.setService(bs);
@@ -103,7 +104,7 @@ if(currentInsuranceId.size()>=1)
                     psb.setCreatedDate(new Date());
                     psbList.add(psb);
 
-                    if (bs!=null){
+                    //if (bs!=null){
                         ConsumableOrder consumableOrder=new ConsumableOrder();
                         consumableOrder.setDate(new Date());
                         consumableOrder.setQnty(o.getValueNumeric().intValue());

@@ -116,6 +116,7 @@ public class DrugOrderPrescriptionController extends AbstractController {
 						DrugOrderedAndQuantinty drugOrderedAndQuantinty=new DrugOrderedAndQuantinty();
 						drugOrderedAndQuantinty.setDrug(conceptService.getDrug(prescriptionRequest.getDnameField()));
 						drugOrderedAndQuantinty.setQuantity(BigDecimal.valueOf(Double.valueOf(prescriptionRequest.getDquantityField())));
+						drugOrderedAndQuantinty.setDrugFrequency(prescriptionRequest.getFrequencyIdField());
 						drugs.add(drugOrderedAndQuantinty);
 						handleOrderCreation(request, patientId, mav, patient, orderService, httpSession, sdf, qtyStr, conceptService, dose, enc, prescriptionRequest);
 					}

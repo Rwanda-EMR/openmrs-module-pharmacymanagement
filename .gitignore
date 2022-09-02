@@ -18,6 +18,7 @@ target
 /.idea/openmrs-module-pharmacymanagement.iml
 /.idea/vcs.xml
 /.idea/
+/.idea/libraries
 /api/target/
 /api/pharmacymanagement-api.iml
 /omod/target/

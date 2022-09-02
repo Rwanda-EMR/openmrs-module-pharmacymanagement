@@ -399,4 +399,9 @@ public class DrugOrderServiceImpl implements DrugOrderService {
 	public List<ConsumableOrder> getConsumableOrderByDate(String date, Patient patient) {
 		return drugOrderDAO.getConsumableOrderByDate(date,patient);
 	}
+
+	@Override
+	public ConsumableOrder getConsumableOrderId(int consumableOrderId) {
+		return drugOrderDAO.getConsumableOrderId(consumableOrderId);
+	}
 }

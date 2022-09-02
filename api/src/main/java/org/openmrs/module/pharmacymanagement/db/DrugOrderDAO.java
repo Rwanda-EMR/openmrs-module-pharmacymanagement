@@ -470,5 +470,5 @@ public interface DrugOrderDAO {
 	public void saveOrUpdateConsumableOrder(ConsumableOrder conso);
 	public List<ConsumableOrder> getConsumableOrderByDate(String date,Patient patient);
 	public Map<Integer, Integer> getCurrSoldeOfDrugProducts(List<DrugProduct> drugProducts);
-
+	public ConsumableOrder getConsumableOrderId(int consumableOrderId);
 }

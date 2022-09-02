@@ -112,9 +112,10 @@ public class ConsumableDispensationController extends
 			for (PharmacyInventory pi : piList) {
 				if (pi.getDrugproductId().getConceptId() != null && pi.getDrugproductId().getExpiryDate()!=null) {
 					for (ConsumableOrder co:consumableOfPatientByDate) {
-						if (co.getConsumable()==pi.getDrugproductId().getConceptId()){
-							map.put(pi.getDrugproductId().getConceptId()
-									.getConceptId(), pi.getDrugproductId());
+						if (co.getConsumable()==pi.getDrugproductId().getConceptId() && co.getIsDispensed()==false){
+						/*	map.put(pi.getDrugproductId().getConceptId()
+									.getConceptId(), pi.getDrugproductId());*/
+							map.put(co.getConsumableOrderId(), pi.getDrugproductId());
 							consDispQnties.put(pi.getDrugproductId().getDrugproductId(),co.getQnty());
 							ordersToDisp.put(pi.getDrugproductId().getDrugproductId(),co);
 						}
@@ -265,6 +266,7 @@ public class ConsumableDispensationController extends
 
 			String disconsumables[] = request.getParameterValues("consumable");
 			String disqnty[] = request.getParameterValues("qnty");
+			String consumableorderIds[] = request.getParameterValues("consumableorderId");
 
 			if (disconsumables != null && disconsumables.length != 0) {
 
@@ -302,6 +304,15 @@ public class ConsumableDispensationController extends
 
 					if (solde >= 0) {
 						dos.saveOrUpdateConsumableDispense(cd);
+						ConsumableOrder consumableOrder=dos.getConsumableOrderId(Integer.valueOf(consumableorderIds[i]));
+						consumableOrder.setQnty(Integer.valueOf(disqnty[i]));
+						consumableOrder.setDispensedDate(new Date());
+						consumableOrder.setDispensedBy(Context.getAuthenticatedUser());
+						consumableOrder.setIsDispensed(true);
+						consumableOrder.setConsumabledispenseId(cd.getConsumabledispenseId());
+						dos.saveOrUpdateConsumableOrder(consumableOrder);
+
+
 						//			if (isEdit) {
 						pinv.setDate(date);
 						pinv.setDrugproductId(dp);

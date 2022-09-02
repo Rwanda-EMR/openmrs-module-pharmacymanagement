@@ -1399,4 +1399,13 @@ public class DrugOrderDAOImpl implements DrugOrderDAO {
 		return criteria.list();*/
 	}
 
+
+	@Override
+	public ConsumableOrder getConsumableOrderId(int consumableOrderId) {
+		Session session = getSessionFactory().getCurrentSession();
+		ConsumableOrder consumableOrder = (ConsumableOrder) session.get(ConsumableOrder.class,
+				consumableOrderId);
+		return consumableOrder;
+	}
+
 }
