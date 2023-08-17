@@ -24,6 +24,8 @@ import org.openmrs.api.LocationService;
 import org.openmrs.api.ObsService;
 import org.openmrs.api.OrderService;
 import org.openmrs.api.context.Context;
+import org.openmrs.module.mohbilling.model.FacilityServicePrice;
+import org.openmrs.module.mohbilling.service.BillingService;
 import org.openmrs.module.pharmacymanagement.DrugOrderPrescription;
 import org.openmrs.module.pharmacymanagement.DrugProduct;
 import org.openmrs.module.pharmacymanagement.PharmacyConstants;
@@ -57,7 +59,16 @@ public class DrugOrderPortletController extends PortletController {
 				drugs.add(dp.getDrugId());
 			}
 		}
-
+		if(drugs.size()==0){
+			//drugs=Context.getConceptService().getAllDrugs(false);
+			for (FacilityServicePrice fsp:Context.getService(BillingService.class).getAllFacilityServicePrices()) {
+				if (!fsp.getHidden() && fsp.getCategory()!=null && fsp.getCategory().equals("MEDICAMENTS")){
+					if (Context.getConceptService().getDrug(fsp.getName())!=null) {
+						drugs.add(Context.getConceptService().getDrug(fsp.getName()));
+					}
+				}
+			}
+		}
 
 
 
@@ -191,6 +202,10 @@ public class DrugOrderPortletController extends PortletController {
 		model.put("dispensedQuantity", orderIdAndDisQuantity);
 
 		model.put("drugs", drugs);
+
+
+
+
 
 	/*	List<Person> people=new ArrayList<Person>();
 		people.add(patient);
