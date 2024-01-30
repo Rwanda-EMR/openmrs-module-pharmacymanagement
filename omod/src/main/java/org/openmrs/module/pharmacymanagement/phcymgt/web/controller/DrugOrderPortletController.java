@@ -3,22 +3,16 @@
  */
 package org.openmrs.module.pharmacymanagement.phcymgt.web.controller;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.velocity.util.ArrayListWrapper;
-import org.openmrs.*;
+import org.openmrs.Concept;
+import org.openmrs.ConceptClass;
+import org.openmrs.Drug;
+import org.openmrs.DrugOrder;
+import org.openmrs.Location;
+import org.openmrs.Obs;
+import org.openmrs.Order;
+import org.openmrs.OrderType;
+import org.openmrs.Patient;
+import org.openmrs.Person;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.LocationService;
 import org.openmrs.api.ObsService;
@@ -35,6 +29,17 @@ import org.openmrs.parameter.OrderSearchCriteria;
 import org.openmrs.parameter.OrderSearchCriteriaBuilder;
 import org.openmrs.util.OpenmrsConstants;
 import org.openmrs.web.controller.PortletController;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -62,7 +67,7 @@ public class DrugOrderPortletController extends PortletController {
 		if(drugs.size()==0){
 			//drugs=Context.getConceptService().getAllDrugs(false);
 			for (FacilityServicePrice fsp:Context.getService(BillingService.class).getAllFacilityServicePrices()) {
-				if (!fsp.getHidden() && fsp.getCategory()!=null && fsp.getCategory().equals("MEDICAMENTS")){
+				if (!fsp.isHidden() && fsp.getCategory()!=null && fsp.getCategory().equals("MEDICAMENTS")){
 					if (Context.getConceptService().getDrug(fsp.getName())!=null) {
 						drugs.add(Context.getConceptService().getDrug(fsp.getName()));
 					}
