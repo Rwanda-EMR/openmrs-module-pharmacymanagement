@@ -266,7 +266,7 @@
 <div id="dt_example">
 <div id="container">
 
-<div style="float: right"><img id="print_ordonance" src="moduleResources/pharmacymanagement/images/print_preview.gif" style="cursor: pointer;" title="Print Preview" /></div>
+<div style="float: right"><img id="print_ordonance" src="${pageContext.request.contextPath}/moduleResources/pharmacymanagement/images/print_preview.gif" style="cursor: pointer;" title="Print Preview" /></div>
 <table cellpadding="0" cellspacing="0" border="0" class="display"
 	id="example_do" style="width:100%">
 	<thead>
@@ -348,7 +348,7 @@
 </div>
 
 <div id="edit-dialog-content">
-<form id="drugOrderForm" method="post" action="module/pharmacymanagement/dopc.form">
+<form id="drugOrderForm" method="post" action="${pageContext.request.contextPath}/module/pharmacymanagement/dopc.form">
 <input type="hidden" name="orderId" id="editing" />
 <input type="hidden" name="editcreate" id="editingcreating" />
 <input type="hidden" name="selecteDrugs" id="selecteDrugs" />
@@ -478,7 +478,7 @@
 </div>
 
 <div id="stop-modal-content">
-<form method="post" action="module/pharmacymanagement/dopc.form?patientId=${model.patientId}">
+<form method="post" action="${pageContext.request.contextPath}/module/pharmacymanagement/dopc.form?patientId=${model.patientId}">
 <input type="hidden" name="orderId" id="stopping" /> <input
 	type="hidden" name="stopping" id="stop" />
 <table>
@@ -580,7 +580,7 @@
 
 <!-- delete order modal -->
 <div id="delete-modal-content">
-<form method="post" action="module/pharmacymanagement/dopc.form?patientId=${model.patientId}&delete=on">
+<form method="post" action="${pageContext.request.contextPath}/module/pharmacymanagement/dopc.form?patientId=${model.patientId}&delete=on">
 <input type="hidden" name="orderToDel" id="orderToDelId" />
 <select name="deleteReason" id="deleteReasonId">
 <option value="Date Error">Date Error</option>
