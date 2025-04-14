@@ -1,15 +1,7 @@
 package org.openmrs.module.pharmacymanagement.phcymgt.web.controller;
 
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
@@ -42,7 +34,18 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
 import org.springframework.web.servlet.view.RedirectView;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class DrugOrderPrescriptionController extends AbstractController {
 	protected final Log log = LogFactory.getLog(getClass());
@@ -153,8 +156,11 @@ public class DrugOrderPrescriptionController extends AbstractController {
 			}
 		}
 
-		return new ModelAndView(new RedirectView(
-				"../../patientDashboard.form?patientId=" + patientId));
+		String redirectUrl = request.getHeader("referer");
+		if (StringUtils.isBlank(redirectUrl)) {
+			redirectUrl = "../../patientDashboard.form?patientId=" + patientId;
+		}
+		return new ModelAndView(new RedirectView(redirectUrl));
 	}
 
 	/**

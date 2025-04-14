@@ -266,7 +266,7 @@
 <div id="dt_example">
 <div id="container">
 
-<div style="float: right"><img id="print_ordonance" src="moduleResources/pharmacymanagement/images/print_preview.gif" style="cursor: pointer;" title="Print Preview" /></div>
+<div style="float: right"><img id="print_ordonance" src="${pageContext.request.contextPath}/moduleResources/pharmacymanagement/images/print_preview.gif" style="cursor: pointer;" title="Print Preview" /></div>
 <table cellpadding="0" cellspacing="0" border="0" class="display"
 	id="example_do" style="width:100%">
 	<thead>
