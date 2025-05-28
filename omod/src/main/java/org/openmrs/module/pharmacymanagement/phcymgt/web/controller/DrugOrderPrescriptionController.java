@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.openmrs.Concept;
@@ -153,8 +154,16 @@ public class DrugOrderPrescriptionController extends AbstractController {
 			}
 		}
 
-		return new ModelAndView(new RedirectView(
-				"../../patientDashboard.form?patientId=" + patientId));
+		String returnUrl = request.getParameter("returnUrl");
+		if (StringUtils.isBlank(returnUrl)) {
+			returnUrl = "../../patientDashboard.form?patientId={patientId}";
+		}
+		returnUrl = returnUrl.replace("{patientId}", patientId);
+		if (patient != null) {
+			returnUrl = returnUrl.replace("{patientUuid}", patient.getUuid());
+		}
+
+		return new ModelAndView(new RedirectView(returnUrl));
 	}
 
 	/**

@@ -62,7 +62,7 @@ public class DrugOrderPortletController extends PortletController {
 		if(drugs.size()==0){
 			//drugs=Context.getConceptService().getAllDrugs(false);
 			for (FacilityServicePrice fsp:Context.getService(BillingService.class).getAllFacilityServicePrices()) {
-				if (!fsp.getHidden() && fsp.getCategory()!=null && fsp.getCategory().equals("MEDICAMENTS")){
+				if (!fsp.isHidden() && fsp.getCategory()!=null && fsp.getCategory().equals("MEDICAMENTS")){
 					if (Context.getConceptService().getDrug(fsp.getName())!=null) {
 						drugs.add(Context.getConceptService().getDrug(fsp.getName()));
 					}

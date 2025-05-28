@@ -352,6 +352,7 @@
 <input type="hidden" name="orderId" id="editing" />
 <input type="hidden" name="editcreate" id="editingcreating" />
 <input type="hidden" name="selecteDrugs" id="selecteDrugs" />
+<input type="hidden" name="returnUrl" value="${model.returnUrl}"/>
 
 <!-- Just created these two parameters in order to get them as they are in the Controller (KAMONYO)-->
 <input type="hidden" name="appointmentId" value="${model.appointmentId}" />
