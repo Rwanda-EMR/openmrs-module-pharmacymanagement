@@ -1,57 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.2//EN" "http://resources.openmrs.org/doctype/config-1.2.dtd">
 <module configVersion="1.2">
 
 	<!-- Drug Store Management and Dispensing Module Properties -->
-	<id>pharmacymanagement</id>
-	<name>Pharmacy Management and Dispensing Module</name>
-	<version>2.0.0-SNAPSHOT</version>
-	<package>org.openmrs.module.pharmacymanagement</package>
+	<id>${project.parent.artifactId}</id>
+	<name>${project.parent.name}</name>
+	<version>${project.parent.version}</version>
+	<package>${project.parent.groupId}.${project.parent.artifactId}</package>
 	<author>MOH/RBC</author>
 	<description>This is module to help in management of a pharmacy in health facilities</description>
 
-	<activator>@MODULE_PACKAGE@.PharmacyManagementModuleActivator</activator>
+	<activator>org.openmrs.module.pharmacymanagement.PharmacyManagementModuleActivator</activator>
 
 	<!-- /Drug Store Management and Dispensing Module Properties -->
 
 	<require_version>${openMRSVersion}</require_version>
 
 	<require_modules>
-		<require_module version="0.3-SNAPSHOT">org.openmrs.module.mohappointment</require_module>
-		<require_module version="2.0.0-SNAPSHOT">org.openmrs.module.mohbilling</require_module>
+		<require_module version="${mohappointmentVersion}">org.openmrs.module.mohappointment</require_module>
+		<require_module version="${mohbillingVersion}">org.openmrs.module.mohbilling</require_module>
 		<require_module>org.openmrs.module.htmlformentry</require_module>
 	</require_modules>
-
 
 	<aware_of_modules>
 		<aware_of_module>org.openmrs.module.legacyui</aware_of_module>
 	</aware_of_modules>
 
-
-	<!-- AOP
-	<advice>
-	  	<point>org.openmrs.api.OrderService</point>
-	  	<class>@MODULE_PACKAGE@.advice.DrugOrderServiceAdvice</class>
-	 </advice>
-	-->
-
 	<!-- Extensions -->
 
 	<extension>
 		<point>org.openmrs.tracmodule.list</point>
-		<class>@MODULE_PACKAGE@.extension.html.AdminList</class>
+		<class>org.openmrs.module.pharmacymanagement.extension.html.AdminList</class>
 	</extension>
 
 	<extension>
 		<point>org.openmrs.patientDashboardTab</point>
-		<class>@MODULE_PACKAGE@.extension.html.DrugOrderDashboardTab</class>
+		<class>org.openmrs.module.pharmacymanagement.extension.html.DrugOrderDashboardTab</class>
 	</extension>
-	<!--
-   <extension>
-       <point>org.openmrs.admin.list</point>
-       <class>@MODULE_PACKAGE@.extension.html.AdminList</class>
-   </extension>
-    -->
+
 	<!-- Required Privileges -->
 	<privilege>
 		<name>View Pharmacy management and Dispensing</name>
@@ -122,49 +107,49 @@
 	</privilege>
 	<!-- Required Global Properties -->
 	<globalProperty>
-		<property>@MODULE_ID@.pharmacyEncounter</property>
+		<property>pharmacymanagement.pharmacyEncounter</property>
 		<defaultValue>14</defaultValue>
 		<description>Pharmacy Encounter</description>
 	</globalProperty>
 	<globalProperty>
-		<property>@MODULE_ID@.periodDispense</property>
+		<property>pharmacymanagement.periodDispense</property>
 		<defaultValue>0</defaultValue>
 		<description>The number of months to go back if there is no Dispense in the current month and there has been dispensing in the previous months</description>
 	</globalProperty>
 	<globalProperty>
-		<property>@MODULE_ID@.possibleFrequency</property>
+		<property>pharmacymanagement.possibleFrequency</property>
 		<defaultValue>4,5,30</defaultValue>
 		<description>The first is for the drugs that a patient can take at once, the second is times per day and the last is days</description>
 	</globalProperty>
 	<globalProperty>
-		<property>@MODULE_ID@.appointmentInConsultationService</property>
+		<property>pharmacymanagement.appointmentInConsultationService</property>
 		<defaultValue>8053</defaultValue>
 		<description>Consultation Services concept</description>
 	</globalProperty>
 	<globalProperty>
-		<property>@MODULE_ID@.CONSUMABLE</property>
+		<property>pharmacymanagement.CONSUMABLE</property>
 		<defaultValue>7988</defaultValue>
 		<description>Consumable coded concept id</description>
 	</globalProperty>
 	<globalProperty>
-		<property>@MODULE_ID@.pharmacyDrugOrderTypID</property>
+		<property>pharmacymanagement.pharmacyDrugOrderTypID</property>
 		<defaultValue>3</defaultValue>
 		<description>Consumable coded concept id</description>
 	</globalProperty>
 	<globalProperty>
-		<property>@MODULE_ID@.pharmacyFrequencies</property>
+		<property>pharmacymanagement.pharmacyFrequencies</property>
 		<defaultValue>1:ONE PER DAY,2:TWO PER DAY,3:THREE PER DAY,4:FOUR PER DAY,5:FIVE PER DAY,6:SIX PER DAY</defaultValue>
 		<description>concept name of frequencies mapped by number:name and comma</description>
 	</globalProperty>
 	<globalProperty>
-		<property>@MODULE_ID@.nextHIVVisitDateNeededDuringDrudOrder</property>
+		<property>pharmacymanagement.nextHIVVisitDateNeededDuringDrudOrder</property>
 		<defaultValue>HIV VISIT</defaultValue>
 		<description>Encounter type name of most recent return date which are needed during drug order prescription.</description>
 	</globalProperty>
 
 
 	<!-- Internationalization -->
-	<!-- All message codes should start with @MODULE_ID@.* -->
+	<!-- All message codes should start with pharmacymanagement.* -->
 	<messages>
 		<lang>en</lang>
 		<file>messages.properties</file>
@@ -172,10 +157,6 @@
 	<messages>
 		<lang>fr</lang>
 		<file>messages_fr.properties</file>
-	</messages>
-	<messages>
-		<lang>es</lang>
-		<file>messages_es.properties</file>
 	</messages>
 	<!-- /Internationalization -->
 
