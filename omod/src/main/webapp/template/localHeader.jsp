@@ -4,7 +4,7 @@
 			class="first<c:if test='<%= request.getRequestURI().contains("drugStoreForm") %>'> active</c:if>">
 		<a
 			href="${pageContext.request.contextPath}/module/pharmacymanagement/storequest.form">
-		<spring:message code="pharmacymanagement.drugReq" /> (<spring:message code="@MODULE_ID@.stock" />)</a></li>
+		<spring:message code="pharmacymanagement.drugReq" /> (<spring:message code="pharmacymanagement.stock" />)</a></li>
 	</openmrs:hasPrivilege>
 	<openmrs:hasPrivilege privilege="View Drug Store management">
 		<li
@@ -31,6 +31,6 @@
     			class="first<c:if test='<%= request.getRequestURI().contains("drugAdjustmentForm") %>'> active</c:if>">
     		<a
     			href="${pageContext.request.contextPath}/module/pharmacymanagement/adjustmentrequest.form">
-    		<spring:message code="pharmacymanagement.drugAdjustment" /> (<spring:message code="@MODULE_ID@.stock" />)</a></li>
+    		<spring:message code="pharmacymanagement.drugAdjustment" /> (<spring:message code="pharmacymanagement.stock" />)</a></li>
     	</openmrs:hasPrivilege>
 </ul>

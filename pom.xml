@@ -55,6 +55,7 @@
 	</dependencyManagement>
 
 	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<openMRSVersion>2.5.4</openMRSVersion>
 		<mohappointmentVersion>0.3-SNAPSHOT</mohappointmentVersion>
 		<mohorderentrybridgeVersion>1.0.1</mohorderentrybridgeVersion>
